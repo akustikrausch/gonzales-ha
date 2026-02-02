@@ -189,6 +189,14 @@ automation:
 
 ---
 
+## Main Project
+
+This repository contains only the Home Assistant add-on and integration. The Gonzales speed monitor itself (backend, web dashboard, TUI, API) lives in the main repository:
+
+**[github.com/akustikrausch/gonzales](https://github.com/akustikrausch/gonzales)** -- standalone installation, full API documentation, configuration reference, Raspberry Pi setup, and development guide.
+
+---
+
 ## Security
 
 - **API key**: The add-on auto-generates a persistent API key and passes it to the integration via Supervisor discovery. For standalone setups, the key can be entered manually during integration setup.
