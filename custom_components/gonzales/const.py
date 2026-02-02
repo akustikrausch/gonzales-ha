@@ -2,6 +2,8 @@
 
 DOMAIN = "gonzales"
 
+CONF_API_KEY = "api_key"
+
 DEFAULT_HOST = "localhost"
 DEFAULT_PORT = 8000
 DEFAULT_SCAN_INTERVAL = 60

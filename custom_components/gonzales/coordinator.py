@@ -16,7 +16,7 @@ from homeassistant.helpers.update_coordinator import (
     UpdateFailed,
 )
 
-from .const import DEFAULT_SCAN_INTERVAL, DOMAIN
+from .const import CONF_API_KEY, DEFAULT_SCAN_INTERVAL, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,6 +37,10 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self._host = config_entry.data[CONF_HOST]
         self._port = config_entry.data[CONF_PORT]
         self._base_url = f"http://{self._host}:{self._port}/api/v1"
+        api_key = config_entry.data.get(CONF_API_KEY, "")
+        self._headers: dict[str, str] = {}
+        if api_key:
+            self._headers["X-API-Key"] = api_key
         scan_interval = config_entry.data.get(
             CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
         )
@@ -68,6 +72,7 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             # Fetch latest measurement
             async with session.get(
                 f"{self._base_url}/measurements/latest",
+                headers=self._headers,
                 timeout=aiohttp.ClientTimeout(total=15),
             ) as resp:
                 if resp.status == 200:
@@ -78,6 +83,7 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             # Fetch system status
             async with session.get(
                 f"{self._base_url}/status",
+                headers=self._headers,
                 timeout=aiohttp.ClientTimeout(total=10),
             ) as resp:
                 if resp.status == 200:
@@ -86,6 +92,7 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             # Fetch ISP score from enhanced statistics
             async with session.get(
                 f"{self._base_url}/statistics/enhanced",
+                headers=self._headers,
                 timeout=aiohttp.ClientTimeout(total=20),
             ) as resp:
                 if resp.status == 200:
