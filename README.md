@@ -1,71 +1,77 @@
-# Gonzales - Home Assistant Integration
+# Gonzales - Home Assistant Add-on & Integration
 
-Custom integration for [Home Assistant](https://www.home-assistant.io/) that monitors your internet speed via a local [Gonzales](https://github.com/akustikrausch/gonzales) instance.
+This repository provides two components for running [Gonzales](https://github.com/akustikrausch/gonzales) with [Home Assistant](https://www.home-assistant.io/):
+
+1. **Gonzales Add-on** -- Runs Gonzales entirely inside Home Assistant (recommended)
+2. **Gonzales Integration** -- Sensor plugin that connects to an external Gonzales instance
 
 ---
 
-## How It Works
+## Option A: Home Assistant Add-on (Recommended)
 
-This integration is a **read-only sensor plugin** for Home Assistant. It does **not** run speed tests itself and does **not** include its own web interface.
+The add-on runs Gonzales as a self-contained Docker container managed by the HA Supervisor. It includes the speed test backend, scheduler, database, and web dashboard -- all accessible through the HA sidebar.
 
-**Architecture:**
+```
+Browser --> HA Sidebar --> Ingress --> Gonzales Web UI
+                                        |
+                            Speedtest CLI + Scheduler + SQLite
+```
+
+### Add-on Installation
+
+1. In Home Assistant, go to **Settings > Add-ons**
+2. Click the **Add-on Store** (bottom right)
+3. Open the three-dot menu (top right) and select **Repositories**
+4. Add: `https://github.com/akustikrausch/gonzales-ha`
+5. Find **Gonzales Speed Monitor** in the store and click **Install**
+6. Start the add-on -- the web dashboard appears in the HA sidebar
+
+The sensor integration is auto-discovered when the add-on starts. Confirm setup when prompted to get all sensors in HA.
+
+### Add-on Configuration
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `test_interval_minutes` | `30` | Minutes between automatic speed tests (1-1440) |
+| `download_threshold_mbps` | `1000.0` | Expected download speed for scoring |
+| `upload_threshold_mbps` | `500.0` | Expected upload speed for scoring |
+| `preferred_server_id` | `0` | Ookla server ID (0 = auto-select) |
+| `log_level` | `INFO` | Log verbosity (DEBUG, INFO, WARNING, ERROR) |
+
+Data is persisted in `/data/` across updates and restarts.
+
+For detailed add-on documentation, see [gonzales-addon/DOCS.md](gonzales-addon/DOCS.md).
+
+---
+
+## Option B: Standalone Integration (HACS)
+
+If you run Gonzales on a separate machine (e.g. a Raspberry Pi or server), install the sensor integration to pull data into HA.
+
 ```
 [Gonzales Server]  <--polls--  [gonzales-ha in HA]  -->  [HA Dashboard / Automations]
   (Raspberry Pi)                 (sensor data)
 ```
 
-- **Gonzales** runs on a separate machine (e.g., Raspberry Pi) and performs the actual speed tests, stores history, and serves the web dashboard
-- **gonzales-ha** (this integration) periodically polls the Gonzales REST API to read the latest measurement, system status, and ISP score
-- All data flows one-way: Gonzales -> HA. The integration never triggers tests or modifies config
-- Both systems are fully local -- no cloud dependency
+The integration is a **read-only sensor plugin**. It polls the Gonzales REST API to read measurements, status, and ISP score. It never triggers tests or modifies config. Fully local -- no cloud dependency.
 
-You need a running Gonzales instance for this integration to work. Without it, the sensors will show "unavailable".
+### Integration Installation
 
----
-
-## Features
-
-- **Download Speed** -- Latest download speed in Mbit/s
-- **Upload Speed** -- Latest upload speed in Mbit/s
-- **Ping Latency** -- Latest ping latency in ms
-- **Ping Jitter** -- Latest ping jitter in ms
-- **Packet Loss** -- Latest packet loss percentage
-- **Last Test Time** -- Timestamp of the most recent speed test
-- **ISP Performance Score** -- Composite 0-100 score with grade (A+ to F)
-- **Diagnostic Sensors** -- Scheduler status, uptime, total measurements, database size
-
-All sensors support Home Assistant long-term statistics.
-
----
-
-## Requirements
-
-- Home Assistant 2024.12.0 or newer
-- A running Gonzales instance accessible on the local network
-- Gonzales API must be reachable from the Home Assistant host
-
----
-
-## Installation
-
-### HACS (Recommended)
+**HACS (Recommended):**
 
 1. Open HACS in Home Assistant
 2. Go to **Integrations**
 3. Click the three-dot menu (top right) and select **Custom repositories**
-4. Add the repository URL and select **Integration** as the category
-5. Click **Add**
-6. Search for **Gonzales** in HACS and install it
-7. Restart Home Assistant
+4. Add `https://github.com/akustikrausch/gonzales-ha` and select **Integration**
+5. Search for **Gonzales** in HACS and install it
+6. Restart Home Assistant
 
-### Manual
+**Manual:**
 
-1. Copy the `custom_components/gonzales/` folder into your Home Assistant `config/custom_components/` directory
+1. Copy the `custom_components/gonzales/` folder into your HA `config/custom_components/` directory
 2. Restart Home Assistant
 
----
-
-## Configuration
+### Integration Configuration
 
 1. Go to **Settings** > **Devices & Services**
 2. Click **Add Integration**
@@ -82,7 +88,15 @@ The integration validates the connection during setup and will show an error if 
 
 ---
 
-## Sensors
+## Requirements
+
+- Home Assistant 2024.12.0 or newer
+- **Add-on**: No additional requirements (everything runs inside HA)
+- **Integration**: A running Gonzales instance accessible on the local network
+
+---
+
+## Sensors (both options)
 
 ### Main Sensors
 
@@ -159,6 +173,14 @@ automation:
 ---
 
 ## Troubleshooting
+
+### Add-on
+
+- **Web UI not loading**: Restart the add-on and check logs. Ensure Ingress is enabled.
+- **Speed test fails**: Check add-on logs. The Ookla CLI license is accepted automatically on first run.
+- **Sensors not appearing**: The add-on registers auto-discovery on startup. Go to **Settings > Devices & Services** and check for a Gonzales discovery notification.
+
+### Integration (standalone)
 
 - **Cannot connect**: Verify that the Gonzales API is running and reachable from your HA host. Test with: `curl http://<host>:<port>/api/v1/status`
 - **Sensors show "unavailable"**: The Gonzales instance may not have any measurements yet. Run a speed test first.
