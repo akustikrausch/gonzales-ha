@@ -6,10 +6,26 @@ profile gonzales flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
 
+  # S6-overlay init system
+  /init rix,
+  /bin/** rix,
+  /usr/bin/** rix,
+  /command/** rix,
+  /package/** r,
+  /etc/s6-overlay/** r,
+  /etc/s6/** r,
+  /etc/fix-attrs.d/** r,
+  /etc/cont-init.d/** rix,
+  /etc/services.d/** rix,
+  /run/s6/** rwk,
+  /run/s6-rc/** rwk,
+  /var/run/s6/** rwk,
+
   # Python runtime
   /usr/local/bin/python3* rix,
   /usr/local/lib/python3*/** r,
   /usr/lib/python3*/** r,
+  /opt/gonzales/** r,
 
   # Speedtest CLI
   /usr/local/bin/speedtest rix,
@@ -41,18 +57,6 @@ profile gonzales flags=(attach_disconnected,mediate_deleted) {
   # Shared libraries
   /usr/lib/** rm,
   /lib/** rm,
-
-  # Shell utilities used by run.sh
-  /usr/bin/bash rix,
-  /bin/bash rix,
-  /usr/bin/curl rix,
-  /usr/bin/hostname rix,
-  /usr/bin/head rix,
-  /usr/bin/tr rix,
-  /usr/bin/cat rix,
-  /usr/bin/chmod rix,
-  /usr/bin/touch rix,
-  /usr/bin/base64 rix,
 
   # Config files
   /etc/** r,
