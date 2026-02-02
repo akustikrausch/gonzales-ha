@@ -1,0 +1,61 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Gonzales",
+        "description": "Enter the host and port of your Gonzales speed monitor.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to Gonzales API. Check host and port."
+    },
+    "abort": {
+      "already_configured": "This Gonzales instance is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "download_speed": {
+        "name": "Download speed"
+      },
+      "upload_speed": {
+        "name": "Upload speed"
+      },
+      "ping_latency": {
+        "name": "Ping latency"
+      },
+      "ping_jitter": {
+        "name": "Ping jitter"
+      },
+      "packet_loss": {
+        "name": "Packet loss"
+      },
+      "last_test_time": {
+        "name": "Last test time"
+      },
+      "isp_score": {
+        "name": "ISP performance score"
+      },
+      "scheduler_running": {
+        "name": "Scheduler status"
+      },
+      "test_in_progress": {
+        "name": "Test in progress"
+      },
+      "uptime": {
+        "name": "Uptime"
+      },
+      "total_measurements": {
+        "name": "Total measurements"
+      },
+      "db_size": {
+        "name": "Database size"
+      }
+    }
+  }
+}
