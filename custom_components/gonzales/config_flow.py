@@ -31,6 +31,37 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
+    _hassio_discovery: dict[str, Any] | None = None
+
+    async def async_step_hassio(
+        self, discovery_info: dict[str, Any]
+    ) -> ConfigFlowResult:
+        """Handle Supervisor add-on discovery."""
+        host = discovery_info["host"]
+        port = discovery_info["port"]
+        await self.async_set_unique_id(f"hassio_{host}:{port}")
+        self._abort_if_unique_id_configured()
+        self._hassio_discovery = discovery_info
+        return await self.async_step_hassio_confirm()
+
+    async def async_step_hassio_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Confirm Supervisor add-on discovery."""
+        if user_input is not None:
+            assert self._hassio_discovery is not None
+            host = self._hassio_discovery["host"]
+            port = self._hassio_discovery["port"]
+            return self.async_create_entry(
+                title="Gonzales (Add-on)",
+                data={
+                    CONF_HOST: host,
+                    CONF_PORT: port,
+                    CONF_SCAN_INTERVAL: DEFAULT_SCAN_INTERVAL,
+                },
+            )
+        return self.async_show_form(step_id="hassio_confirm")
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:

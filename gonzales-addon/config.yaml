@@ -1,0 +1,34 @@
+name: "Gonzales Speed Monitor"
+version: "1.0.0"
+slug: "gonzales"
+description: "Internet speed monitor with automated testing and web dashboard."
+url: "https://github.com/akustikrausch/gonzales-ha"
+arch:
+  - aarch64
+  - amd64
+ingress: true
+ingress_port: 8099
+ingress_entry: /
+ingress_stream: true
+panel_icon: "mdi:speedometer"
+panel_title: "Gonzales"
+boot: auto
+startup: application
+homeassistant: "2024.12.0"
+discovery:
+  - gonzales
+map:
+  - type: data
+    read_only: false
+options:
+  test_interval_minutes: 30
+  download_threshold_mbps: 1000.0
+  upload_threshold_mbps: 500.0
+  preferred_server_id: 0
+  log_level: "INFO"
+schema:
+  test_interval_minutes: "int(1,1440)"
+  download_threshold_mbps: float
+  upload_threshold_mbps: float
+  preferred_server_id: int
+  log_level: "list(DEBUG|INFO|WARNING|ERROR)"
