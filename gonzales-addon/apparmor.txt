@@ -6,13 +6,28 @@ profile gonzales flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/nameservice>
   #include <abstractions/ssl_certs>
 
+  # Capabilities required by S6-overlay (s6-overlay-suexec is setuid)
+  capability chown,
+  capability dac_override,
+  capability fowner,
+  capability kill,
+  capability setgid,
+  capability setuid,
+  capability net_bind_service,
+
+  # Signal handling (S6 process supervision)
+  signal,
+
   # S6-overlay init system
   /init rix,
   /bin/** rix,
   /usr/bin/** rix,
+  /usr/local/bin/** rix,
+  /usr/sbin/** rix,
+  /sbin/** rix,
   /command/** rix,
   /package/** r,
-  /etc/s6-overlay/** r,
+  /etc/s6-overlay/** rwk,
   /etc/s6/** r,
   /etc/fix-attrs.d/** r,
   /etc/cont-init.d/** rix,
@@ -21,8 +36,7 @@ profile gonzales flags=(attach_disconnected,mediate_deleted) {
   /run/s6-rc/** rwk,
   /var/run/s6/** rwk,
 
-  # Python runtime
-  /usr/local/bin/python3* rix,
+  # Python runtime + packages
   /usr/local/lib/python3*/** r,
   /usr/lib/python3*/** r,
   /opt/gonzales/** r,
@@ -48,11 +62,12 @@ profile gonzales flags=(attach_disconnected,mediate_deleted) {
   network inet6 dgram,
   network unix stream,
 
-  # Proc / sys / dev
+  # Proc / sys / dev (read-only)
   @{PROC}/** r,
   /sys/** r,
   /dev/null rw,
   /dev/urandom r,
+  /dev/pts/** rw,
 
   # Shared libraries
   /usr/lib/** rm,

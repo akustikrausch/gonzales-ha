@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.2
+
+- Fix: Add AppArmor capabilities (`setuid`, `setgid`, `kill`, `signal`) required by `s6-overlay-suexec`
+- Fix: Allow S6-overlay writable paths and broader executable access in AppArmor profile
+
 ## 1.2.1
 
 - Fix: Allow S6-overlay init (remove `init: false` that caused `/init` Permission denied)
