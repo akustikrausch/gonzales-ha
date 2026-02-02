@@ -1,0 +1,38 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  yaml:
+    name: Validate YAML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate config.yaml
+        run: python3 -c "import yaml; yaml.safe_load(open('gonzales-addon/config.yaml'))"
+      - name: Validate build.yaml
+        run: python3 -c "import yaml; yaml.safe_load(open('gonzales-addon/build.yaml'))"
+
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: gonzales-addon
+
+  hacs:
+    name: HACS Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: HACS Validation
+        uses: hacs/action@main
+        with:
+          category: integration
