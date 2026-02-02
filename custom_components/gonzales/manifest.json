@@ -1,0 +1,13 @@
+{
+  "domain": "gonzales",
+  "name": "Gonzales",
+  "version": "1.0.0",
+  "codeowners": ["@akustikrausch"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/akustikrausch/gonzales-ha",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/akustikrausch/gonzales-ha/issues",
+  "requirements": []
+}
