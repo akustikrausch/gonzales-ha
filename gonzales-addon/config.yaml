@@ -1,5 +1,5 @@
 name: "Gonzales Speed Monitor"
-version: "1.1.0"
+version: "1.2.0"
 slug: "gonzales"
 description: "Internet speed monitor with automated testing and web dashboard."
 url: "https://github.com/akustikrausch/gonzales-ha"
@@ -17,7 +17,6 @@ boot: auto
 startup: application
 watchdog: "http://[HOST]:[PORT:8099]/api/v1/status"
 homeassistant: "2024.12.0"
-image: "ghcr.io/akustikrausch/gonzales-ha-addon-{arch}"
 apparmor: true
 discovery:
   - gonzales

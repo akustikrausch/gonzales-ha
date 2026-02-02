@@ -4,7 +4,7 @@ FROM ${BUILD_FROM} AS builder
 
 RUN apk add --no-cache git
 
-RUN pip3 install --no-cache-dir --prefix=/usr/local \
+RUN pip3 install --no-cache-dir --target=/opt/gonzales \
     "gonzales @ git+https://github.com/akustikrausch/gonzales.git#subdirectory=backend"
 
 # ===== Runtime: lean image =====
@@ -37,8 +37,7 @@ LABEL \
 
 RUN apk add --no-cache bash curl ca-certificates jemalloc
 
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /opt/gonzales /opt/gonzales
 
 RUN ARCH=$(uname -m) && \
     case "$ARCH" in aarch64) A=aarch64;; x86_64) A=x86_64;; *) echo "Unsupported arch: $ARCH" && exit 1;; esac && \
@@ -49,6 +48,7 @@ RUN ARCH=$(uname -m) && \
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -fsS http://127.0.0.1:8099/api/v1/status > /dev/null || exit 1
 
+ENV PYTHONPATH=/opt/gonzales
 ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 
 COPY run.sh /run.sh
