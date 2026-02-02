@@ -4,6 +4,25 @@ Custom integration for [Home Assistant](https://www.home-assistant.io/) that mon
 
 ---
 
+## How It Works
+
+This integration is a **read-only sensor plugin** for Home Assistant. It does **not** run speed tests itself and does **not** include its own web interface.
+
+**Architecture:**
+```
+[Gonzales Server]  <--polls--  [gonzales-ha in HA]  -->  [HA Dashboard / Automations]
+  (Raspberry Pi)                 (sensor data)
+```
+
+- **Gonzales** runs on a separate machine (e.g., Raspberry Pi) and performs the actual speed tests, stores history, and serves the web dashboard
+- **gonzales-ha** (this integration) periodically polls the Gonzales REST API to read the latest measurement, system status, and ISP score
+- All data flows one-way: Gonzales -> HA. The integration never triggers tests or modifies config
+- Both systems are fully local -- no cloud dependency
+
+You need a running Gonzales instance for this integration to work. Without it, the sensors will show "unavailable".
+
+---
+
 ## Features
 
 - **Download Speed** -- Latest download speed in Mbit/s
