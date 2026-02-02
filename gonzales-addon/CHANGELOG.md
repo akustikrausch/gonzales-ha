@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.0
+
+- Fix: Remove pre-built image reference (local build until GHCR is set up)
+- Fix: Use `--target` instead of `--prefix` for reliable Python package installation on Alpine
+
 ## 1.1.0
 
 - Multi-stage Docker build (git removed from runtime image)
