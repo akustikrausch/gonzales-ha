@@ -9,7 +9,7 @@ This repository provides two components for running [Gonzales](https://github.co
 
 ## Option A: Home Assistant Add-on (Recommended)
 
-The add-on runs Gonzales as a self-contained Docker container managed by the HA Supervisor. It includes the speed test backend, scheduler, database, and web dashboard -- all accessible through the HA sidebar.
+The add-on runs Gonzales as a self-contained Docker container managed by the HA Supervisor. It includes the speed test backend, scheduler, database, and web dashboard -- all accessible through the HA sidebar. Pre-built images for **aarch64** (Raspberry Pi) and **amd64** are available on GHCR for fast installation.
 
 ```
 Browser --> HA Sidebar --> Ingress --> Gonzales Web UI
@@ -82,6 +82,7 @@ The integration is a **read-only sensor plugin**. It polls the Gonzales REST API
 |-------|---------|-------------|
 | Host | `localhost` | Hostname or IP of your Gonzales instance |
 | Port | `8000` | Port the Gonzales API is running on |
+| API key | *(empty)* | API key if the instance has `GONZALES_API_KEY` set |
 | Update interval | `60` | How often to poll the API (seconds, 10-3600) |
 
 The integration validates the connection during setup and will show an error if the Gonzales API is not reachable.
@@ -188,6 +189,16 @@ automation:
 
 ---
 
+## Security
+
+- **API key**: The add-on auto-generates a persistent API key and passes it to the integration via Supervisor discovery. For standalone setups, the key can be entered manually during integration setup.
+- **AppArmor**: The add-on ships with a restrictive AppArmor profile.
+- **No exposed ports**: The web UI is only accessible via HA Ingress.
+
+## Ookla Speedtest CLI
+
+This project uses the [Ookla Speedtest CLI](https://www.speedtest.net/apps/cli), which is proprietary software free for personal, non-commercial use. By using Gonzales, you agree to Ookla's [terms of use](https://www.speedtest.net/about/terms) and [privacy policy](https://www.speedtest.net/about/privacy).
+
 ## License
 
-MIT
+MIT (Gonzales code). The Ookla Speedtest CLI has its own license -- see above.

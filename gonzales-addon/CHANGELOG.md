@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.1.0
+
+- Multi-stage Docker build (git removed from runtime image)
+- S6-overlay v3 compatibility (`init: false`, `with-contenv bashio` shebang)
+- Auto-generated persistent API key (`/data/.api_key`)
+- API key passed to integration via Supervisor discovery
+- Ookla EULA auto-acceptance on first start
+- Input validation for `test_interval_minutes`
+- AppArmor security profile
+- Watchdog health check for auto-restart
+- jemalloc memory allocator for ARM efficiency
+- OCI + HA container labels
+- Pre-built multi-arch images on GHCR (aarch64 + amd64)
+- `.dockerignore` to reduce build context
+- Version display on startup
+- CI/CD: GitHub Actions for multi-arch builds + lint
+
 ## 1.0.0
 
 - Initial release
