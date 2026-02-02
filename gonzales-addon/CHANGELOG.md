@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1
+
+- Fix: Allow S6-overlay init (remove `init: false` that caused `/init` Permission denied)
+- Fix: Update AppArmor profile to permit S6-overlay, `/bin/`, `/opt/gonzales/` paths
+
 ## 1.2.0
 
 - Fix: Remove pre-built image reference (local build until GHCR is set up)
