@@ -2,77 +2,43 @@
 
 profile gonzales flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
-  #include <abstractions/python>
-  #include <abstractions/nameservice>
-  #include <abstractions/ssl_certs>
 
-  # Capabilities required by S6-overlay (s6-overlay-suexec is setuid)
-  capability chown,
-  capability dac_override,
-  capability fowner,
-  capability kill,
-  capability setgid,
-  capability setuid,
-  capability net_bind_service,
+  # Capabilities
+  file,
+  signal (send) set=(kill,term,int,hup,cont),
 
-  # Signal handling (S6 process supervision)
-  signal,
+  # S6-Overlay
+  /init ix,
+  /bin/** ix,
+  /usr/bin/** ix,
+  /usr/local/bin/** ix,
+  /run/{s6,s6-rc*,service}/** ix,
+  /package/** ix,
+  /command/** ix,
+  /etc/services.d/** rwix,
+  /etc/cont-init.d/** rwix,
+  /etc/cont-finish.d/** rwix,
+  /run/{,**} rwk,
+  /dev/tty rw,
 
-  # S6-overlay init system
-  /init rix,
-  /bin/** rix,
-  /usr/bin/** rix,
-  /usr/local/bin/** rix,
-  /usr/sbin/** rix,
-  /sbin/** rix,
-  /command/** rix,
-  /package/** r,
-  /etc/s6-overlay/** rwk,
-  /etc/s6/** r,
-  /etc/fix-attrs.d/** r,
-  /etc/cont-init.d/** rix,
-  /etc/services.d/** rix,
-  /run/s6/** rwk,
-  /run/s6-rc/** rwk,
-  /var/run/s6/** rwk,
-
-  # Python runtime + packages
-  /usr/local/lib/python3*/** r,
-  /usr/lib/python3*/** r,
-  /opt/gonzales/** r,
-
-  # Speedtest CLI
-  /usr/local/bin/speedtest rix,
-
-  # Persistent data
-  /data/ rw,
-  /data/** rwk,
-
-  # Temp files
-  /tmp/ rw,
+  # Bashio
+  /usr/lib/bashio/** ix,
   /tmp/** rwk,
 
-  # Runtime
-  /run/** rw,
+  # Addon data
+  /data/** rw,
 
-  # Network access (TCP + UDP for speedtest)
+  # Network (TCP + UDP for speedtest, unix for internal)
   network inet stream,
   network inet dgram,
   network inet6 stream,
   network inet6 dgram,
   network unix stream,
 
-  # Proc / sys / dev (read-only)
-  @{PROC}/** r,
-  /sys/** r,
-  /dev/null rw,
-  /dev/urandom r,
-  /dev/pts/** rw,
-
-  # Shared libraries
-  /usr/lib/** rm,
-  /lib/** rm,
-
-  # Config files
-  /etc/** r,
+  # Deny dangerous host access
+  deny @{PROC}/* w,
+  deny @{PROC}/{[^1-9],[^1-9][^0-9],[^1-9s][^0-9y][^0-9s]} r,
+  deny @{PROC}/sys/kernel/{?,??,[^s][^h][^m]**} w,
+  deny @{PROC}/sysrq-trigger rwklx,
+  deny @{PROC}/kcore rwklx,
 }
