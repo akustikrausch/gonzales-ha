@@ -1,11 +1,12 @@
 name: "Gonzales Speed Monitor"
-version: "1.2.2"
+version: "1.2.3"
 slug: "gonzales"
 description: "Internet speed monitor with automated testing and web dashboard."
 url: "https://github.com/akustikrausch/gonzales-ha"
 arch:
   - aarch64
   - amd64
+init: false
 ingress: true
 ingress_port: 8099
 ingress_entry: /

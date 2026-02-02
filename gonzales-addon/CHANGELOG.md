@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.3
+
+- Fix: Restore `init: false` (S6-overlay v3 must be PID 1, Docker tini must not be injected)
+- Fix: Rewrite AppArmor profile based on official HA template (`file,` blanket rule + deny /proc writes)
+
 ## 1.2.2
 
 - Fix: Add AppArmor capabilities (`setuid`, `setgid`, `kill`, `signal`) required by `s6-overlay-suexec`
