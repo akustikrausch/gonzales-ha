@@ -1,0 +1,59 @@
+#include <tunables/global>
+
+profile gonzales flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/python>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+
+  # Python runtime
+  /usr/local/bin/python3* rix,
+  /usr/local/lib/python3*/** r,
+  /usr/lib/python3*/** r,
+
+  # Speedtest CLI
+  /usr/local/bin/speedtest rix,
+
+  # Persistent data
+  /data/ rw,
+  /data/** rwk,
+
+  # Temp files
+  /tmp/ rw,
+  /tmp/** rwk,
+
+  # Runtime
+  /run/** rw,
+
+  # Network access (TCP + UDP for speedtest)
+  network inet stream,
+  network inet dgram,
+  network inet6 stream,
+  network inet6 dgram,
+  network unix stream,
+
+  # Proc / sys / dev
+  @{PROC}/** r,
+  /sys/** r,
+  /dev/null rw,
+  /dev/urandom r,
+
+  # Shared libraries
+  /usr/lib/** rm,
+  /lib/** rm,
+
+  # Shell utilities used by run.sh
+  /usr/bin/bash rix,
+  /bin/bash rix,
+  /usr/bin/curl rix,
+  /usr/bin/hostname rix,
+  /usr/bin/head rix,
+  /usr/bin/tr rix,
+  /usr/bin/cat rix,
+  /usr/bin/chmod rix,
+  /usr/bin/touch rix,
+  /usr/bin/base64 rix,
+
+  # Config files
+  /etc/** r,
+}
