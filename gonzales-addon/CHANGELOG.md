@@ -1,5 +1,41 @@
 # Changelog
 
+## 2.0.7
+
+### Fixes
+- **Fix Docker build error**: Add missing build dependencies (gcc, musl-dev, libffi-dev) for Python package compilation
+
+## 2.0.6
+
+### Changes
+- Prepare for HACS submission
+- Add GitHub Actions workflows for validation and releases
+- Add info.md for HACS integration info panel
+
+## 2.0.5
+
+### Improvements
+- **Mobile navigation**: Redesigned bottom nav with 4 main items + "More" sheet
+- **SEO optimization**: Meta tags, Open Graph, Twitter Cards
+- **LLM-friendly docs**: Added llms.txt files
+
+## 2.0.4
+
+### Features
+- **In-app documentation**: Built-in Docs page accessible from sidebar
+- **Legal compliance**: Added Ookla trademark notices and EULA links
+
+## 2.0.0 - 2.0.3
+
+### Major Release - New Features
+- **ISP Contract Validation**: Professional PDF reports with SLA compliance, violations, timestamps
+- **Network Topology Analysis**: Traceroute with hop-by-hop latency analysis
+- **QoS Tests**: Application-specific quality tests (Netflix 4K, Zoom, Gaming, VPN)
+- **Clean Architecture**: Domain/Application/Infrastructure layer separation
+- **New pages**: QoS Tests, Network Topology
+- **Dashboard**: Quick QoS status display
+- **Settings**: Contract details configuration (ISP name, speeds)
+
 ## 1.2.6
 
 ### Fixes

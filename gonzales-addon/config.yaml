@@ -1,5 +1,5 @@
 name: "Gonzales Speed Monitor"
-version: "2.0.6"
+version: "2.0.7"
 slug: "gonzales"
 description: "Internet speed monitor with automated testing and web dashboard."
 url: "https://github.com/akustikrausch/gonzales-ha"

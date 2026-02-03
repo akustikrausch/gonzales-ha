@@ -1,10 +1,17 @@
-# ===== Builder: git only needed here =====
+# ===== Builder: compile Python packages =====
 ARG BUILD_FROM
 FROM ${BUILD_FROM} AS builder
 
 # BUILD_VERSION invalidates cache when addon version changes
 ARG BUILD_VERSION
-RUN apk add --no-cache git
+
+# Install build dependencies for Python packages (uvloop, httptools, etc.)
+RUN apk add --no-cache \
+    git \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    python3-dev
 
 # Cache buster: rebuild gonzales package when addon version bumps
 RUN echo "Building gonzales backend for addon v${BUILD_VERSION}" && \
