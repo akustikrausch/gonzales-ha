@@ -3,21 +3,27 @@
     "step": {
       "user": {
         "title": "Connect to Gonzales",
-        "description": "Enter the host and port of your Gonzales speed monitor.",
+        "description": "**Using the Gonzales Add-on?** Just click OK - the defaults should work automatically.\n\n**Standalone installation?** Enter the IP address and port of your Gonzales server.",
         "data": {
           "host": "Host",
           "port": "Port",
           "api_key": "API key (optional)",
           "scan_interval": "Update interval (seconds)"
+        },
+        "data_description": {
+          "host": "For the add-on, use 'localhost'. For standalone, use the server IP (e.g., 192.168.1.50)",
+          "port": "Default is 8099. Only change if you configured a different port.",
+          "api_key": "Leave empty for the add-on. Only needed for standalone with authentication.",
+          "scan_interval": "How often to fetch data from Gonzales (does not affect speed test interval)"
         }
       },
       "hassio_confirm": {
         "title": "Gonzales Add-on Discovered",
-        "description": "The Gonzales Speed Monitor add-on has been detected. Do you want to set up the integration?"
+        "description": "The Gonzales Speed Monitor add-on has been detected. Click Submit to complete the setup."
       }
     },
     "error": {
-      "cannot_connect": "Cannot connect to Gonzales API. Check host and port."
+      "cannot_connect": "Cannot connect to Gonzales API. Is the add-on running? Check host and port."
     },
     "abort": {
       "already_configured": "This Gonzales instance is already configured."
