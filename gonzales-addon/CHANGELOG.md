@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.4
+
+- Fix: Blank Ingress page — React Router now detects `/api/hassio_ingress/<token>/` path and sets basename correctly
+- Improve: Startup message now says "Access via Home Assistant sidebar" instead of misleading URL hint
+
 ## 1.2.3
 
 - Fix: Restore `init: false` (S6-overlay v3 must be PID 1, Docker tini must not be injected)
