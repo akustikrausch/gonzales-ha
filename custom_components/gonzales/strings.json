@@ -61,6 +61,11 @@
       "db_size": {
         "name": "Database size"
       }
+    },
+    "binary_sensor": {
+      "internet_outage": {
+        "name": "Internet outage"
+      }
     }
   }
 }
