@@ -16,18 +16,14 @@ from .const import CONF_API_KEY, DEFAULT_HOST, DEFAULT_PORT, DEFAULT_SCAN_INTERV
 
 _LOGGER = logging.getLogger(__name__)
 
-# Addon slug (must match config.yaml)
-ADDON_SLUG = "local_gonzales"
+# Default addon port (must match config.yaml)
 ADDON_PORT = 8099
 
-# Possible hostnames for the addon container (Docker networking)
-# Home Assistant addons use hostname format: <slug> or addon_<slug>
-ADDON_HOSTNAMES = [
-    "local-gonzales",      # slug with dash
-    "local_gonzales",      # slug with underscore
-    "addon_local_gonzales",  # prefixed
-    "gonzales",            # just the name
-    "a]_gonzales",        # sometimes HA uses this
+# Fallback hostnames if Supervisor API is unavailable
+FALLBACK_HOSTNAMES = [
+    "local-gonzales",
+    "local_gonzales",
+    "gonzales",
 ]
 
 
@@ -173,46 +169,92 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
         return None
 
     async def _detect_via_supervisor(self) -> dict[str, Any] | None:
-        """Detect addon via Home Assistant Supervisor API."""
+        """Detect addon via Home Assistant Supervisor API.
+
+        First queries /addons to find gonzales by name/slug pattern,
+        then gets its actual hostname and IP.
+        """
         supervisor_token = os.environ.get("SUPERVISOR_TOKEN")
         if not supervisor_token:
             _LOGGER.debug("No SUPERVISOR_TOKEN, skipping Supervisor detection")
             return None
 
         session = async_get_clientsession(self.hass)
+        headers = {"Authorization": f"Bearer {supervisor_token}"}
 
         try:
-            # Check if gonzales addon is installed and running
-            url = "http://supervisor/addons/local_gonzales/info"
-            headers = {"Authorization": f"Bearer {supervisor_token}"}
-
+            # Step 1: List all installed addons to find gonzales
             async with session.get(
-                url, headers=headers, timeout=aiohttp.ClientTimeout(total=5)
+                "http://supervisor/addons",
+                headers=headers,
+                timeout=aiohttp.ClientTimeout(total=5),
             ) as resp:
-                if resp.status == 200:
-                    data = await resp.json()
-                    addon_data = data.get("data", {})
-                    state = addon_data.get("state")
+                if resp.status != 200:
+                    _LOGGER.debug("Failed to list addons: %s", resp.status)
+                    return None
 
-                    if state == "started":
-                        # Get the hostname from addon info
-                        hostname = addon_data.get("hostname", "local-gonzales")
-                        _LOGGER.info(
-                            "Found running Gonzales addon via Supervisor: hostname=%s",
-                            hostname
-                        )
+                data = await resp.json()
+                addons = data.get("data", {}).get("addons", [])
 
-                        # Verify we can actually connect
-                        if await self._validate_connection(hostname, ADDON_PORT, ""):
-                            return {"host": hostname, "port": ADDON_PORT, "api_key": ""}
+            # Step 2: Find gonzales addon by name or slug pattern
+            gonzales_addon = None
+            for addon in addons:
+                slug = addon.get("slug", "").lower()
+                name = addon.get("name", "").lower()
+                # Match addons with "gonzales" in name or slug
+                if "gonzales" in slug or "gonzales" in name:
+                    if addon.get("installed"):
+                        gonzales_addon = addon
+                        break
 
-                        # Try with IP from network info
-                        ip = addon_data.get("ip_address")
-                        if ip and await self._validate_connection(ip, ADDON_PORT, ""):
-                            return {"host": ip, "port": ADDON_PORT, "api_key": ""}
+            if not gonzales_addon:
+                _LOGGER.debug("No gonzales addon found in installed addons")
+                return None
 
-                    else:
-                        _LOGGER.warning("Gonzales addon found but not running (state=%s)", state)
+            addon_slug = gonzales_addon["slug"]
+            _LOGGER.info("Found Gonzales addon with slug: %s", addon_slug)
+
+            # Step 3: Get detailed info including hostname and IP
+            async with session.get(
+                f"http://supervisor/addons/{addon_slug}/info",
+                headers=headers,
+                timeout=aiohttp.ClientTimeout(total=5),
+            ) as resp:
+                if resp.status != 200:
+                    _LOGGER.debug("Failed to get addon info: %s", resp.status)
+                    return None
+
+                info = await resp.json()
+                addon_data = info.get("data", {})
+
+            state = addon_data.get("state")
+            if state != "started":
+                _LOGGER.warning("Gonzales addon found but not running (state=%s)", state)
+                return None
+
+            # Try hostname first, then IP
+            hostname = addon_data.get("hostname")
+            ip_address = addon_data.get("ip_address")
+
+            _LOGGER.info(
+                "Gonzales addon running: hostname=%s, ip=%s",
+                hostname, ip_address
+            )
+
+            # Try hostname with dashes (Docker DNS uses dashes)
+            if hostname:
+                dns_hostname = hostname.replace("_", "-")
+                if await self._validate_connection(dns_hostname, ADDON_PORT, ""):
+                    return {"host": dns_hostname, "port": ADDON_PORT, "api_key": ""}
+                # Try original hostname
+                if await self._validate_connection(hostname, ADDON_PORT, ""):
+                    return {"host": hostname, "port": ADDON_PORT, "api_key": ""}
+
+            # Fall back to IP address
+            if ip_address and await self._validate_connection(ip_address, ADDON_PORT, ""):
+                return {"host": ip_address, "port": ADDON_PORT, "api_key": ""}
+
+            _LOGGER.warning("Could not connect to Gonzales addon at %s or %s", hostname, ip_address)
 
         except aiohttp.ClientError as err:
             _LOGGER.debug("Supervisor API error: %s", err)
@@ -222,10 +264,10 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
         return None
 
     async def _detect_via_hostnames(self) -> dict[str, Any] | None:
-        """Try to detect addon by testing known hostnames."""
+        """Try to detect addon by testing known hostnames (fallback method)."""
         session = async_get_clientsession(self.hass)
 
-        for hostname in ADDON_HOSTNAMES:
+        for hostname in FALLBACK_HOSTNAMES:
             try:
                 url = f"http://{hostname}:{ADDON_PORT}/api/v1/status"
                 async with session.get(
