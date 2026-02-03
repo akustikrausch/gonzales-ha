@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.13
+
+### Fixes
+- **Fix connection issue**: Changed default host from 'localhost' to 'local-gonzales' (Docker networking)
+- **Improved addon detection**: Added Supervisor API detection method
+- **Better hostname handling**: Try multiple hostname patterns for addon discovery
+
 ## 2.0.12
 
 ### Improvements

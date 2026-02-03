@@ -11,7 +11,7 @@
           "scan_interval": "Update interval (seconds)"
         },
         "data_description": {
-          "host": "For the add-on, use 'localhost'. For standalone, use the server IP (e.g., 192.168.1.50)",
+          "host": "For the add-on, try 'local-gonzales' or 'local_gonzales'. For standalone, use the server IP.",
           "port": "Default is 8099. Only change if you configured a different port.",
           "api_key": "Leave empty for the add-on. Only needed for standalone with authentication.",
           "scan_interval": "How often to fetch data from Gonzales (does not affect speed test interval)"
