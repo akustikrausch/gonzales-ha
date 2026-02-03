@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.8
+
+### Fixes
+- **Fix Docker build error**: Remove invalid `readme = "README.md"` reference from pyproject.toml that caused hatchling metadata generation to fail
+
 ## 2.0.7
 
 ### Fixes
