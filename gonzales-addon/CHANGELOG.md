@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.14
+
+### Improvements
+- **Improved addon detection**: Query `/addons` endpoint to find gonzales by name pattern (supports both local and repo installs)
+- **Default interval changed**: Test interval now defaults to 60 minutes (was 30)
+- **Data usage prediction**: Settings page shows estimated data usage per day based on interval and speed thresholds
+
+### Fixes
+- **Fix connection for repo installs**: Detection now works for addons installed from repository URL (not just local installs)
+
 ## 2.0.13
 
 ### Fixes
