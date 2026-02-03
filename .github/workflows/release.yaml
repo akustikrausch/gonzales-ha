@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 2.0.6)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate version format
+        run: |
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Invalid version format. Use semantic versioning (e.g., 2.0.6)"
+            exit 1
+          fi
+
+      - name: Check version matches manifest
+        run: |
+          MANIFEST_VERSION=$(grep '"version"' custom_components/gonzales/manifest.json | sed 's/.*: *"\([^"]*\)".*/\1/')
+          if [ "$MANIFEST_VERSION" != "${{ inputs.version }}" ]; then
+            echo "Version mismatch! Input: ${{ inputs.version }}, Manifest: $MANIFEST_VERSION"
+            echo "Update manifest.json first, then create release."
+            exit 1
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          body: |
+            ## Gonzales v${{ inputs.version }}
+
+            ### Installation
+
+            **Via HACS:**
+            1. Add custom repository: `https://github.com/akustikrausch/gonzales-ha`
+            2. Search for "Gonzales" and install
+
+            **Via Add-on:**
+            1. Add repository to Add-on Store
+            2. Install "Gonzales Speed Monitor"
+
+            See [README](https://github.com/akustikrausch/gonzales-ha) for full documentation.
+          draft: false
+          prerelease: false
+          generate_release_notes: true
