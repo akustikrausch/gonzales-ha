@@ -18,6 +18,12 @@ RUN echo "Building gonzales backend for addon v${BUILD_VERSION}" && \
     pip3 install --no-cache-dir --target=/opt/gonzales \
     "gonzales @ git+https://github.com/akustikrausch/gonzales.git#subdirectory=backend"
 
+# Clone custom_components for HA integration (will be copied to /config on startup)
+RUN git clone --depth 1 https://github.com/akustikrausch/gonzales-ha.git /tmp/gonzales-ha && \
+    mkdir -p /opt/gonzales-integration && \
+    cp -r /tmp/gonzales-ha/custom_components/gonzales /opt/gonzales-integration/ && \
+    rm -rf /tmp/gonzales-ha
+
 # ===== Runtime: lean image =====
 FROM ${BUILD_FROM}
 
@@ -49,6 +55,7 @@ LABEL \
 RUN apk add --no-cache bash curl ca-certificates jemalloc
 
 COPY --from=builder /opt/gonzales /opt/gonzales
+COPY --from=builder /opt/gonzales-integration /opt/gonzales-integration
 
 RUN ARCH=$(uname -m) && \
     case "$ARCH" in aarch64) A=aarch64;; x86_64) A=x86_64;; *) echo "Unsupported arch: $ARCH" && exit 1;; esac && \
