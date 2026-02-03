@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.11
+
+### Improvements
+- **Add integration icon**: Integration now shows proper icon in HA UI
+- **Fix default port**: Changed default port from 8000 to 8099
+- **Auto-detect addon**: Integration automatically detects running addon and configures itself
+- **Documentation**: Added restart requirement notice after addon installation
+
 ## 2.0.10
 
 ### Features

@@ -21,9 +21,13 @@ Gonzales automatically tests your internet speed and keeps track of the results.
 After installing the add-on, here's what happens:
 
 1. **First start**: By using this add-on, you agree to the [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (auto-accepted on first run)
-2. **First test**: Within a few minutes, the first speed test runs
-3. **Integration setup**: A notification appears to add sensors to Home Assistant
-4. **Dashboard access**: Click "Gonzales" in your sidebar to see results
+2. **Integration auto-install**: The addon automatically copies the Gonzales integration to your Home Assistant
+3. **⚠️ Restart required**: **Restart Home Assistant** for the integration to become available
+4. **Integration setup**: Go to **Settings → Devices & Services → Add Integration → Gonzales** and confirm
+5. **First test**: Within a few minutes, the first speed test runs
+6. **Dashboard access**: Click "Gonzales" in your sidebar to see results
+
+> **Important**: After the first addon start (or after an update), you must **restart Home Assistant** for the integration changes to take effect. The sensors will only appear after this restart.
 
 That's it! Everything else is automatic.
 
@@ -227,7 +231,7 @@ If you run Gonzales on a separate machine (Raspberry Pi, server, NAS), you can s
 5. Go to **Settings → Devices & Services → Add Integration → Gonzales**
 6. Enter:
    - **Host**: IP address of your Gonzales server (e.g., `192.168.1.50`)
-   - **Port**: Usually `8000`
+   - **Port**: `8099` (default Gonzales port)
    - **API Key**: If you set one on the server (optional)
 
 ### Difference from Add-on
@@ -377,9 +381,13 @@ Gonzales testet automatisch deine Internetgeschwindigkeit und speichert die Erge
 Nach der Installation passiert Folgendes:
 
 1. **Erster Start**: Mit der Nutzung dieses Add-ons akzeptierst du die [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (wird beim ersten Start automatisch akzeptiert)
-2. **Erster Test**: Innerhalb weniger Minuten läuft der erste Speedtest
-3. **Integration**: Eine Benachrichtigung erscheint, um Sensoren hinzuzufügen
-4. **Dashboard**: Klicke auf "Gonzales" in deiner Seitenleiste
+2. **Integration Auto-Install**: Das Addon kopiert automatisch die Gonzales-Integration in dein Home Assistant
+3. **⚠️ Neustart erforderlich**: **Starte Home Assistant neu**, damit die Integration verfügbar wird
+4. **Integration einrichten**: Gehe zu **Einstellungen → Geräte & Dienste → Integration hinzufügen → Gonzales** und bestätige
+5. **Erster Test**: Innerhalb weniger Minuten läuft der erste Speedtest
+6. **Dashboard**: Klicke auf "Gonzales" in deiner Seitenleiste
+
+> **Wichtig**: Nach dem ersten Addon-Start (oder nach einem Update) musst du **Home Assistant neu starten**, damit die Integration-Änderungen wirksam werden. Die Sensoren erscheinen erst nach diesem Neustart.
 
 Das war's! Alles andere läuft automatisch.
 
@@ -574,7 +582,7 @@ Wenn du Gonzales auf einem separaten Gerät betreibst (Raspberry Pi, Server, NAS
 5. Gehe zu **Einstellungen → Geräte & Dienste → Integration hinzufügen → Gonzales**
 6. Gib ein:
    - **Host**: IP-Adresse deines Gonzales-Servers (z.B. `192.168.1.50`)
-   - **Port**: Normalerweise `8000`
+   - **Port**: `8099` (Standard-Gonzales-Port)
    - **API Key**: Falls du einen auf dem Server gesetzt hast (optional)
 
 ### Unterschied zum Add-on
