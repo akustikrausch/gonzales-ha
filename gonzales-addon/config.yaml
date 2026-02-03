@@ -1,5 +1,5 @@
 name: "Gonzales Speed Monitor"
-version: "2.0.9"
+version: "2.0.10"
 slug: "gonzales"
 description: "Internet speed monitor with automated testing and web dashboard."
 url: "https://github.com/akustikrausch/gonzales-ha"
@@ -22,6 +22,8 @@ discovery:
   - gonzales
 map:
   - type: data
+    read_only: false
+  - type: config
     read_only: false
 options:
   test_interval_minutes: 30

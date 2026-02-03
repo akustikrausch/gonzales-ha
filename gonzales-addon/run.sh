@@ -33,6 +33,35 @@ if [[ ! -f "/data/.speedtest_eula_accepted" ]]; then
     touch /data/.speedtest_eula_accepted
 fi
 
+# --- Install/update custom_components integration ---
+readonly BUNDLED_INTEGRATION="/opt/gonzales-integration/gonzales"
+readonly HA_INTEGRATION="/config/custom_components/gonzales"
+
+if [[ -d "${BUNDLED_INTEGRATION}" ]]; then
+    # Get bundled version from manifest.json
+    BUNDLED_VERSION=$(python3 -c "import json; print(json.load(open('${BUNDLED_INTEGRATION}/manifest.json'))['version'])" 2>/dev/null || echo "0.0.0")
+
+    # Get installed version (if exists)
+    if [[ -f "${HA_INTEGRATION}/manifest.json" ]]; then
+        INSTALLED_VERSION=$(python3 -c "import json; print(json.load(open('${HA_INTEGRATION}/manifest.json'))['version'])" 2>/dev/null || echo "0.0.0")
+    else
+        INSTALLED_VERSION="0.0.0"
+    fi
+
+    # Install or update if bundled is newer
+    if [[ "${BUNDLED_VERSION}" != "${INSTALLED_VERSION}" ]]; then
+        bashio::log.info "Installing Gonzales integration v${BUNDLED_VERSION} (was: ${INSTALLED_VERSION})"
+        mkdir -p /config/custom_components
+        rm -rf "${HA_INTEGRATION}"
+        cp -r "${BUNDLED_INTEGRATION}" "${HA_INTEGRATION}"
+        bashio::log.info "Integration installed. Home Assistant restart required for changes to take effect."
+    else
+        bashio::log.debug "Gonzales integration v${INSTALLED_VERSION} already up to date"
+    fi
+else
+    bashio::log.warning "Bundled integration not found at ${BUNDLED_INTEGRATION}"
+fi
+
 # --- Export environment for Gonzales ---
 export GONZALES_HOST="0.0.0.0"
 export GONZALES_PORT=8099

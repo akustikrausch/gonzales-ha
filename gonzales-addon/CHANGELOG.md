@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.10
+
+### Features
+- **Auto-install integration**: The addon now automatically installs the Gonzales custom integration to Home Assistant's `custom_components` folder on startup
+- Eliminates need for manual HACS installation or file copying
+- Integration version is auto-updated when addon updates
+
 ## 2.0.9
 
 ### Fixes
