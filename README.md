@@ -67,6 +67,10 @@ Go to **Settings → Add-ons → Gonzales Speed Monitor → Configuration**
 
 Click **Gonzales** in the sidebar, then go to **Settings**. You can run manual tests, change the theme, and see system status.
 
+### In-App Documentation
+
+The web dashboard includes a built-in **Docs** page accessible from the sidebar. It covers all features, configuration options, troubleshooting tips, and Home Assistant integration examples - all without leaving the app.
+
 ### Understanding Tolerance
 
 **Example:** You pay for a 1000 Mbps connection.
