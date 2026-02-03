@@ -20,7 +20,7 @@ Gonzales automatically tests your internet speed and keeps track of the results.
 
 After installing the add-on, here's what happens:
 
-1. **First start**: Gonzales accepts the Ookla speed test license automatically
+1. **First start**: By using this add-on, you agree to the [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (auto-accepted on first run)
 2. **First test**: Within a few minutes, the first speed test runs
 3. **Integration setup**: A notification appears to add sensors to Home Assistant
 4. **Dashboard access**: Click "Gonzales" in your sidebar to see results
@@ -376,7 +376,7 @@ Gonzales testet automatisch deine Internetgeschwindigkeit und speichert die Erge
 
 Nach der Installation passiert Folgendes:
 
-1. **Erster Start**: Gonzales akzeptiert die Ookla Speedtest-Lizenz automatisch
+1. **Erster Start**: Mit der Nutzung dieses Add-ons akzeptierst du die [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (wird beim ersten Start automatisch akzeptiert)
 2. **Erster Test**: Innerhalb weniger Minuten läuft der erste Speedtest
 3. **Integration**: Eine Benachrichtigung erscheint, um Sensoren hinzuzufügen
 4. **Dashboard**: Klicke auf "Gonzales" in deiner Seitenleiste
@@ -700,3 +700,27 @@ Browser → Home Assistant → Ingress Proxy → Gonzales (Port 8099)
 - Speicher: ~100-200 MB während Speedtests
 - Festplatte: ~50 KB pro Test (Datenbank wächst langsam)
 - Netzwerk: Nutzt deine volle Bandbreite während Tests (2-3 Minuten)
+
+---
+
+## License / Lizenz
+
+**Gonzales** is MIT licensed open source software.
+
+**Ookla Speedtest CLI** is proprietary third-party software by Ookla, LLC. By using this add-on, you accept the [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula):
+- Personal, non-commercial use: Permitted
+- Commercial use: Requires separate license from Ookla
+- The CLI is downloaded from Ookla's servers during add-on installation
+
+Speedtest® is a registered trademark of Ookla, LLC. This project is not affiliated with or endorsed by Ookla.
+
+---
+
+**Gonzales** ist MIT-lizenzierte Open-Source-Software.
+
+**Ookla Speedtest CLI** ist proprietäre Drittanbieter-Software von Ookla, LLC. Mit der Nutzung dieses Add-ons akzeptierst du die [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula):
+- Persönliche, nicht-kommerzielle Nutzung: Erlaubt
+- Kommerzielle Nutzung: Erfordert separate Lizenz von Ookla
+- Die CLI wird während der Add-on-Installation von Ookla-Servern heruntergeladen
+
+Speedtest® ist eine eingetragene Marke von Ookla, LLC. Dieses Projekt ist nicht mit Ookla verbunden oder von Ookla unterstützt.
