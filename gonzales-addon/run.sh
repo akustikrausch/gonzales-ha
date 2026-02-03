@@ -77,12 +77,20 @@ export GONZALES_LOG_LEVEL="${LOG_LEVEL}"
 
 # --- Register discovery (with API key) ---
 if bashio::supervisor.ping 2>/dev/null; then
-    payload="{\"service\":\"gonzales\",\"config\":{\"host\":\"$(hostname)\",\"port\":8099,\"api_key\":\"${GONZALES_API_KEY}\"}}"
-    curl -s -X POST \
+    # Get hostname and convert underscores to dashes for DNS compatibility
+    # Container hostname is like "546fc077_gonzales" but DNS needs "546fc077-gonzales"
+    ADDON_HOSTNAME=$(hostname | tr '_' '-')
+    bashio::log.info "Registering discovery with hostname: ${ADDON_HOSTNAME}"
+    payload="{\"service\":\"gonzales\",\"config\":{\"host\":\"${ADDON_HOSTNAME}\",\"port\":8099,\"api_key\":\"${GONZALES_API_KEY}\"}}"
+    if curl -s -X POST \
         -H "Authorization: Bearer ${SUPERVISOR_TOKEN}" \
         -H "Content-Type: application/json" \
         -d "${payload}" \
-        http://supervisor/discovery || bashio::log.warning "Discovery registration failed"
+        http://supervisor/discovery; then
+        bashio::log.info "Discovery registered successfully"
+    else
+        bashio::log.warning "Discovery registration failed"
+    fi
 fi
 
 # --- Print version and start ---

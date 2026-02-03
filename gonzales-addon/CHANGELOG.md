@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.1
+
+### Fixes
+- **Fix discovery hostname**: Convert underscores to dashes in hostname for DNS compatibility (e.g., `546fc077_gonzales` → `546fc077-gonzales`)
+- **Better logging**: Log discovery registration status for debugging
+
 ## 2.1.0
 
 ### New Features
