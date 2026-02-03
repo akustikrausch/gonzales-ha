@@ -241,6 +241,94 @@ If you run Gonzales on a separate machine (Raspberry Pi, server, NAS), you can s
 
 ---
 
+## Using Sensors in Home Assistant Dashboards
+
+Gonzales creates these sensors in Home Assistant:
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Download Speed | `sensor.gonzales_download_speed` | Latest download in Mbps |
+| Upload Speed | `sensor.gonzales_upload_speed` | Latest upload in Mbps |
+| Ping | `sensor.gonzales_ping_latency` | Latency in ms |
+| Jitter | `sensor.gonzales_ping_jitter` | Jitter in ms |
+| Packet Loss | `sensor.gonzales_packet_loss` | Packet loss % |
+| ISP Score | `sensor.gonzales_isp_score` | Overall rating 0-100 |
+| Last Test | `sensor.gonzales_last_test_time` | Timestamp of last test |
+
+### Dashboard Examples
+
+**Entities Card:**
+```yaml
+type: entities
+title: Internet Speed
+entities:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+  - entity: sensor.gonzales_ping_latency
+    name: Ping
+```
+
+**Gauge Card:**
+```yaml
+type: gauge
+entity: sensor.gonzales_download_speed
+name: Download Speed
+min: 0
+max: 1000
+severity:
+  green: 850
+  yellow: 500
+  red: 0
+```
+
+**History Graph:**
+```yaml
+type: history-graph
+title: Speed History
+hours_to_show: 24
+entities:
+  - sensor.gonzales_download_speed
+  - sensor.gonzales_upload_speed
+```
+
+### Automation Examples
+
+**Notify when internet is slow:**
+```yaml
+automation:
+  - alias: "Slow Internet Alert"
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.gonzales_download_speed
+      below: 100
+    action:
+      service: notify.mobile_app_your_phone
+      data:
+        title: "Slow Internet"
+        message: "Speed: {{ states('sensor.gonzales_download_speed') }} Mbps"
+```
+
+**Daily speed report:**
+```yaml
+automation:
+  - alias: "Daily Speed Report"
+    trigger:
+      platform: time
+      at: "08:00:00"
+    action:
+      service: notify.mobile_app_your_phone
+      data:
+        title: "Daily Internet Report"
+        message: >
+          Download: {{ states('sensor.gonzales_download_speed') }} Mbps
+          Upload: {{ states('sensor.gonzales_upload_speed') }} Mbps
+          ISP Score: {{ states('sensor.gonzales_isp_score') }}
+```
+
+---
+
 ## Technical Details (Advanced)
 
 ### Architecture
@@ -497,6 +585,94 @@ Wenn du Gonzales auf einem separaten Gerät betreibst (Raspberry Pi, Server, NAS
 | Dashboard | In HA-Seitenleiste | Auf dem separaten Gerät |
 | Sensoren | Ja | Ja |
 | Datenspeicherung | Auf HA-Gerät | Auf separatem Gerät |
+
+---
+
+## Sensoren im Home Assistant Dashboard nutzen
+
+Gonzales erstellt diese Sensoren in Home Assistant:
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Download Speed | `sensor.gonzales_download_speed` | Aktueller Download in Mbps |
+| Upload Speed | `sensor.gonzales_upload_speed` | Aktueller Upload in Mbps |
+| Ping | `sensor.gonzales_ping_latency` | Latenz in ms |
+| Jitter | `sensor.gonzales_ping_jitter` | Jitter in ms |
+| Packet Loss | `sensor.gonzales_packet_loss` | Paketverlust % |
+| ISP Score | `sensor.gonzales_isp_score` | Gesamtbewertung 0-100 |
+| Letzter Test | `sensor.gonzales_last_test_time` | Zeitstempel des letzten Tests |
+
+### Dashboard-Beispiele
+
+**Entitäten-Karte:**
+```yaml
+type: entities
+title: Internet Geschwindigkeit
+entities:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+  - entity: sensor.gonzales_ping_latency
+    name: Ping
+```
+
+**Gauge-Karte:**
+```yaml
+type: gauge
+entity: sensor.gonzales_download_speed
+name: Download Speed
+min: 0
+max: 1000
+severity:
+  green: 850
+  yellow: 500
+  red: 0
+```
+
+**Verlaufsgraph:**
+```yaml
+type: history-graph
+title: Geschwindigkeitsverlauf
+hours_to_show: 24
+entities:
+  - sensor.gonzales_download_speed
+  - sensor.gonzales_upload_speed
+```
+
+### Automations-Beispiele
+
+**Benachrichtigung bei langsamem Internet:**
+```yaml
+automation:
+  - alias: "Langsames Internet Warnung"
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.gonzales_download_speed
+      below: 100
+    action:
+      service: notify.mobile_app_dein_handy
+      data:
+        title: "Langsames Internet"
+        message: "Geschwindigkeit: {{ states('sensor.gonzales_download_speed') }} Mbps"
+```
+
+**Täglicher Geschwindigkeitsbericht:**
+```yaml
+automation:
+  - alias: "Täglicher Internet-Bericht"
+    trigger:
+      platform: time
+      at: "08:00:00"
+    action:
+      service: notify.mobile_app_dein_handy
+      data:
+        title: "Täglicher Internet-Bericht"
+        message: >
+          Download: {{ states('sensor.gonzales_download_speed') }} Mbps
+          Upload: {{ states('sensor.gonzales_upload_speed') }} Mbps
+          ISP Score: {{ states('sensor.gonzales_isp_score') }}
+```
 
 ---
 

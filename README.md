@@ -88,8 +88,80 @@ After setup, you get these sensors automatically:
 | Ping | How fast your connection responds (lower = better) |
 | ISP Score | Overall rating of your internet (0-100) |
 | Last Test Time | When the last test ran |
+| Internet Outage | Binary sensor: ON if outage detected |
 
 Use these sensors in automations, dashboards, or to track your ISP's performance over time.
+
+---
+
+## Using Sensors in Home Assistant Dashboards
+
+### Simple Dashboard Card
+
+Add a quick overview to any dashboard. Go to **Edit Dashboard → Add Card → Entities** and add these:
+
+```yaml
+type: entities
+title: Internet Speed
+entities:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+  - entity: sensor.gonzales_ping_latency
+    name: Ping
+  - entity: sensor.gonzales_isp_score
+    name: ISP Score
+```
+
+### Gauge Cards for Visual Display
+
+Create eye-catching speed gauges:
+
+```yaml
+type: gauge
+entity: sensor.gonzales_download_speed
+name: Download Speed
+min: 0
+max: 1000
+severity:
+  green: 850
+  yellow: 500
+  red: 0
+```
+
+### History Graph
+
+Track your internet performance over time:
+
+```yaml
+type: history-graph
+title: Internet Speed History
+hours_to_show: 24
+entities:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+```
+
+### ApexCharts (Advanced)
+
+If you have [ApexCharts Card](https://github.com/RomRider/apexcharts-card) installed (via HACS):
+
+```yaml
+type: custom:apexcharts-card
+header:
+  title: Speed Trend
+  show: true
+series:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+    stroke_width: 2
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+    stroke_width: 2
+```
 
 ---
 
@@ -109,6 +181,51 @@ automation:
         data:
           title: "Slow Internet!"
           message: "Download speed is only {{ states('sensor.gonzales_download_speed') }} Mbps"
+```
+
+---
+
+## Internet Outage Detection
+
+Gonzales automatically detects internet outages using smart retry logic:
+
+1. **First failure**: Wait 1 minute, retry
+2. **Second failure**: Wait 1 minute, retry again
+3. **Third consecutive failure**: Outage confirmed!
+
+When an outage is detected, the `binary_sensor.gonzales_internet_outage` turns **ON**.
+
+### Outage Automation Example
+
+```yaml
+automation:
+  - alias: "Internet Outage Alert"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gonzales_internet_outage
+        to: "on"
+    action:
+      - service: notify.mobile_app_your_phone
+        data:
+          title: "⚠️ Internet Outage!"
+          message: "Your internet connection has been down for multiple consecutive tests."
+      # Optional: Restart router via smart plug
+      - service: switch.turn_off
+        entity_id: switch.router_plug
+      - delay: "00:00:30"
+      - service: switch.turn_on
+        entity_id: switch.router_plug
+
+  - alias: "Internet Restored"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gonzales_internet_outage
+        to: "off"
+    action:
+      - service: notify.mobile_app_your_phone
+        data:
+          title: "✅ Internet Restored"
+          message: "Your internet connection is working again."
 ```
 
 ---
@@ -162,6 +279,16 @@ Check the add-on logs: **Settings → Add-ons → Gonzales → Log**. Common cau
 ## Advanced: Standalone Integration
 
 If you run Gonzales on a separate device (like a Raspberry Pi), you can still connect it to Home Assistant. See the [Integration Setup Guide](gonzales-addon/DOCS.md#standalone-integration) for details.
+
+---
+
+## Roadmap / Planned Features
+
+### Multi-Server Comparison Test (Coming Soon)
+- Test against 3-5 different servers simultaneously
+- Automatically detect routing issues
+- Analyze ISP peering quality
+- Find the "best route" automatically
 
 ---
 
@@ -253,6 +380,78 @@ Nach der Einrichtung erhältst du diese Sensoren:
 | Ping | Reaktionszeit deiner Verbindung (niedriger = besser) |
 | ISP Score | Gesamtbewertung deines Internets (0-100) |
 | Last Test Time | Wann der letzte Test lief |
+| Internet Outage | Binärer Sensor: AN wenn Ausfall erkannt |
+
+---
+
+## Sensoren im Home Assistant Dashboard nutzen
+
+### Einfache Dashboard-Karte
+
+Füge eine schnelle Übersicht zu jedem Dashboard hinzu. Gehe zu **Dashboard bearbeiten → Karte hinzufügen → Entitäten** und füge hinzu:
+
+```yaml
+type: entities
+title: Internet Geschwindigkeit
+entities:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+  - entity: sensor.gonzales_ping_latency
+    name: Ping
+  - entity: sensor.gonzales_isp_score
+    name: ISP Bewertung
+```
+
+### Gauge-Karten für visuelle Anzeige
+
+Erstelle auffällige Geschwindigkeits-Anzeigen:
+
+```yaml
+type: gauge
+entity: sensor.gonzales_download_speed
+name: Download Speed
+min: 0
+max: 1000
+severity:
+  green: 850
+  yellow: 500
+  red: 0
+```
+
+### Verlaufsgraph
+
+Verfolge deine Internetleistung über Zeit:
+
+```yaml
+type: history-graph
+title: Internet Geschwindigkeitsverlauf
+hours_to_show: 24
+entities:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+```
+
+### ApexCharts (Fortgeschritten)
+
+Wenn du [ApexCharts Card](https://github.com/RomRider/apexcharts-card) installiert hast (über HACS):
+
+```yaml
+type: custom:apexcharts-card
+header:
+  title: Geschwindigkeits-Trend
+  show: true
+series:
+  - entity: sensor.gonzales_download_speed
+    name: Download
+    stroke_width: 2
+  - entity: sensor.gonzales_upload_speed
+    name: Upload
+    stroke_width: 2
+```
 
 ---
 
@@ -272,6 +471,51 @@ automation:
         data:
           title: "Langsames Internet!"
           message: "Download-Geschwindigkeit ist nur {{ states('sensor.gonzales_download_speed') }} Mbps"
+```
+
+---
+
+## Internet-Ausfall-Erkennung
+
+Gonzales erkennt automatisch Internet-Ausfälle mit intelligenter Retry-Logik:
+
+1. **Erster Fehler**: 1 Minute warten, erneut versuchen
+2. **Zweiter Fehler**: 1 Minute warten, nochmal versuchen
+3. **Dritter aufeinanderfolgender Fehler**: Ausfall bestätigt!
+
+Bei einem erkannten Ausfall schaltet `binary_sensor.gonzales_internet_outage` auf **ON**.
+
+### Ausfall-Automation Beispiel
+
+```yaml
+automation:
+  - alias: "Internet Ausfall Warnung"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gonzales_internet_outage
+        to: "on"
+    action:
+      - service: notify.mobile_app_dein_handy
+        data:
+          title: "⚠️ Internet Ausfall!"
+          message: "Deine Internetverbindung ist bei mehreren aufeinanderfolgenden Tests ausgefallen."
+      # Optional: Router über Smart Plug neustarten
+      - service: switch.turn_off
+        entity_id: switch.router_steckdose
+      - delay: "00:00:30"
+      - service: switch.turn_on
+        entity_id: switch.router_steckdose
+
+  - alias: "Internet Wiederhergestellt"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.gonzales_internet_outage
+        to: "off"
+    action:
+      - service: notify.mobile_app_dein_handy
+        data:
+          title: "✅ Internet Wiederhergestellt"
+          message: "Deine Internetverbindung funktioniert wieder."
 ```
 
 ---
@@ -319,6 +563,16 @@ Prüfe die Add-on Logs: **Einstellungen → Add-ons → Gonzales → Log**. Häu
 - Keine Internetverbindung
 - Firewall blockiert den Speedtest
 - Temporäre Ookla Server-Probleme (später erneut versuchen)
+
+---
+
+## Roadmap / Geplante Features
+
+### Multi-Server Vergleichstest (Coming Soon)
+- Gleichzeitig gegen 3-5 verschiedene Server testen
+- Routing-Probleme automatisch erkennen
+- ISP-Peering-Qualität analysieren
+- "Beste Route" automatisch finden
 
 ---
 
