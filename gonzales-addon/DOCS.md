@@ -1,104 +1,526 @@
-# Gonzales Speed Monitor - Add-on Documentation
+# Gonzales Speed Monitor - Documentation
 
-## Overview
+**[Deutsche Dokumentation weiter unten](#deutsche-dokumentation)**
 
-This add-on runs the [Gonzales](https://github.com/akustikrausch/gonzales) internet speed monitor directly inside Home Assistant. It performs automated speed tests using the Ookla Speedtest CLI, stores results in a local database, and provides a web dashboard accessible through the Home Assistant sidebar.
+---
 
-## How It Works
+## What Does This Add-on Do?
 
-The add-on is a self-contained Docker container that includes:
+Gonzales automatically tests your internet speed and keeps track of the results. Think of it like having someone check your internet speed every 30 minutes and write down the results for you.
 
-- **Gonzales backend** (FastAPI + scheduler + SQLite)
-- **Ookla Speedtest CLI** for actual speed measurements
-- **Web dashboard** served via Home Assistant Ingress
+**What you get:**
+- A dashboard showing your current internet speed
+- History of all past speed tests
+- Alerts when your internet is slower than it should be
+- Statistics to see if your ISP is giving you what you pay for
 
-The add-on runs speed tests at a configurable interval, stores all results persistently in `/data/gonzales.db`, and exposes a full web UI through the HA sidebar.
+---
+
+## First Time Setup
+
+After installing the add-on, here's what happens:
+
+1. **First start**: Gonzales accepts the Ookla speed test license automatically
+2. **First test**: Within a few minutes, the first speed test runs
+3. **Integration setup**: A notification appears to add sensors to Home Assistant
+4. **Dashboard access**: Click "Gonzales" in your sidebar to see results
+
+That's it! Everything else is automatic.
+
+---
+
+## Understanding the Dashboard
+
+### Main Screen (Dashboard)
+
+When you open Gonzales, you see:
+
+- **Download Speed**: How fast you can receive data (streaming, downloads)
+- **Upload Speed**: How fast you can send data (video calls, uploads)
+- **Ping**: How quickly your connection responds (important for gaming)
+
+**Colors explained:**
+- **Green**: Your speed is good (above your threshold)
+- **Red**: Your speed is below what you should be getting
+
+### History
+
+Shows all past speed tests in a list. You can:
+- See when each test ran
+- Filter by date range
+- Delete old measurements if needed
+
+### Statistics
+
+Shows averages and trends:
+- How your speed varies throughout the day
+- Your ISP's overall performance score
+- Compliance rate (how often you get the speed you pay for)
+
+### Export
+
+Download your data as:
+- **CSV**: For spreadsheets (Excel, Google Sheets)
+- **PDF**: For printing or sharing
+
+### Settings
+
+- Change test interval
+- Set your expected speeds
+- Adjust tolerance
+- Choose a specific test server
+
+---
+
+## Configuration Options Explained
+
+### Test Interval (test_interval_minutes)
+
+How often Gonzales runs a speed test.
+
+- **Default**: 30 minutes
+- **Range**: 1 to 1440 minutes (1 minute to 24 hours)
+- **Recommendation**: 30-60 minutes is usually enough
+
+**Why not test more often?**
+- Speed tests use bandwidth (a few hundred MB each)
+- Too frequent tests can affect your normal internet use
+- More data doesn't necessarily mean better insights
+
+### Download/Upload Threshold
+
+Enter the speed your ISP promises you.
+
+**Example:**
+- Your plan says "1000 Mbps download, 500 Mbps upload"
+- Set download_threshold_mbps = 1000
+- Set upload_threshold_mbps = 500
+
+**How to find your plan's speed:**
+- Check your ISP contract or bill
+- Look at your router's admin page
+- Contact your ISP
+
+### Tolerance Percent
+
+How much slower than your plan is still acceptable.
+
+**Default**: 15% (meaning 85% of your plan speed is OK)
+
+**Why have tolerance?**
+- Internet speeds naturally fluctuate
+- Wi-Fi adds some overhead
+- Distance to test server matters
+- A measurement of 920 Mbps on a 1000 Mbps plan is normal
+
+**Examples:**
+| Plan | Tolerance | Minimum OK Speed |
+|------|-----------|------------------|
+| 1000 Mbps | 15% | 850 Mbps |
+| 500 Mbps | 15% | 425 Mbps |
+| 100 Mbps | 20% | 80 Mbps |
+
+### Preferred Server ID
+
+Which Ookla test server to use.
+
+- **Default**: 0 (auto-select nearest server)
+- **When to change**: If auto-selection picks a bad server
+
+**How to find server IDs:**
+1. Go to speedtest.net
+2. Click "Change Server"
+3. The ID is in the URL when you select a server
+
+### Log Level
+
+How much detail to show in logs.
+
+- **INFO** (default): Normal operation messages
+- **DEBUG**: Very detailed (for troubleshooting)
+- **WARNING**: Only potential problems
+- **ERROR**: Only actual errors
+
+---
+
+## Your Data
+
+### Where is data stored?
+
+All data stays on your Home Assistant device in the `/data/` folder:
+
+| File | What it contains |
+|------|------------------|
+| `gonzales.db` | All your speed test results |
+| `config.json` | Your settings |
+| `.api_key` | Security key (auto-generated) |
+
+### Is my data private?
+
+**Yes.** Gonzales does not send your data anywhere except:
+- The speed test itself connects to Ookla's servers (to measure speed)
+- No analytics, no tracking, no cloud storage
+
+### Can I backup my data?
+
+Yes! The data is stored in `/data/gonzales.db`. You can:
+- Use Home Assistant's backup feature (includes add-on data)
+- Manually copy the file via SSH or Samba
+
+---
+
+## Troubleshooting
+
+### "The web interface shows a blank page"
+
+1. Go to **Settings → Add-ons → Gonzales**
+2. Click **Restart**
+3. Wait 30 seconds
+4. Clear your browser cache (Ctrl+Shift+R or Cmd+Shift+R)
+5. Try again
+
+### "Speed test failed" in the logs
+
+Common causes:
+- **No internet**: Check your connection
+- **Firewall**: Speed test needs to connect to Ookla servers
+- **Ookla servers busy**: Wait and try again
+- **Bad server**: Try setting a specific preferred_server_id
+
+### "My speeds are much lower than expected"
+
+Things to check:
+1. **WiFi vs Cable**: Wired connections are faster and more reliable
+2. **Time of day**: Internet is slower when many people are online (evening)
+3. **Router location**: Far from your Home Assistant device?
+4. **Other devices**: Are others streaming or downloading?
+
+### "Sensors show unavailable"
+
+The sensors need at least one completed speed test:
+1. Open the Gonzales dashboard
+2. Click "Run Test" to start a manual test
+3. Wait for it to complete
+4. Sensors should update within 60 seconds
+
+### "Add-on keeps restarting"
+
+Check the logs for errors:
+1. Go to **Settings → Add-ons → Gonzales → Log**
+2. Look for error messages
+3. Common issues:
+   - Corrupted database (delete `gonzales.db` and restart)
+   - Out of disk space
+
+---
+
+## Standalone Integration
+
+If you run Gonzales on a separate machine (Raspberry Pi, server, NAS), you can still see the data in Home Assistant.
+
+### Setup
+
+1. Install HACS if you haven't already
+2. Add custom repository: `https://github.com/akustikrausch/gonzales-ha`
+3. Install the Gonzales integration
+4. Restart Home Assistant
+5. Go to **Settings → Devices & Services → Add Integration → Gonzales**
+6. Enter:
+   - **Host**: IP address of your Gonzales server (e.g., `192.168.1.50`)
+   - **Port**: Usually `8000`
+   - **API Key**: If you set one on the server (optional)
+
+### Difference from Add-on
+
+| Feature | Add-on | Standalone Integration |
+|---------|--------|------------------------|
+| Speed tests | Runs on HA device | Runs on separate device |
+| Dashboard | In HA sidebar | On the separate device |
+| Sensors | Yes | Yes |
+| Data storage | On HA device | On separate device |
+
+---
+
+## Technical Details (Advanced)
 
 ### Architecture
 
 ```
-Browser --> HA Sidebar --> Ingress --> Gonzales Web UI (port 8099)
-                                        |
-                            FastAPI + APScheduler + SQLAlchemy
-                                        |
-                            Ookla Speedtest CLI + SQLite WAL
+Browser → Home Assistant → Ingress Proxy → Gonzales (port 8099)
+                                              ↓
+                              FastAPI + SQLite + Scheduler
+                                              ↓
+                              Ookla Speedtest CLI
 ```
 
-- **Multi-stage Docker build**: Build dependencies (git) are not included in the runtime image
-- **jemalloc allocator**: Reduces memory fragmentation on ARM devices (Raspberry Pi)
-- **AppArmor profile**: Restricts container access to only what's needed
-- **Watchdog**: Supervisor auto-restarts the add-on if the health check fails
+### Security
 
-## Configuration
+- **API Key**: Auto-generated on first start, stored in `/data/.api_key`
+- **AppArmor**: Restrictive profile limits container access
+- **No open ports**: Web UI only accessible through Home Assistant Ingress
+- **No external dependencies**: Everything runs locally
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `test_interval_minutes` | `30` | How often to run a speed test (1-1440 minutes) |
-| `download_threshold_mbps` | `1000.0` | Expected download speed (your subscribed plan) |
-| `upload_threshold_mbps` | `500.0` | Expected upload speed (your subscribed plan) |
-| `tolerance_percent` | `15.0` | Acceptable deviation from threshold (0-50%) |
-| `preferred_server_id` | `0` | Ookla server ID to use (0 = auto-select) |
-| `log_level` | `INFO` | Log verbosity (DEBUG, INFO, WARNING, ERROR) |
+### Performance
 
-### Understanding Tolerance
+- Memory: ~100-200 MB during speed tests
+- Disk: ~50 KB per test (database grows slowly)
+- Network: Uses your full bandwidth during tests (2-3 minutes)
 
-The `tolerance_percent` setting defines what counts as an acceptable speed measurement. Instead of requiring exactly the subscribed speed, you can allow a percentage deviation:
+---
 
-- **15% tolerance** (default): 85% of subscribed speed is acceptable
-- **Example**: 1000 Mbps plan with 15% tolerance = 850 Mbps minimum
+---
 
-This is useful because real-world speeds fluctuate slightly. A measurement of 920 Mbps on a 1000 Mbps plan is generally considered fine. Adjust the tolerance in Settings based on your ISP's typical performance.
+# Deutsche Dokumentation
 
-## Security
+## Was macht dieses Add-on?
 
-- **API key**: The add-on generates a random API key on first start and persists it in `/data/.api_key`. The key is passed to the integration via Supervisor discovery, so no manual configuration is needed.
-- **AppArmor**: A restrictive profile limits the container to Python, the speedtest binary, `/data/` access, and network operations.
-- **No external ports**: The web UI is only accessible via HA Ingress (no ports exposed to the host network).
+Gonzales testet automatisch deine Internetgeschwindigkeit und speichert die Ergebnisse. Stell es dir vor wie einen Assistenten, der alle 30 Minuten dein Internet prüft und die Ergebnisse aufschreibt.
 
-## Integration with gonzales-ha
+**Was du bekommst:**
+- Ein Dashboard mit deiner aktuellen Internetgeschwindigkeit
+- Historie aller vergangenen Speedtests
+- Warnungen, wenn dein Internet langsamer ist als es sein sollte
+- Statistiken, um zu sehen, ob dein Anbieter liefert, was du bezahlst
 
-If you also have the **Gonzales** Home Assistant integration installed (via HACS), the add-on will be auto-discovered. You'll get a notification in Home Assistant to set up the integration, which creates sensors for:
+---
 
-- Download/Upload speed
-- Ping latency and jitter
-- Packet loss
-- ISP performance score
-- Scheduler status and diagnostics
+## Erste Einrichtung
 
-The API key is passed automatically via discovery -- no manual entry required.
+Nach der Installation passiert Folgendes:
 
-## Data Persistence
+1. **Erster Start**: Gonzales akzeptiert die Ookla Speedtest-Lizenz automatisch
+2. **Erster Test**: Innerhalb weniger Minuten läuft der erste Speedtest
+3. **Integration**: Eine Benachrichtigung erscheint, um Sensoren hinzuzufügen
+4. **Dashboard**: Klicke auf "Gonzales" in deiner Seitenleiste
 
-All data is stored in `/data/` which is persistent across add-on updates and restarts:
+Das war's! Alles andere läuft automatisch.
 
-- `gonzales.db` -- SQLite database with all speed test results
-- `config.json` -- Runtime configuration changes made via the web UI
-- `.api_key` -- Auto-generated API key (permissions: 600)
-- `.speedtest_eula_accepted` -- Ookla license acceptance sentinel
+---
 
-## Web Dashboard
+## Das Dashboard verstehen
 
-Access the Gonzales web dashboard directly from the Home Assistant sidebar. The dashboard provides:
+### Hauptbildschirm (Dashboard)
 
-- Real-time speed test progress with live visualization
-- Historical speed test results with charts
-- ISP performance scoring and statistics
-- Data export (CSV/PDF)
-- Manual speed test triggering
+Wenn du Gonzales öffnest, siehst du:
 
-## Network Requirements
+- **Download-Geschwindigkeit**: Wie schnell du Daten empfangen kannst (Streaming, Downloads)
+- **Upload-Geschwindigkeit**: Wie schnell du Daten senden kannst (Videoanrufe, Uploads)
+- **Ping**: Wie schnell deine Verbindung reagiert (wichtig fürs Gaming)
 
-- The add-on needs internet access to perform speed tests
-- No incoming ports need to be exposed (Ingress handles web UI access)
-- The Ookla Speedtest CLI connects to nearby test servers automatically
+**Farben erklärt:**
+- **Grün**: Deine Geschwindigkeit ist gut (über deinem Schwellwert)
+- **Rot**: Deine Geschwindigkeit ist unter dem, was du bekommen solltest
 
-## Ookla Speedtest CLI
+### History (Verlauf)
 
-This add-on uses the [Ookla Speedtest CLI](https://www.speedtest.net/apps/cli), which is proprietary software free for personal, non-commercial use. The CLI license (EULA + GDPR consent) is automatically accepted on first start. By using this add-on, you agree to Ookla's [terms of use](https://www.speedtest.net/about/terms).
+Zeigt alle vergangenen Speedtests in einer Liste. Du kannst:
+- Sehen, wann jeder Test lief
+- Nach Datum filtern
+- Alte Messungen löschen
 
-## Troubleshooting
+### Statistics (Statistiken)
 
-- **Speed test fails**: Check the add-on logs for error messages. The Ookla CLI license is accepted automatically on first run.
-- **Web UI not loading**: Try restarting the add-on. Check that Ingress is enabled in the add-on configuration.
-- **Slow or unreliable results**: Try setting a specific `preferred_server_id` instead of auto-selection. You can find server IDs in the web dashboard under Settings.
-- **Add-on keeps restarting**: Check the logs for startup errors. The watchdog will restart the add-on if the health check fails for 3 consecutive checks.
+Zeigt Durchschnitte und Trends:
+- Wie deine Geschwindigkeit über den Tag variiert
+- Gesamtbewertung deines Anbieters
+- Compliance-Rate (wie oft du die bezahlte Geschwindigkeit bekommst)
+
+### Export
+
+Lade deine Daten herunter als:
+- **CSV**: Für Tabellenkalkulationen (Excel, Google Sheets)
+- **PDF**: Zum Drucken oder Teilen
+
+### Settings (Einstellungen)
+
+- Testintervall ändern
+- Erwartete Geschwindigkeiten einstellen
+- Toleranz anpassen
+- Bestimmten Testserver wählen
+
+---
+
+## Konfigurationsoptionen erklärt
+
+### Testintervall (test_interval_minutes)
+
+Wie oft Gonzales einen Speedtest durchführt.
+
+- **Standard**: 30 Minuten
+- **Bereich**: 1 bis 1440 Minuten (1 Minute bis 24 Stunden)
+- **Empfehlung**: 30-60 Minuten reicht meist aus
+
+**Warum nicht öfter testen?**
+- Speedtests verbrauchen Bandbreite (einige hundert MB pro Test)
+- Zu häufige Tests können deine normale Internetnutzung beeinflussen
+- Mehr Daten bedeuten nicht unbedingt bessere Erkenntnisse
+
+### Download/Upload Schwellwert
+
+Trage die Geschwindigkeit ein, die dein Anbieter verspricht.
+
+**Beispiel:**
+- Dein Tarif sagt "1000 Mbit/s Download, 500 Mbit/s Upload"
+- Setze download_threshold_mbps = 1000
+- Setze upload_threshold_mbps = 500
+
+**Wie findest du die Geschwindigkeit deines Tarifs:**
+- Schau in deinen Vertrag oder auf die Rechnung
+- Sieh in die Admin-Seite deines Routers
+- Frag deinen Anbieter
+
+### Toleranz in Prozent
+
+Wie viel langsamer als dein Tarif noch akzeptabel ist.
+
+**Standard**: 15% (bedeutet 85% deiner Tarifgeschwindigkeit ist OK)
+
+**Warum Toleranz?**
+- Internetgeschwindigkeiten schwanken natürlich
+- WLAN hat etwas Overhead
+- Entfernung zum Testserver spielt eine Rolle
+- Eine Messung von 920 Mbps bei einem 1000 Mbps Tarif ist normal
+
+**Beispiele:**
+| Tarif | Toleranz | Minimale OK-Geschwindigkeit |
+|-------|----------|----------------------------|
+| 1000 Mbps | 15% | 850 Mbps |
+| 500 Mbps | 15% | 425 Mbps |
+| 100 Mbps | 20% | 80 Mbps |
+
+### Bevorzugter Server (preferred_server_id)
+
+Welchen Ookla-Testserver verwenden.
+
+- **Standard**: 0 (automatisch nächsten Server wählen)
+- **Wann ändern**: Wenn die Automatik einen schlechten Server wählt
+
+**Wie finde ich Server-IDs:**
+1. Gehe zu speedtest.net
+2. Klicke auf "Server ändern"
+3. Die ID steht in der URL, wenn du einen Server auswählst
+
+---
+
+## Deine Daten
+
+### Wo werden Daten gespeichert?
+
+Alle Daten bleiben auf deinem Home Assistant Gerät im `/data/` Ordner:
+
+| Datei | Was sie enthält |
+|-------|-----------------|
+| `gonzales.db` | Alle deine Speedtest-Ergebnisse |
+| `config.json` | Deine Einstellungen |
+| `.api_key` | Sicherheitsschlüssel (automatisch generiert) |
+
+### Sind meine Daten privat?
+
+**Ja.** Gonzales sendet deine Daten nirgendwohin außer:
+- Der Speedtest selbst verbindet sich mit Ooklas Servern (um Geschwindigkeit zu messen)
+- Keine Analysen, kein Tracking, keine Cloud-Speicherung
+
+### Kann ich meine Daten sichern?
+
+Ja! Die Daten sind in `/data/gonzales.db` gespeichert. Du kannst:
+- Home Assistants Backup-Funktion nutzen (beinhaltet Add-on Daten)
+- Die Datei manuell per SSH oder Samba kopieren
+
+---
+
+## Problemlösung
+
+### "Die Weboberfläche zeigt eine leere Seite"
+
+1. Gehe zu **Einstellungen → Add-ons → Gonzales**
+2. Klicke **Neustart**
+3. Warte 30 Sekunden
+4. Leere deinen Browser-Cache (Strg+Umschalt+R oder Cmd+Shift+R)
+5. Versuche es erneut
+
+### "Speedtest fehlgeschlagen" in den Logs
+
+Häufige Ursachen:
+- **Kein Internet**: Prüfe deine Verbindung
+- **Firewall**: Speedtest muss sich mit Ookla-Servern verbinden können
+- **Ookla-Server ausgelastet**: Warte und versuche es später
+- **Schlechter Server**: Versuche eine bestimmte preferred_server_id einzustellen
+
+### "Meine Geschwindigkeiten sind viel niedriger als erwartet"
+
+Dinge zum Prüfen:
+1. **WLAN vs Kabel**: Kabelverbindungen sind schneller und zuverlässiger
+2. **Tageszeit**: Internet ist langsamer, wenn viele online sind (abends)
+3. **Router-Position**: Weit weg von deinem Home Assistant Gerät?
+4. **Andere Geräte**: Streamen oder laden andere gerade herunter?
+
+### "Sensoren zeigen nicht verfügbar"
+
+Die Sensoren brauchen mindestens einen abgeschlossenen Speedtest:
+1. Öffne das Gonzales Dashboard
+2. Klicke "Run Test" um einen manuellen Test zu starten
+3. Warte bis er fertig ist
+4. Sensoren sollten sich innerhalb von 60 Sekunden aktualisieren
+
+### "Add-on startet immer wieder neu"
+
+Prüfe die Logs auf Fehler:
+1. Gehe zu **Einstellungen → Add-ons → Gonzales → Log**
+2. Suche nach Fehlermeldungen
+3. Häufige Probleme:
+   - Beschädigte Datenbank (lösche `gonzales.db` und starte neu)
+   - Kein Speicherplatz mehr
+
+---
+
+## Eigenständige Integration (Standalone)
+
+Wenn du Gonzales auf einem separaten Gerät betreibst (Raspberry Pi, Server, NAS), kannst du die Daten trotzdem in Home Assistant sehen.
+
+### Einrichtung
+
+1. Installiere HACS falls noch nicht geschehen
+2. Füge Custom Repository hinzu: `https://github.com/akustikrausch/gonzales-ha`
+3. Installiere die Gonzales Integration
+4. Starte Home Assistant neu
+5. Gehe zu **Einstellungen → Geräte & Dienste → Integration hinzufügen → Gonzales**
+6. Gib ein:
+   - **Host**: IP-Adresse deines Gonzales-Servers (z.B. `192.168.1.50`)
+   - **Port**: Normalerweise `8000`
+   - **API Key**: Falls du einen auf dem Server gesetzt hast (optional)
+
+### Unterschied zum Add-on
+
+| Funktion | Add-on | Eigenständige Integration |
+|----------|--------|---------------------------|
+| Speedtests | Laufen auf HA-Gerät | Laufen auf separatem Gerät |
+| Dashboard | In HA-Seitenleiste | Auf dem separaten Gerät |
+| Sensoren | Ja | Ja |
+| Datenspeicherung | Auf HA-Gerät | Auf separatem Gerät |
+
+---
+
+## Technische Details (Fortgeschritten)
+
+### Architektur
+
+```
+Browser → Home Assistant → Ingress Proxy → Gonzales (Port 8099)
+                                              ↓
+                              FastAPI + SQLite + Scheduler
+                                              ↓
+                              Ookla Speedtest CLI
+```
+
+### Sicherheit
+
+- **API-Schlüssel**: Automatisch beim ersten Start generiert, gespeichert in `/data/.api_key`
+- **AppArmor**: Restriktives Profil begrenzt Container-Zugriff
+- **Keine offenen Ports**: Web-UI nur über Home Assistant Ingress erreichbar
+- **Keine externen Abhängigkeiten**: Alles läuft lokal
+
+### Leistung
+
+- Speicher: ~100-200 MB während Speedtests
+- Festplatte: ~50 KB pro Test (Datenbank wächst langsam)
+- Netzwerk: Nutzt deine volle Bandbreite während Tests (2-3 Minuten)

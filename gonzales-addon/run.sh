@@ -1,4 +1,6 @@
 #!/usr/bin/with-contenv bashio
+# shellcheck shell=bash
+# shellcheck disable=SC1091,SC2155
 set -euo pipefail
 
 # --- Read and validate configuration ---

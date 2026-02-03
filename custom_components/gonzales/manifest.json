@@ -1,7 +1,7 @@
 {
   "domain": "gonzales",
   "name": "Gonzales",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "codeowners": ["@akustikrausch"],
   "config_flow": true,
   "dependencies": [],
