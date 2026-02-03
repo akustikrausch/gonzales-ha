@@ -580,6 +580,8 @@ Prüfe die Add-on Logs: **Einstellungen → Add-ons → Gonzales → Log**. Häu
 
 ---
 
-## Lizenz
+## License / Lizenz
 
-MIT (Gonzales Code). Die Ookla Speedtest CLI hat eine eigene Lizenz - durch die Nutzung akzeptierst du Ooklas [Nutzungsbedingungen](https://www.speedtest.net/about/terms).
+**Gonzales** is MIT licensed. The **Ookla Speedtest CLI** is proprietary third-party software. By using this add-on, you accept the [Ookla EULA](https://www.speedtest.net/about/eula). Personal use is free; commercial use requires a license from Ookla. Speedtest® is a trademark of Ookla, LLC. Not affiliated with Ookla.
+
+**Gonzales** ist MIT-lizenziert. Die **Ookla Speedtest CLI** ist proprietäre Drittanbieter-Software. Mit der Nutzung akzeptierst du die [Ookla EULA](https://www.speedtest.net/about/eula). Persönliche Nutzung kostenlos; kommerzielle Nutzung erfordert Ookla-Lizenz. Speedtest® ist eine Marke von Ookla, LLC. Nicht mit Ookla verbunden.
