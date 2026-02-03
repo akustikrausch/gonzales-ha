@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.5
+
+### Features
+- **Percentage-based tolerance**: Configure acceptable speed as percentage of subscribed speed (e.g., 85% of 1000 Mbps = 850 Mbps minimum)
+- **Time-of-day statistics**: New 5-period analysis (Morning, Midday, Afternoon, Evening, Night) with compliance tracking
+- **Date range presets**: Quick filter buttons (Today, This Week, This Month, This Year) in History and Statistics pages
+- **Delete all measurements**: New action with confirmation modal (type "DELETE" to confirm)
+
+### Fixes
+- **Docker cache invalidation**: Assets now update correctly when addon version changes (BUILD_VERSION cache buster)
+- **CSP font fix**: Export page fonts now load correctly (`font-src 'self' data:`)
+
 ## 1.2.4
 
 - Fix: Blank Ingress page — React Router now detects `/api/hassio_ingress/<token>/` path and sets basename correctly

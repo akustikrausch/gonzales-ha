@@ -2,9 +2,13 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM} AS builder
 
+# BUILD_VERSION invalidates cache when addon version changes
+ARG BUILD_VERSION
 RUN apk add --no-cache git
 
-RUN pip3 install --no-cache-dir --target=/opt/gonzales \
+# Cache buster: rebuild gonzales package when addon version bumps
+RUN echo "Building gonzales backend for addon v${BUILD_VERSION}" && \
+    pip3 install --no-cache-dir --target=/opt/gonzales \
     "gonzales @ git+https://github.com/akustikrausch/gonzales.git#subdirectory=backend"
 
 # ===== Runtime: lean image =====

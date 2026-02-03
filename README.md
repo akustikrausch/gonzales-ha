@@ -33,10 +33,13 @@ The sensor integration is auto-discovered when the add-on starts. Confirm setup 
 | Option | Default | Description |
 |--------|---------|-------------|
 | `test_interval_minutes` | `30` | Minutes between automatic speed tests (1-1440) |
-| `download_threshold_mbps` | `1000.0` | Expected download speed for scoring |
-| `upload_threshold_mbps` | `500.0` | Expected upload speed for scoring |
+| `download_threshold_mbps` | `1000.0` | Expected download speed (your subscribed plan) |
+| `upload_threshold_mbps` | `500.0` | Expected upload speed (your subscribed plan) |
+| `tolerance_percent` | `15.0` | Acceptable deviation from threshold (15% means 85% of subscribed speed is OK) |
 | `preferred_server_id` | `0` | Ookla server ID (0 = auto-select) |
 | `log_level` | `INFO` | Log verbosity (DEBUG, INFO, WARNING, ERROR) |
+
+The tolerance setting allows you to define what counts as "acceptable" speed. For example, with a 1000 Mbps plan and 15% tolerance, any measurement above 850 Mbps is considered compliant.
 
 Data is persisted in `/data/` across updates and restarts.
 
