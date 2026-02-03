@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.9
+
+### Fixes
+- **Fix infinite reload loop**: Update FRONTEND_VERSION constant to match backend version
+
 ## 2.0.8
 
 ### Fixes
