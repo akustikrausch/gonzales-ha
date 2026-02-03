@@ -1,0 +1,77 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Mit Gonzales verbinden",
+        "description": "**Gonzales Add-on nutzen?** Einfach OK klicken - die Standardwerte sollten automatisch funktionieren.\n\n**Standalone-Installation?** IP-Adresse und Port deines Gonzales-Servers eingeben.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API-Schlüssel (optional)",
+          "scan_interval": "Aktualisierungsintervall (Sekunden)"
+        },
+        "data_description": {
+          "host": "Für das Add-on: 'localhost'. Für Standalone: Server-IP (z.B. 192.168.1.50)",
+          "port": "Standard ist 8099. Nur ändern, wenn du einen anderen Port konfiguriert hast.",
+          "api_key": "Für das Add-on leer lassen. Nur für Standalone mit Authentifizierung.",
+          "scan_interval": "Wie oft Daten von Gonzales abgerufen werden (beeinflusst nicht das Speedtest-Intervall)"
+        }
+      },
+      "hassio_confirm": {
+        "title": "Gonzales Add-on erkannt",
+        "description": "Das Gonzales Speed Monitor Add-on wurde erkannt. Klicke auf Absenden, um die Einrichtung abzuschließen."
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zur Gonzales-API nicht möglich. Läuft das Add-on? Prüfe Host und Port."
+    },
+    "abort": {
+      "already_configured": "Diese Gonzales-Instanz ist bereits konfiguriert."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "download_speed": {
+        "name": "Download-Geschwindigkeit"
+      },
+      "upload_speed": {
+        "name": "Upload-Geschwindigkeit"
+      },
+      "ping_latency": {
+        "name": "Ping-Latenz"
+      },
+      "ping_jitter": {
+        "name": "Ping-Jitter"
+      },
+      "packet_loss": {
+        "name": "Paketverlust"
+      },
+      "last_test_time": {
+        "name": "Letzter Test"
+      },
+      "isp_score": {
+        "name": "ISP-Bewertung"
+      },
+      "scheduler_running": {
+        "name": "Scheduler-Status"
+      },
+      "test_in_progress": {
+        "name": "Test läuft"
+      },
+      "uptime": {
+        "name": "Laufzeit"
+      },
+      "total_measurements": {
+        "name": "Messungen gesamt"
+      },
+      "db_size": {
+        "name": "Datenbankgröße"
+      }
+    },
+    "binary_sensor": {
+      "internet_outage": {
+        "name": "Internetausfall"
+      }
+    }
+  }
+}

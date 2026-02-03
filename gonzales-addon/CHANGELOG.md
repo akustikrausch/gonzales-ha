@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.12
+
+### Improvements
+- **Better setup UI**: Added helpful descriptions for each configuration field
+- **German translation**: Integration UI now available in German
+- **Clearer error messages**: Improved error text when connection fails
+
 ## 2.0.11
 
 ### Improvements
