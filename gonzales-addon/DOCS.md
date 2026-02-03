@@ -34,10 +34,20 @@ Browser --> HA Sidebar --> Ingress --> Gonzales Web UI (port 8099)
 | Option | Default | Description |
 |--------|---------|-------------|
 | `test_interval_minutes` | `30` | How often to run a speed test (1-1440 minutes) |
-| `download_threshold_mbps` | `1000.0` | Expected download speed for scoring |
-| `upload_threshold_mbps` | `500.0` | Expected upload speed for scoring |
+| `download_threshold_mbps` | `1000.0` | Expected download speed (your subscribed plan) |
+| `upload_threshold_mbps` | `500.0` | Expected upload speed (your subscribed plan) |
+| `tolerance_percent` | `15.0` | Acceptable deviation from threshold (0-50%) |
 | `preferred_server_id` | `0` | Ookla server ID to use (0 = auto-select) |
 | `log_level` | `INFO` | Log verbosity (DEBUG, INFO, WARNING, ERROR) |
+
+### Understanding Tolerance
+
+The `tolerance_percent` setting defines what counts as an acceptable speed measurement. Instead of requiring exactly the subscribed speed, you can allow a percentage deviation:
+
+- **15% tolerance** (default): 85% of subscribed speed is acceptable
+- **Example**: 1000 Mbps plan with 15% tolerance = 850 Mbps minimum
+
+This is useful because real-world speeds fluctuate slightly. A measurement of 920 Mbps on a 1000 Mbps plan is generally considered fine. Adjust the tolerance in Settings based on your ISP's typical performance.
 
 ## Security
 

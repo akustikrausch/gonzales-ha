@@ -1,5 +1,5 @@
 name: "Gonzales Speed Monitor"
-version: "1.2.4"
+version: "1.2.5"
 slug: "gonzales"
 description: "Internet speed monitor with automated testing and web dashboard."
 url: "https://github.com/akustikrausch/gonzales-ha"
@@ -27,11 +27,13 @@ options:
   test_interval_minutes: 30
   download_threshold_mbps: 1000.0
   upload_threshold_mbps: 500.0
+  tolerance_percent: 15.0
   preferred_server_id: 0
   log_level: "INFO"
 schema:
   test_interval_minutes: "int(1,1440)"
   download_threshold_mbps: float
   upload_threshold_mbps: float
+  tolerance_percent: "float(0,50)"
   preferred_server_id: int
   log_level: "list(DEBUG|INFO|WARNING|ERROR)"
