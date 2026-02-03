@@ -7,8 +7,11 @@
 - **Time-of-day statistics**: New 5-period analysis (Morning, Midday, Afternoon, Evening, Night) with compliance tracking
 - **Date range presets**: Quick filter buttons (Today, This Week, This Month, This Year) in History and Statistics pages
 - **Delete all measurements**: New action with confirmation modal (type "DELETE" to confirm)
+- **Version display**: Version shown in terminal startup log and Settings > System Status
+- **Export branding**: Gonzales branding in CSV header and PDF footer
 
 ### Fixes
+- **Auto-reload on update**: Frontend automatically reloads when version mismatch detected (no manual cache clear needed)
 - **Docker cache invalidation**: Assets now update correctly when addon version changes (BUILD_VERSION cache buster)
 - **CSP font fix**: Export page fonts now load correctly (`font-src 'self' data:`)
 
