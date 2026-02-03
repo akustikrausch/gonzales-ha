@@ -1,0 +1,94 @@
+# Gonzales Speed Monitor - Home Assistant Add-on
+
+> Home Assistant add-on for automated internet speed monitoring with sensors, automations, and a web dashboard.
+
+## What is this?
+
+Gonzales is a Home Assistant add-on that automatically tests your internet speed and exposes the results as sensors. It includes a full web dashboard accessible via the Home Assistant sidebar.
+
+## Features
+
+- Automatic speed tests at configurable intervals
+- Home Assistant sensors for download, upload, ping, jitter, packet loss
+- Internet outage detection with binary sensor
+- ISP performance scoring
+- Web dashboard with statistics and history
+- QoS tests (Netflix 4K, Zoom HD, Cloud Gaming, VPN)
+- Network topology analysis
+- PDF/CSV export for ISP documentation
+- SLA compliance tracking
+
+## Installation
+
+1. Add repository to Home Assistant: https://github.com/akustikrausch/gonzales-ha
+2. Install "Gonzales Speed Monitor" from Add-on Store
+3. Start the add-on
+4. Click "Gonzales" in sidebar to access dashboard
+5. Confirm integration setup when prompted
+
+## Available Sensors
+
+| Entity | Description |
+|--------|-------------|
+| sensor.gonzales_download_speed | Download speed in Mbit/s |
+| sensor.gonzales_upload_speed | Upload speed in Mbit/s |
+| sensor.gonzales_ping_latency | Ping latency in ms |
+| sensor.gonzales_ping_jitter | Jitter in ms |
+| sensor.gonzales_packet_loss | Packet loss percentage |
+| sensor.gonzales_isp_score | ISP performance score 0-100 |
+| sensor.gonzales_last_test_time | Timestamp of last test |
+| binary_sensor.gonzales_internet_outage | ON if outage detected |
+
+## Automation Examples
+
+### Slow Internet Notification
+```yaml
+trigger:
+  platform: numeric_state
+  entity_id: sensor.gonzales_download_speed
+  below: 50
+action:
+  service: notify.mobile_app
+  data:
+    title: "Slow Internet"
+    message: "Speed: {{ states('sensor.gonzales_download_speed') }} Mbps"
+```
+
+### Automatic Router Restart on Outage
+```yaml
+trigger:
+  platform: state
+  entity_id: binary_sensor.gonzales_internet_outage
+  to: "on"
+action:
+  - service: switch.turn_off
+    entity_id: switch.router_plug
+  - delay: "00:00:30"
+  - service: switch.turn_on
+    entity_id: switch.router_plug
+```
+
+## Configuration
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| test_interval_minutes | Test frequency (1-1440) | 30 |
+| download_threshold_mbps | Expected download speed | 1000 |
+| upload_threshold_mbps | Expected upload speed | 500 |
+| tolerance_percent | Acceptable deviation (0-50%) | 15 |
+| preferred_server_id | Specific server (0=auto) | 0 |
+| isp_name | Provider name for reports | "" |
+
+## Privacy
+
+All data stays local on your Home Assistant device. No cloud, no tracking. Speed tests connect to Ookla servers only for measurement.
+
+## License
+
+Gonzales is MIT licensed. Uses Ookla Speedtest CLI (third-party, separate EULA).
+
+## Links
+
+- Repository: https://github.com/akustikrausch/gonzales-ha
+- Main Project: https://github.com/akustikrausch/gonzales
+- Issues: https://github.com/akustikrausch/gonzales-ha/issues
