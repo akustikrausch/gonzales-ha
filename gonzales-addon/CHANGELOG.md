@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.6
+
+### Fixes
+- **Fix 403 Forbidden**: Web UI now works correctly in Home Assistant - requests through Ingress proxy are trusted when API key is configured
+
 ## 1.2.5
 
 ### Features
