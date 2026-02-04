@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.5.1
+
+### Improvements
+- **Scheduler status in header**: The header now displays the next scheduled test time (e.g., "45 min", "1h 30m") with a clock icon when the scheduler is active
+- **Read-only indicator**: Scheduler status is displayed for information only and cannot be toggled from the header
+
 ## 3.5.0
 
 ### New Features - AI Agent Integration
