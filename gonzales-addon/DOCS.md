@@ -207,6 +207,27 @@ The sensors need at least one completed speed test:
 3. Wait for it to complete
 4. Sensors should update within 60 seconds
 
+### "Integration cannot connect to Gonzales API"
+
+If auto-discovery doesn't find the addon, you can manually enter the hostname:
+
+**How to find the hostname:**
+1. Go to **Settings → Add-ons → Gonzales**
+2. Look at the URL in your browser's address bar
+3. It shows something like: `homeassistant.local/hassio/addon/546fc077_gonzales/info`
+4. The hostname is the addon slug with underscores replaced by dashes: `546fc077-gonzales`
+
+**Alternative method:**
+1. In the URL, find the part after `/addon/` (e.g., `546fc077_gonzales`)
+2. Replace underscores `_` with dashes `-`
+3. Use this as the hostname (e.g., `546fc077-gonzales`)
+
+**Why different slugs?**
+- Local folder install: `local_gonzales` → hostname: `local-gonzales`
+- GitHub repo install: `546fc077_gonzales` → hostname: `546fc077-gonzales`
+
+The prefix (like `546fc077`) is a hash of the repository URL and varies per installation.
+
 ### "Add-on keeps restarting"
 
 Check the logs for errors:
@@ -572,6 +593,27 @@ Die Sensoren brauchen mindestens einen abgeschlossenen Speedtest:
 2. Klicke "Run Test" um einen manuellen Test zu starten
 3. Warte bis er fertig ist
 4. Sensoren sollten sich innerhalb von 60 Sekunden aktualisieren
+
+### "Integration kann nicht mit Gonzales API verbinden"
+
+Wenn die Auto-Erkennung das Addon nicht findet, kannst du den Hostnamen manuell eingeben:
+
+**Wie man den Hostnamen findet:**
+1. Gehe zu **Einstellungen → Add-ons → Gonzales**
+2. Schau in die Adresszeile deines Browsers
+3. Sie zeigt so etwas wie: `homeassistant.local/hassio/addon/546fc077_gonzales/info`
+4. Der Hostname ist der Addon-Slug mit Unterstrichen ersetzt durch Bindestriche: `546fc077-gonzales`
+
+**Alternative Methode:**
+1. In der URL, finde den Teil nach `/addon/` (z.B. `546fc077_gonzales`)
+2. Ersetze Unterstriche `_` durch Bindestriche `-`
+3. Nutze das als Hostname (z.B. `546fc077-gonzales`)
+
+**Warum unterschiedliche Slugs?**
+- Lokale Ordner-Installation: `local_gonzales` → Hostname: `local-gonzales`
+- GitHub-Repo-Installation: `546fc077_gonzales` → Hostname: `546fc077-gonzales`
+
+Das Präfix (wie `546fc077`) ist ein Hash der Repository-URL und variiert je nach Installation.
 
 ### "Add-on startet immer wieder neu"
 
