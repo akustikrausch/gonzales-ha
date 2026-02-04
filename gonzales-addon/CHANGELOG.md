@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.5.2
+
+### Bug Fixes
+- **Fix Auto-Discovery**: Integration now automatically detects the Gonzales addon regardless of installation method (local folder, GitHub repository with hash prefix like `546fc077_gonzales`)
+- **Improved addon detection**: Queries Supervisor API to find ALL addons with "gonzales" in the name, not just predefined slugs
+- **No manual hostname needed**: Users no longer need to manually find and enter the addon hostname
+
 ## 3.5.1
 
 ### Improvements
