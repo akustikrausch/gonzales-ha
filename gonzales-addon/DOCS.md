@@ -209,24 +209,47 @@ The sensors need at least one completed speed test:
 
 ### "Integration cannot connect to Gonzales API"
 
-If auto-discovery doesn't find the addon, you can manually enter the hostname:
+If auto-discovery doesn't find the addon, you need to enter the connection details manually.
 
-**How to find the hostname:**
-1. Go to **Settings → Add-ons → Gonzales**
-2. Look at the URL in your browser's address bar
-3. It shows something like: `homeassistant.local/hassio/addon/546fc077_gonzales/info`
-4. The hostname is the addon slug with underscores replaced by dashes: `546fc077-gonzales`
+**Step 1: Open the Add-on Web Interface**
+1. Go to **Settings → Add-ons → Gonzales Speed Monitor**
+2. Click **Open Web UI** (or click Gonzales in the sidebar)
 
-**Alternative method:**
-1. In the URL, find the part after `/addon/` (e.g., `546fc077_gonzales`)
-2. Replace underscores `_` with dashes `-`
-3. Use this as the hostname (e.g., `546fc077-gonzales`)
+**Step 2: Find YOUR Slug in the URL**
 
-**Why different slugs?**
-- Local folder install: `local_gonzales` → hostname: `local-gonzales`
-- GitHub repo install: `546fc077_gonzales` → hostname: `546fc077-gonzales`
+Look at your browser's address bar:
+```
+http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/ingress
+                                            ^^^^^^^^^^^^^^^^
+                                            This is YOUR unique slug
+```
 
-The prefix (like `546fc077`) is a hash of the repository URL and varies per installation.
+Your slug depends on how you installed the addon:
+- `546fc077_gonzales` — installed from GitHub (hash varies!)
+- `a1b2c3d4_gonzales` — different repository = different hash
+- `local_gonzales` — installed from local folder
+
+**Step 3: Convert to Hostname**
+
+Replace underscores `_` with dashes `-`:
+
+| Your URL shows | Enter as Host |
+|----------------|---------------|
+| `546fc077_gonzales` | `546fc077-gonzales` |
+| `local_gonzales` | `local-gonzales` |
+
+**Step 4: Connection Settings**
+
+| Field | Value |
+|-------|-------|
+| Host | Your hostname with dashes |
+| Port | Try `8470` first, then `8099` if it fails |
+| API key | Leave empty |
+
+**Common Mistakes:**
+- Using underscore `_` instead of dash `-`
+- Using a generic name instead of YOUR slug from the URL
+- Wrong port — try both `8470` and `8099`
 
 ### "Add-on keeps restarting"
 
@@ -596,24 +619,47 @@ Die Sensoren brauchen mindestens einen abgeschlossenen Speedtest:
 
 ### "Integration kann nicht mit Gonzales API verbinden"
 
-Wenn die Auto-Erkennung das Addon nicht findet, kannst du den Hostnamen manuell eingeben:
+Wenn Auto-Discovery das Addon nicht findet, musst du die Verbindungsdaten manuell eingeben.
 
-**Wie man den Hostnamen findet:**
-1. Gehe zu **Einstellungen → Add-ons → Gonzales**
-2. Schau in die Adresszeile deines Browsers
-3. Sie zeigt so etwas wie: `homeassistant.local/hassio/addon/546fc077_gonzales/info`
-4. Der Hostname ist der Addon-Slug mit Unterstrichen ersetzt durch Bindestriche: `546fc077-gonzales`
+**Schritt 1: Add-on Web-Oberfläche öffnen**
+1. Gehe zu **Einstellungen → Add-ons → Gonzales Speed Monitor**
+2. Klicke **Web-UI öffnen** (oder klicke Gonzales in der Seitenleiste)
 
-**Alternative Methode:**
-1. In der URL, finde den Teil nach `/addon/` (z.B. `546fc077_gonzales`)
-2. Ersetze Unterstriche `_` durch Bindestriche `-`
-3. Nutze das als Hostname (z.B. `546fc077-gonzales`)
+**Schritt 2: DEINEN Slug in der URL finden**
 
-**Warum unterschiedliche Slugs?**
-- Lokale Ordner-Installation: `local_gonzales` → Hostname: `local-gonzales`
-- GitHub-Repo-Installation: `546fc077_gonzales` → Hostname: `546fc077-gonzales`
+Schau in die Adresszeile deines Browsers:
+```
+http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/ingress
+                                            ^^^^^^^^^^^^^^^^
+                                            Das ist DEIN einzigartiger Slug
+```
 
-Das Präfix (wie `546fc077`) ist ein Hash der Repository-URL und variiert je nach Installation.
+Dein Slug hängt davon ab, wie du das Addon installiert hast:
+- `546fc077_gonzales` — installiert von GitHub (Hash variiert!)
+- `a1b2c3d4_gonzales` — anderes Repository = anderer Hash
+- `local_gonzales` — installiert aus lokalem Ordner
+
+**Schritt 3: In Hostname umwandeln**
+
+Ersetze Unterstriche `_` durch Bindestriche `-`:
+
+| Deine URL zeigt | Als Host eingeben |
+|-----------------|-------------------|
+| `546fc077_gonzales` | `546fc077-gonzales` |
+| `local_gonzales` | `local-gonzales` |
+
+**Schritt 4: Verbindungseinstellungen**
+
+| Feld | Wert |
+|------|------|
+| Host | Dein Hostname mit Bindestrichen |
+| Port | Probiere zuerst `8470`, dann `8099` falls es fehlschlägt |
+| API key | Leer lassen |
+
+**Häufige Fehler:**
+- Unterstrich `_` statt Bindestrich `-` verwenden
+- Generischen Namen statt DEINEM Slug aus der URL verwenden
+- Falscher Port — probiere sowohl `8470` als auch `8099`
 
 ### "Add-on startet immer wieder neu"
 

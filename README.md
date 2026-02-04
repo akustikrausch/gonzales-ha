@@ -99,52 +99,61 @@ The add-on runs the speed tests, but you need the **integration** for Home Assis
 
 If auto-discovery doesn't find the add-on, you need to enter the connection details manually.
 
-### Finding Your Hostname
+### Step 1: Open the Add-on Web Interface
 
 1. Go to **Settings → Add-ons → Gonzales Speed Monitor**
-2. Look at the **URL in your browser's address bar**
-3. Find the add-on slug (the part after `/addon/`)
+2. Click **Open Web UI** (or click Gonzales in the sidebar)
+3. The Gonzales dashboard opens in your browser
 
-**Example URL:**
+### Step 2: Find Your Slug in the URL
+
+Look at your browser's address bar. You'll see something like:
+
 ```
-http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/info
+http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/ingress
                                             ^^^^^^^^^^^^^^^^
-                                            This is the slug
+                                            This is YOUR slug
 ```
 
-### Converting Slug to Hostname
+**Your slug is unique to your installation!** Common examples:
+- `546fc077_gonzales` — installed from GitHub repository
+- `a1b2c3d4_gonzales` — different repository hash
+- `local_gonzales` — installed from local folder
 
-**Important:** Replace underscores `_` with dashes `-`
+### Step 3: Convert Slug to Hostname
 
-| URL shows | Hostname to enter |
-|-----------|-------------------|
+Replace underscores `_` with dashes `-`:
+
+| Your URL shows | Enter as Hostname |
+|----------------|-------------------|
 | `546fc077_gonzales` | `546fc077-gonzales` |
 | `local_gonzales` | `local-gonzales` |
 | `a1b2c3d4_gonzales` | `a1b2c3d4-gonzales` |
 
-### Connection Settings
+### Step 4: Enter Connection Settings
 
 | Field | Value |
 |-------|-------|
-| **Host** | Your hostname with dashes (e.g., `546fc077-gonzales`) |
-| **Port** | `8470` (this is always 8470, not 8099!) |
-| **API key** | Leave empty (not needed for add-on) |
-| **Update interval** | `60` (seconds between sensor updates) |
+| **Host** | Your hostname with dashes (from Step 3) |
+| **Port** | Usually `8470` — try `8099` if that doesn't work |
+| **API key** | Leave empty |
+| **Update interval** | `60` seconds |
 
 ### Common Mistakes
 
 | Problem | Solution |
 |---------|----------|
-| Using underscore `_` | Use dash `-` instead |
-| Wrong port (8099, 80, etc.) | Always use `8470` |
-| Using IP address | Use hostname like `546fc077-gonzales` |
-| Add-on not running | Start the add-on first, then add integration |
+| Copied slug with underscore `_` | Must use dash `-` |
+| Port doesn't work | Try both `8470` and `8099` |
+| Generic hostname like "gonzales" | Use YOUR slug from the URL |
+| Add-on not started | Start the add-on first |
 
 ### Still Not Working?
 
-1. **Verify add-on is running:** Settings → Add-ons → Gonzales → Status should show "Running"
-2. **Check the add-on logs:** Settings → Add-ons → Gonzales → Log tab
-3. **Try the IP address:** In rare cases, use the add-on's IP (visible in add-on info) instead of hostname
+1. **Check if add-on is running:** Settings → Add-ons → Gonzales → must show "Running"
+2. **Verify your slug:** Open the web UI and check the URL again
+3. **Check add-on logs:** Settings → Add-ons → Gonzales → Log tab
+4. **Try different ports:** `8470`, `8099`, or check add-on configuration for the port
 
 ---
 
@@ -511,52 +520,61 @@ Das Add-on führt die Speedtests durch, aber du brauchst die **Integration** fü
 
 Wenn Auto-Discovery das Add-on nicht findet, musst du die Verbindungsdaten manuell eingeben.
 
-### Hostname finden
+### Schritt 1: Add-on Web-Oberfläche öffnen
 
 1. Gehe zu **Einstellungen → Add-ons → Gonzales Speed Monitor**
-2. Schau dir die **URL in der Adresszeile deines Browsers** an
-3. Finde den Add-on-Slug (der Teil nach `/addon/`)
+2. Klicke **Web-UI öffnen** (oder klicke Gonzales in der Seitenleiste)
+3. Das Gonzales Dashboard öffnet sich im Browser
 
-**Beispiel-URL:**
+### Schritt 2: Deinen Slug in der URL finden
+
+Schau in die Adresszeile deines Browsers. Du siehst so etwas wie:
+
 ```
-http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/info
+http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/ingress
                                             ^^^^^^^^^^^^^^^^
-                                            Das ist der Slug
+                                            Das ist DEIN Slug
 ```
 
-### Slug in Hostname umwandeln
+**Dein Slug ist einzigartig für deine Installation!** Typische Beispiele:
+- `546fc077_gonzales` — installiert vom GitHub-Repository
+- `a1b2c3d4_gonzales` — anderer Repository-Hash
+- `local_gonzales` — installiert aus lokalem Ordner
 
-**Wichtig:** Ersetze Unterstriche `_` durch Bindestriche `-`
+### Schritt 3: Slug in Hostname umwandeln
 
-| URL zeigt | Hostname eingeben |
-|-----------|-------------------|
+Ersetze Unterstriche `_` durch Bindestriche `-`:
+
+| Deine URL zeigt | Als Hostname eingeben |
+|-----------------|----------------------|
 | `546fc077_gonzales` | `546fc077-gonzales` |
 | `local_gonzales` | `local-gonzales` |
 | `a1b2c3d4_gonzales` | `a1b2c3d4-gonzales` |
 
-### Verbindungseinstellungen
+### Schritt 4: Verbindungseinstellungen eingeben
 
 | Feld | Wert |
 |------|------|
-| **Host** | Dein Hostname mit Bindestrichen (z.B. `546fc077-gonzales`) |
-| **Port** | `8470` (immer 8470, nicht 8099!) |
-| **API key** | Leer lassen (nicht benötigt für Add-on) |
-| **Update interval** | `60` (Sekunden zwischen Sensor-Updates) |
+| **Host** | Dein Hostname mit Bindestrichen (aus Schritt 3) |
+| **Port** | Normalerweise `8470` — probiere `8099` falls das nicht funktioniert |
+| **API key** | Leer lassen |
+| **Update interval** | `60` Sekunden |
 
 ### Häufige Fehler
 
 | Problem | Lösung |
 |---------|--------|
-| Unterstrich `_` verwendet | Bindestrich `-` verwenden |
-| Falscher Port (8099, 80, etc.) | Immer `8470` verwenden |
-| IP-Adresse verwendet | Hostname wie `546fc077-gonzales` verwenden |
-| Add-on läuft nicht | Erst Add-on starten, dann Integration hinzufügen |
+| Slug mit Unterstrich `_` kopiert | Muss Bindestrich `-` sein |
+| Port funktioniert nicht | Probiere sowohl `8470` als auch `8099` |
+| Generischer Hostname wie "gonzales" | Nutze DEINEN Slug aus der URL |
+| Add-on nicht gestartet | Erst Add-on starten |
 
 ### Funktioniert immer noch nicht?
 
-1. **Prüfe ob Add-on läuft:** Einstellungen → Add-ons → Gonzales → Status sollte "Gestartet" zeigen
-2. **Add-on-Logs prüfen:** Einstellungen → Add-ons → Gonzales → Log-Tab
-3. **IP-Adresse versuchen:** In seltenen Fällen die Add-on-IP (sichtbar in Add-on-Info) statt Hostname verwenden
+1. **Prüfe ob Add-on läuft:** Einstellungen → Add-ons → Gonzales → muss "Gestartet" zeigen
+2. **Slug nochmal prüfen:** Web-UI öffnen und URL nochmal anschauen
+3. **Add-on-Logs prüfen:** Einstellungen → Add-ons → Gonzales → Log-Tab
+4. **Andere Ports probieren:** `8470`, `8099`, oder in der Add-on-Konfiguration nach dem Port schauen
 
 ---
 
