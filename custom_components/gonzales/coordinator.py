@@ -113,3 +113,60 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             raise UpdateFailed("No data received from Gonzales API")
 
         return data
+
+    async def async_trigger_speedtest(self) -> dict[str, Any] | None:
+        """Trigger a speed test via the Gonzales API."""
+        session = async_get_clientsession(self.hass)
+        try:
+            async with session.post(
+                f"{self._base_url}/speedtest/trigger",
+                headers=self._headers,
+                timeout=aiohttp.ClientTimeout(total=120),
+            ) as resp:
+                if resp.status == 200:
+                    result = await resp.json()
+                    # Refresh data after test
+                    await self.async_request_refresh()
+                    return result
+                elif resp.status == 429:
+                    _LOGGER.warning("Speed test rate limited, try again later")
+                    return None
+                else:
+                    _LOGGER.error("Failed to trigger speed test: %s", resp.status)
+                    return None
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.error("Error triggering speed test: %s", err)
+            return None
+
+    async def async_set_interval(self, interval_minutes: int) -> bool:
+        """Set the test interval via the Gonzales API.
+
+        Args:
+            interval_minutes: The test interval in minutes (1-1440).
+
+        Returns:
+            True if successful, False otherwise.
+        """
+        session = async_get_clientsession(self.hass)
+        try:
+            async with session.patch(
+                f"{self._base_url}/config",
+                headers=self._headers,
+                json={"test_interval_minutes": interval_minutes},
+                timeout=aiohttp.ClientTimeout(total=15),
+            ) as resp:
+                if resp.status == 200:
+                    _LOGGER.info(
+                        "Set Gonzales test interval to %d minutes", interval_minutes
+                    )
+                    # Refresh data to get new config
+                    await self.async_request_refresh()
+                    return True
+                else:
+                    _LOGGER.error(
+                        "Failed to set test interval: %s", resp.status
+                    )
+                    return False
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.error("Error setting test interval: %s", err)
+            return False

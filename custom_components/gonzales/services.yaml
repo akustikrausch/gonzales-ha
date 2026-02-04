@@ -1,0 +1,35 @@
+run_speedtest:
+  name: Run Speed Test
+  description: Trigger a manual speed test on the Gonzales server.
+  fields:
+    entry_id:
+      name: Entry ID
+      description: The config entry ID to run the speed test for. If not specified, runs for all configured Gonzales instances.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+
+set_interval:
+  name: Set Test Interval
+  description: Set the automatic speed test interval on the Gonzales server.
+  fields:
+    interval:
+      name: Interval (minutes)
+      description: The test interval in minutes. Must be between 1 and 1440 (24 hours).
+      required: true
+      example: 60
+      selector:
+        number:
+          min: 1
+          max: 1440
+          step: 1
+          unit_of_measurement: minutes
+          mode: box
+    entry_id:
+      name: Entry ID
+      description: The config entry ID to set the interval for. If not specified, sets for all configured Gonzales instances.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:

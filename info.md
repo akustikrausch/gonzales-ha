@@ -4,14 +4,16 @@ Automated internet speed monitoring with Home Assistant integration.
 
 ## Features
 
-- **Automatic Speed Tests** - Configurable intervals (default: 30 min)
+- **Automatic Speed Tests** - Configurable intervals (default: 60 min)
 - **Home Assistant Sensors** - Download, upload, ping, jitter, packet loss
-- **ISP Performance Score** - A-F grade based on consistency
+- **ISP Performance Score** - 0-100 score based on consistency
 - **Internet Outage Detection** - Binary sensor with smart retry logic
 - **Web Dashboard** - Full UI accessible via HA sidebar (with add-on)
 - **QoS Tests** - Netflix 4K, Zoom HD, Cloud Gaming, VPN profiles
 - **Network Topology** - Traceroute analysis
 - **Export** - PDF/CSV reports for ISP documentation
+- **Accessibility** - WCAG 2.1 AA compliant interface
+- **Rate Limiting** - Built-in API protection
 
 ## Sensors
 
