@@ -9,19 +9,50 @@
 
 # Gonzales Speed Monitor for Home Assistant
 
-Monitor your internet speed automatically and see results directly in Home Assistant.
+**The professional-grade internet monitoring solution, fully integrated with Home Assistant.** One-click installation, beautiful web dashboard, and comprehensive sensors to automate your smart home based on real internet performance data.
 
 **[Deutsche Anleitung weiter unten](#deutsche-anleitung)**
 
 ---
 
+## Why Gonzales?
+
+🚀 **Prove ISP Problems** — Months of speed test data to show your provider isn't delivering what you pay for. Export PDF reports for customer service disputes.
+
+📊 **Professional Dashboard** — Real-time analytics with historical trends, hourly patterns, ISP grading (A+ to F), and predictive forecasts. Accessible directly from your HA sidebar.
+
+🏠 **True Home Assistant Integration** — Not just sensors, but full automation support. Restart your router when speeds drop, switch to backup internet, send alerts, track long-term trends.
+
+🔒 **100% Local & Private** — All data stays on your Home Assistant. No cloud accounts, no subscriptions, no data harvesting.
+
+🤖 **AI-Ready** — MCP server for Claude Desktop, Summary API for LLMs. Ask your AI assistant about your network health.
+
+## Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **One-Click Install** | Add repository, install, done. No terminal, no configuration files |
+| **Automated Testing** | Speed tests every 15-240 minutes (configurable via UI) |
+| **10+ Sensors** | Download, upload, ping, jitter, packet loss, ISP score, outage detection |
+| **Outage Detection** | Smart retry logic — binary sensor goes ON after 3 consecutive failures |
+| **QoS Analysis** | Gaming, streaming, video calls — see if your connection meets requirements |
+| **ISP Grading** | A+ to F rating based on consistency and speed delivery |
+| **Export Options** | CSV for spreadsheets, PDF reports for ISP complaints |
+| **Trend Prediction** | 7-day forecast based on historical patterns |
+| **Full Ingress Support** | Dashboard accessible via HA sidebar, no port forwarding needed |
+| **Accessibility** | WCAG 2.1 AA compliant — works with screen readers |
+
+---
+
 ## What is Gonzales?
 
-Gonzales is an internet speed monitor that:
+Gonzales is a comprehensive internet monitoring system that:
 - Runs automatic speed tests at regular intervals (default: every 60 minutes)
-- Shows your download/upload speeds and ping in Home Assistant
-- Alerts you when your internet is slower than expected
-- Keeps a history of all tests so you can see trends over time
+- Provides 10+ sensors for download/upload speeds, ping, jitter, packet loss, and ISP quality score
+- Detects internet outages automatically with smart retry logic
+- Keeps unlimited history for long-term trend analysis
+- Generates professional PDF reports for ISP complaints
+- Integrates with Home Assistant automations for smart responses
 
 **No technical knowledge required** - just install and it works!
 
@@ -336,13 +367,40 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 # Deutsche Anleitung
 
+## Warum Gonzales?
+
+🚀 **ISP-Probleme beweisen** — Monatelange Speedtest-Daten zeigen, dass dein Anbieter nicht liefert, was du bezahlst. PDF-Berichte für Reklamationen exportieren.
+
+📊 **Professionelles Dashboard** — Echtzeit-Analysen mit Verlaufstrends, stündlichen Mustern, ISP-Bewertung (A+ bis F) und Vorhersagen. Direkt über die HA-Seitenleiste erreichbar.
+
+🏠 **Echte Home Assistant Integration** — Nicht nur Sensoren, sondern volle Automations-Unterstützung. Router neustarten bei Geschwindigkeitsabfall, Backup-Internet aktivieren, Benachrichtigungen senden.
+
+🔒 **100% Lokal & Privat** — Alle Daten bleiben auf deinem Home Assistant. Keine Cloud-Konten, keine Abos, keine Datensammlung.
+
+## Funktionen
+
+| Funktion | Beschreibung |
+|----------|--------------|
+| **Ein-Klick-Installation** | Repository hinzufügen, installieren, fertig |
+| **Automatische Tests** | Speedtests alle 15-240 Minuten (konfigurierbar) |
+| **10+ Sensoren** | Download, Upload, Ping, Jitter, Paketverlust, ISP-Score, Ausfallerkennung |
+| **Ausfallerkennung** | Intelligente Retry-Logik — Binärsensor geht AN nach 3 aufeinanderfolgenden Fehlern |
+| **QoS-Analyse** | Gaming, Streaming, Videoanrufe — sieh ob deine Verbindung die Anforderungen erfüllt |
+| **ISP-Bewertung** | A+ bis F basierend auf Konsistenz und Geschwindigkeitslieferung |
+| **Export-Optionen** | CSV für Tabellen, PDF-Berichte für ISP-Beschwerden |
+| **Trend-Vorhersage** | 7-Tage-Prognose basierend auf historischen Mustern |
+
+---
+
 ## Was ist Gonzales?
 
-Gonzales ist ein Internet-Geschwindigkeitsmonitor, der:
+Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 - Automatisch regelmäßige Speedtests durchführt (Standard: alle 60 Minuten)
-- Download/Upload-Geschwindigkeiten und Ping in Home Assistant anzeigt
-- Dich warnt, wenn dein Internet langsamer ist als erwartet
-- Eine Historie aller Tests speichert, damit du Trends erkennen kannst
+- 10+ Sensoren für Download/Upload, Ping, Jitter, Paketverlust und ISP-Qualitätsbewertung bereitstellt
+- Internet-Ausfälle automatisch mit intelligenter Retry-Logik erkennt
+- Unbegrenzte Historie für langfristige Trendanalysen speichert
+- Professionelle PDF-Berichte für ISP-Beschwerden generiert
+- Sich in Home Assistant Automationen für intelligente Reaktionen integriert
 
 **Keine technischen Kenntnisse erforderlich** - einfach installieren und es funktioniert!
 
