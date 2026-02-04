@@ -9,7 +9,7 @@
 
 # Gonzales Speed Monitor for Home Assistant
 
-**The professional-grade internet monitoring solution, fully integrated with Home Assistant.** One-click installation, beautiful web dashboard, and comprehensive sensors to automate your smart home based on real internet performance data.
+**Professional internet monitoring, fully integrated with Home Assistant.** One-click installation, comprehensive web dashboard, and 10+ sensors for complete visibility into your connection quality.
 
 **[Deutsche Anleitung weiter unten](#deutsche-anleitung)**
 
@@ -17,30 +17,29 @@
 
 ## Why Gonzales?
 
-🚀 **Prove ISP Problems** — Months of speed test data to show your provider isn't delivering what you pay for. Export PDF reports for customer service disputes.
+**Transparency & Documentation** — Continuous monitoring creates an objective record of your internet performance. Understand patterns, identify issues early, and have data when you need it.
 
-📊 **Professional Dashboard** — Real-time analytics with historical trends, hourly patterns, ISP grading (A+ to F), and predictive forecasts. Accessible directly from your HA sidebar.
+**Professional Dashboard** — Real-time analytics with historical trends, hourly/daily/weekly breakdowns, per-server comparisons, ISP grading (A+ to F), and 7-day predictive forecasts. Accessible directly from your HA sidebar via Ingress.
 
-🏠 **True Home Assistant Integration** — Not just sensors, but full automation support. Restart your router when speeds drop, switch to backup internet, send alerts, track long-term trends.
+**Deep Home Assistant Integration** — 10+ sensors including download, upload, ping, jitter, packet loss, ISP score, and outage detection. Build automations for notifications, router reboots, failover switching, and more.
 
-🔒 **100% Local & Private** — All data stays on your Home Assistant. No cloud accounts, no subscriptions, no data harvesting.
+**100% Local & Private** — All data stays on your Home Assistant. No cloud accounts, no subscriptions, no external dependencies.
 
-🤖 **AI-Ready** — MCP server for Claude Desktop, Summary API for LLMs. Ask your AI assistant about your network health.
+**Developer-Friendly** — REST API with SSE streaming, MCP server for AI assistants, CLI with JSON output.
 
-## Key Features
+## Core Features
 
-| Feature | Description |
-|---------|-------------|
-| **One-Click Install** | Add repository, install, done. No terminal, no configuration files |
-| **Automated Testing** | Speed tests every 15-240 minutes (configurable via UI) |
-| **10+ Sensors** | Download, upload, ping, jitter, packet loss, ISP score, outage detection |
-| **Outage Detection** | Smart retry logic — binary sensor goes ON after 3 consecutive failures |
-| **QoS Analysis** | Gaming, streaming, video calls — see if your connection meets requirements |
-| **ISP Grading** | A+ to F rating based on consistency and speed delivery |
-| **Export Options** | CSV for spreadsheets, PDF reports for ISP complaints |
-| **Trend Prediction** | 7-day forecast based on historical patterns |
-| **Full Ingress Support** | Dashboard accessible via HA sidebar, no port forwarding needed |
-| **Accessibility** | WCAG 2.1 AA compliant — works with screen readers |
+| Category | Features |
+|----------|----------|
+| **Installation** | One-click add-on install, auto-discovery integration, Ingress support (no port forwarding) |
+| **Monitoring** | Scheduled tests (15-240 min), 10,000+ Ookla servers, server pinning, real-time progress |
+| **Sensors** | Download/upload speed, ping, jitter, packet loss, ISP score, outage binary sensor, diagnostics |
+| **Analytics** | Hourly/daily/weekly stats, server comparison, SLA compliance, reliability metrics, trend prediction |
+| **Quality Analysis** | ISP grading (A+ to F), QoS profiles (gaming/streaming/video calls), network topology |
+| **Detection** | Outage detection (3-strike retry), jitter monitoring, packet loss tracking |
+| **Export** | CSV export, PDF reports with charts, unlimited data retention |
+| **Automation** | Full sensor integration, binary sensors for triggers, diagnostic entities |
+| **Accessibility** | WCAG 2.1 AA compliant, keyboard navigation, screen reader support |
 
 ---
 
@@ -49,12 +48,13 @@
 Gonzales is a comprehensive internet monitoring system that:
 - Runs automatic speed tests at regular intervals (default: every 60 minutes)
 - Provides 10+ sensors for download/upload speeds, ping, jitter, packet loss, and ISP quality score
-- Detects internet outages automatically with smart retry logic
-- Keeps unlimited history for long-term trend analysis
-- Generates professional PDF reports for ISP complaints
-- Integrates with Home Assistant automations for smart responses
+- Detects internet outages automatically with smart 3-strike retry logic
+- Tracks SLA compliance and calculates reliability percentages
+- Analyzes QoS requirements for gaming, streaming, and video calls
+- Generates professional PDF reports with charts and statistics
+- Integrates fully with Home Assistant automations
 
-**No technical knowledge required** - just install and it works!
+**No technical knowledge required** — just install and it works!
 
 ---
 
@@ -369,26 +369,29 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 ## Warum Gonzales?
 
-🚀 **ISP-Probleme beweisen** — Monatelange Speedtest-Daten zeigen, dass dein Anbieter nicht liefert, was du bezahlst. PDF-Berichte für Reklamationen exportieren.
+**Transparenz & Dokumentation** — Kontinuierliches Monitoring erstellt eine objektive Aufzeichnung deiner Internet-Performance. Verstehe Muster, erkenne Probleme frühzeitig und habe Daten, wenn du sie brauchst.
 
-📊 **Professionelles Dashboard** — Echtzeit-Analysen mit Verlaufstrends, stündlichen Mustern, ISP-Bewertung (A+ bis F) und Vorhersagen. Direkt über die HA-Seitenleiste erreichbar.
+**Professionelles Dashboard** — Echtzeit-Analysen mit historischen Trends, stündlichen/täglichen/wöchentlichen Aufschlüsselungen, Server-Vergleichen, ISP-Bewertung (A+ bis F) und 7-Tage-Vorhersagen. Direkt über die HA-Seitenleiste via Ingress erreichbar.
 
-🏠 **Echte Home Assistant Integration** — Nicht nur Sensoren, sondern volle Automations-Unterstützung. Router neustarten bei Geschwindigkeitsabfall, Backup-Internet aktivieren, Benachrichtigungen senden.
+**Tiefe Home Assistant Integration** — 10+ Sensoren inklusive Download, Upload, Ping, Jitter, Paketverlust, ISP-Score und Ausfallerkennung. Erstelle Automationen für Benachrichtigungen, Router-Neustarts, Failover-Umschaltung und mehr.
 
-🔒 **100% Lokal & Privat** — Alle Daten bleiben auf deinem Home Assistant. Keine Cloud-Konten, keine Abos, keine Datensammlung.
+**100% Lokal & Privat** — Alle Daten bleiben auf deinem Home Assistant. Keine Cloud-Konten, keine Abos, keine externen Abhängigkeiten.
 
-## Funktionen
+**Entwicklerfreundlich** — REST API mit SSE-Streaming, MCP-Server für KI-Assistenten, CLI mit JSON-Ausgabe.
 
-| Funktion | Beschreibung |
-|----------|--------------|
-| **Ein-Klick-Installation** | Repository hinzufügen, installieren, fertig |
-| **Automatische Tests** | Speedtests alle 15-240 Minuten (konfigurierbar) |
-| **10+ Sensoren** | Download, Upload, Ping, Jitter, Paketverlust, ISP-Score, Ausfallerkennung |
-| **Ausfallerkennung** | Intelligente Retry-Logik — Binärsensor geht AN nach 3 aufeinanderfolgenden Fehlern |
-| **QoS-Analyse** | Gaming, Streaming, Videoanrufe — sieh ob deine Verbindung die Anforderungen erfüllt |
-| **ISP-Bewertung** | A+ bis F basierend auf Konsistenz und Geschwindigkeitslieferung |
-| **Export-Optionen** | CSV für Tabellen, PDF-Berichte für ISP-Beschwerden |
-| **Trend-Vorhersage** | 7-Tage-Prognose basierend auf historischen Mustern |
+## Kernfunktionen
+
+| Kategorie | Funktionen |
+|-----------|------------|
+| **Installation** | Ein-Klick-Add-on-Installation, Auto-Discovery-Integration, Ingress-Support (kein Port-Forwarding) |
+| **Monitoring** | Geplante Tests (15-240 Min), 10.000+ Ookla-Server, Server-Pinning, Echtzeit-Fortschritt |
+| **Sensoren** | Download/Upload-Speed, Ping, Jitter, Paketverlust, ISP-Score, Ausfall-Binärsensor, Diagnose |
+| **Analysen** | Stündliche/tägliche/wöchentliche Stats, Server-Vergleich, SLA-Compliance, Zuverlässigkeitsmetriken, Trend-Vorhersage |
+| **Qualitätsanalyse** | ISP-Bewertung (A+ bis F), QoS-Profile (Gaming/Streaming/Videoanrufe), Netzwerk-Topologie |
+| **Erkennung** | Ausfallerkennung (3-Strike-Retry), Jitter-Monitoring, Paketverlust-Tracking |
+| **Export** | CSV-Export, PDF-Berichte mit Diagrammen, unbegrenzte Datenaufbewahrung |
+| **Automation** | Volle Sensor-Integration, Binary Sensors für Trigger, Diagnose-Entities |
+| **Barrierefreiheit** | WCAG 2.1 AA konform, Tastaturnavigation, Screenreader-Unterstützung |
 
 ---
 
@@ -397,12 +400,13 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 - Automatisch regelmäßige Speedtests durchführt (Standard: alle 60 Minuten)
 - 10+ Sensoren für Download/Upload, Ping, Jitter, Paketverlust und ISP-Qualitätsbewertung bereitstellt
-- Internet-Ausfälle automatisch mit intelligenter Retry-Logik erkennt
-- Unbegrenzte Historie für langfristige Trendanalysen speichert
-- Professionelle PDF-Berichte für ISP-Beschwerden generiert
-- Sich in Home Assistant Automationen für intelligente Reaktionen integriert
+- Internet-Ausfälle automatisch mit intelligenter 3-Strike-Retry-Logik erkennt
+- SLA-Compliance trackt und Zuverlässigkeitsprozente berechnet
+- QoS-Anforderungen für Gaming, Streaming und Videoanrufe analysiert
+- Professionelle PDF-Berichte mit Diagrammen und Statistiken generiert
+- Sich vollständig in Home Assistant Automationen integriert
 
-**Keine technischen Kenntnisse erforderlich** - einfach installieren und es funktioniert!
+**Keine technischen Kenntnisse erforderlich** — einfach installieren und es funktioniert!
 
 ---
 
