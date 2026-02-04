@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.5.3
+
+### Improvements
+- **Comprehensive in-app documentation**: Completely rewritten Docs page with detailed guides for all features
+- **Home Assistant automation examples**: Multiple ready-to-use YAML snippets for notifications, outage detection, daily reports
+- **Dashboard card examples**: Copy-paste YAML for entities, gauges, and history graphs
+- **Troubleshooting guide**: Detailed solutions for common problems including manual hostname discovery
+- **Speed test education**: Explanation of WiFi vs Ethernet, factors affecting results, QoS requirements
+- **Data usage guide**: Table showing test intervals vs. monthly data consumption
+
 ## 3.5.2
 
 ### Bug Fixes
