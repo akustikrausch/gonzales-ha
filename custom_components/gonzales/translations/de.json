@@ -19,7 +19,7 @@
       },
       "hassio_confirm": {
         "title": "Gonzales Add-on erkannt",
-        "description": "Das Gonzales Speed Monitor Add-on wurde erkannt. Klicke auf Absenden, um die Einrichtung abzuschließen."
+        "description": "Das Gonzales Speed Monitor Add-on wurde gefunden unter **{host}:{port}**.\n\nKlicke auf Absenden, um die Einrichtung abzuschließen."
       }
     },
     "error": {

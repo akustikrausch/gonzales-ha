@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.2
+
+### Fixes
+- **Fix discovery parsing**: Integration now correctly parses `HassioServiceInfo` from Home Assistant Supervisor discovery messages. Previously the integration crashed because it expected a plain dict instead of the proper `HassioServiceInfo` type.
+- **Better discovery UX**: Discovery confirmation dialog now shows the detected hostname and port (e.g., "Addon found at **546fc077-gonzales:8099**")
+- **Auto-update existing config**: When discovery is received with new connection info, existing configuration is automatically updated instead of being ignored.
+- **Connection validation**: Validates connection before creating config entry, shows error if addon is unreachable.
+
 ## 2.1.1
 
 ### Fixes

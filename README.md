@@ -18,7 +18,7 @@ Monitor your internet speed automatically and see results directly in Home Assis
 ## What is Gonzales?
 
 Gonzales is an internet speed monitor that:
-- Runs automatic speed tests at regular intervals (e.g., every 30 minutes)
+- Runs automatic speed tests at regular intervals (default: every 60 minutes)
 - Shows your download/upload speeds and ping in Home Assistant
 - Alerts you when your internet is slower than expected
 - Keeps a history of all tests so you can see trends over time
@@ -67,7 +67,7 @@ Go to **Settings → Add-ons → Gonzales Speed Monitor → Configuration**
 
 | Setting | What it does | Default |
 |---------|--------------|---------|
-| Test interval | How often to run tests | Every 30 minutes |
+| Test interval | How often to run tests | Every 60 minutes |
 | Download threshold | Your internet plan's download speed | 1000 Mbps |
 | Upload threshold | Your internet plan's upload speed | 500 Mbps |
 | Tolerance | How much slower is still "OK" | 15% |
@@ -320,7 +320,7 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 ## Was ist Gonzales?
 
 Gonzales ist ein Internet-Geschwindigkeitsmonitor, der:
-- Automatisch regelmäßige Speedtests durchführt (z.B. alle 30 Minuten)
+- Automatisch regelmäßige Speedtests durchführt (Standard: alle 60 Minuten)
 - Download/Upload-Geschwindigkeiten und Ping in Home Assistant anzeigt
 - Dich warnt, wenn dein Internet langsamer ist als erwartet
 - Eine Historie aller Tests speichert, damit du Trends erkennen kannst
@@ -367,7 +367,7 @@ Gehe zu **Einstellungen → Add-ons → Gonzales Speed Monitor → Konfiguration
 
 | Einstellung | Was sie bewirkt | Standard |
 |-------------|-----------------|----------|
-| Test interval | Wie oft Tests laufen | Alle 30 Minuten |
+| Test interval | Wie oft Tests laufen | Alle 60 Minuten |
 | Download threshold | Download-Geschwindigkeit deines Tarifs | 1000 Mbps |
 | Upload threshold | Upload-Geschwindigkeit deines Tarifs | 500 Mbps |
 | Tolerance | Wie viel langsamer noch "OK" ist | 15% |
