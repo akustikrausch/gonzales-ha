@@ -80,11 +80,71 @@ Gonzales is a comprehensive internet monitoring system that:
 4. After installation, click **Start**
 5. Turn on **Show in sidebar** (optional but recommended)
 
-### Step 3: You're Done!
+### Step 3: Add the Integration (Sensors)
 
-Click **Gonzales** in your sidebar to see the dashboard. The first speed test runs automatically within a few minutes.
+The add-on runs the speed tests, but you need the **integration** for Home Assistant sensors.
 
-A notification will appear asking to set up the integration - click **Configure** to add speed sensors to Home Assistant.
+1. Go to **Settings → Devices & Services**
+2. Click **+ Add Integration** (bottom right)
+3. Search for **Gonzales**
+4. Click on it
+
+**If auto-discovery works:** Click **Submit** — done!
+
+**If auto-discovery fails:** You'll see a form asking for Host and Port. See the next section.
+
+---
+
+## Manual Integration Setup
+
+If auto-discovery doesn't find the add-on, you need to enter the connection details manually.
+
+### Finding Your Hostname
+
+1. Go to **Settings → Add-ons → Gonzales Speed Monitor**
+2. Look at the **URL in your browser's address bar**
+3. Find the add-on slug (the part after `/addon/`)
+
+**Example URL:**
+```
+http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/info
+                                            ^^^^^^^^^^^^^^^^
+                                            This is the slug
+```
+
+### Converting Slug to Hostname
+
+**Important:** Replace underscores `_` with dashes `-`
+
+| URL shows | Hostname to enter |
+|-----------|-------------------|
+| `546fc077_gonzales` | `546fc077-gonzales` |
+| `local_gonzales` | `local-gonzales` |
+| `a1b2c3d4_gonzales` | `a1b2c3d4-gonzales` |
+
+### Connection Settings
+
+| Field | Value |
+|-------|-------|
+| **Host** | Your hostname with dashes (e.g., `546fc077-gonzales`) |
+| **Port** | `8470` (this is always 8470, not 8099!) |
+| **API key** | Leave empty (not needed for add-on) |
+| **Update interval** | `60` (seconds between sensor updates) |
+
+### Common Mistakes
+
+| Problem | Solution |
+|---------|----------|
+| Using underscore `_` | Use dash `-` instead |
+| Wrong port (8099, 80, etc.) | Always use `8470` |
+| Using IP address | Use hostname like `546fc077-gonzales` |
+| Add-on not running | Start the add-on first, then add integration |
+
+### Still Not Working?
+
+1. **Verify add-on is running:** Settings → Add-ons → Gonzales → Status should show "Running"
+2. **Check the add-on logs:** Settings → Add-ons → Gonzales → Log tab
+3. **Try the IP address:** In rare cases, use the add-on's IP (visible in add-on info) instead of hostname
 
 ---
 
@@ -432,11 +492,71 @@ Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 4. Nach der Installation klicke **Starten**
 5. Aktiviere **In Seitenleiste anzeigen** (optional aber empfohlen)
 
-### Schritt 3: Fertig!
+### Schritt 3: Integration hinzufügen (Sensoren)
 
-Klicke auf **Gonzales** in der Seitenleiste, um das Dashboard zu sehen. Der erste Speedtest startet automatisch innerhalb weniger Minuten.
+Das Add-on führt die Speedtests durch, aber du brauchst die **Integration** für Home Assistant Sensoren.
 
-Eine Benachrichtigung erscheint, um die Integration einzurichten - klicke **Konfigurieren**, um Sensoren zu Home Assistant hinzuzufügen.
+1. Gehe zu **Einstellungen → Geräte & Dienste**
+2. Klicke **+ Integration hinzufügen** (unten rechts)
+3. Suche nach **Gonzales**
+4. Klicke darauf
+
+**Wenn Auto-Discovery funktioniert:** Klicke **Absenden** — fertig!
+
+**Wenn Auto-Discovery fehlschlägt:** Du siehst ein Formular für Host und Port. Siehe nächsten Abschnitt.
+
+---
+
+## Manuelle Integration einrichten
+
+Wenn Auto-Discovery das Add-on nicht findet, musst du die Verbindungsdaten manuell eingeben.
+
+### Hostname finden
+
+1. Gehe zu **Einstellungen → Add-ons → Gonzales Speed Monitor**
+2. Schau dir die **URL in der Adresszeile deines Browsers** an
+3. Finde den Add-on-Slug (der Teil nach `/addon/`)
+
+**Beispiel-URL:**
+```
+http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/info
+                                            ^^^^^^^^^^^^^^^^
+                                            Das ist der Slug
+```
+
+### Slug in Hostname umwandeln
+
+**Wichtig:** Ersetze Unterstriche `_` durch Bindestriche `-`
+
+| URL zeigt | Hostname eingeben |
+|-----------|-------------------|
+| `546fc077_gonzales` | `546fc077-gonzales` |
+| `local_gonzales` | `local-gonzales` |
+| `a1b2c3d4_gonzales` | `a1b2c3d4-gonzales` |
+
+### Verbindungseinstellungen
+
+| Feld | Wert |
+|------|------|
+| **Host** | Dein Hostname mit Bindestrichen (z.B. `546fc077-gonzales`) |
+| **Port** | `8470` (immer 8470, nicht 8099!) |
+| **API key** | Leer lassen (nicht benötigt für Add-on) |
+| **Update interval** | `60` (Sekunden zwischen Sensor-Updates) |
+
+### Häufige Fehler
+
+| Problem | Lösung |
+|---------|--------|
+| Unterstrich `_` verwendet | Bindestrich `-` verwenden |
+| Falscher Port (8099, 80, etc.) | Immer `8470` verwenden |
+| IP-Adresse verwendet | Hostname wie `546fc077-gonzales` verwenden |
+| Add-on läuft nicht | Erst Add-on starten, dann Integration hinzufügen |
+
+### Funktioniert immer noch nicht?
+
+1. **Prüfe ob Add-on läuft:** Einstellungen → Add-ons → Gonzales → Status sollte "Gestartet" zeigen
+2. **Add-on-Logs prüfen:** Einstellungen → Add-ons → Gonzales → Log-Tab
+3. **IP-Adresse versuchen:** In seltenen Fällen die Add-on-IP (sichtbar in Add-on-Info) statt Hostname verwenden
 
 ---
 
