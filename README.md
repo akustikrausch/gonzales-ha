@@ -295,6 +295,17 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 ---
 
+## What's New in v3.5.0
+
+### AI Agent Integration
+- **MCP Server**: Native integration with Claude Desktop and other MCP-compatible AI tools
+- **Summary API**: New `/api/v1/summary` endpoint designed for AI agents and LLMs
+- **AGENTS.md**: Machine-readable documentation for AI agents
+
+### Developer Experience
+- Improved OpenAPI documentation with examples
+- Consistent `--json` output across all CLI commands
+
 ## What's New in v3.0.0
 
 ### Clean Architecture
@@ -310,14 +321,6 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 ### Security
 - Rate limiting (100 requests/minute per IP)
 - Token bucket algorithm for fair resource distribution
-
-## Roadmap / Planned Features
-
-### Multi-Server Comparison Test (Coming Soon)
-- Test against 3-5 different servers simultaneously
-- Automatically detect routing issues
-- Analyze ISP peering quality
-- Find the "best route" automatically
 
 ---
 
@@ -595,6 +598,17 @@ Prüfe die Add-on Logs: **Einstellungen → Add-ons → Gonzales → Log**. Häu
 
 ---
 
+## Was ist neu in v3.5.0
+
+### KI-Agenten Integration
+- **MCP Server**: Native Integration mit Claude Desktop und anderen MCP-kompatiblen KI-Tools
+- **Summary API**: Neuer `/api/v1/summary` Endpoint für KI-Agenten und LLMs
+- **AGENTS.md**: Maschinenlesbare Dokumentation für KI-Agenten
+
+### Entwickler-Erfahrung
+- Verbesserte OpenAPI-Dokumentation mit Beispielen
+- Konsistente `--json` Ausgabe für alle CLI-Befehle
+
 ## Was ist neu in v3.0.0
 
 ### Clean Architecture
@@ -610,14 +624,6 @@ Prüfe die Add-on Logs: **Einstellungen → Add-ons → Gonzales → Log**. Häu
 ### Sicherheit
 - Rate Limiting (100 Anfragen/Minute pro IP)
 - Token-Bucket-Algorithmus für faire Ressourcenverteilung
-
-## Roadmap / Geplante Features
-
-### Multi-Server Vergleichstest (Coming Soon)
-- Gleichzeitig gegen 3-5 verschiedene Server testen
-- Routing-Probleme automatisch erkennen
-- ISP-Peering-Qualität analysieren
-- "Beste Route" automatisch finden
 
 ---
 

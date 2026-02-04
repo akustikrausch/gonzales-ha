@@ -1,5 +1,35 @@
 # Changelog
 
+## 3.5.0
+
+### New Features - AI Agent Integration
+
+**MCP Server (Model Context Protocol)**
+- Native integration with Claude Desktop and other MCP-compatible AI tools
+- New `gonzales-mcp` command to start the MCP server
+- Available tools: get_latest_speedtest, run_speedtest, get_statistics, get_connection_status, get_outages, get_isp_score, get_summary
+
+**Summary API Endpoint**
+- New `GET /api/v1/summary` endpoint designed for AI agents and LLMs
+- Returns structured status with alerts and recommendations
+- Supports JSON and Markdown output formats
+- Human-readable summary text for quick understanding
+
+**AGENTS.md Documentation**
+- Machine-readable documentation for AI agents
+- Quick reference for common operations
+- Integration examples for Python and curl
+- Interpretation guide for results
+
+**Improved OpenAPI Documentation**
+- Enhanced endpoint descriptions with use cases
+- Added examples to response schemas
+- Better parameter documentation
+
+### CLI Improvements
+- Consistent `--json` output across all CLI commands
+- Unified JSON response format with success/data/timestamp
+
 ## 3.0.1
 
 ### Bug Fixes
