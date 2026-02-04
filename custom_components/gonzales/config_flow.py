@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import logging
-import os
 from typing import Any
 
 import aiohttp
 import voluptuous as vol
 
+from homeassistant.components.hassio import HassioServiceInfo
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_HOST, CONF_PORT, CONF_SCAN_INTERVAL
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -32,37 +32,38 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
-    _hassio_discovery: dict[str, Any] | None = None
+    _hassio_discovery: HassioServiceInfo | None = None
     _addon_detected: bool = False
     _addon_host: str | None = None
-    _supervisor_available: bool = False
+    _discovered_host: str = DEFAULT_HOST
+    _discovered_port: int = DEFAULT_PORT
+    _discovered_api_key: str = ""
 
     async def async_step_hassio(
-        self, discovery_info: dict[str, Any]
+        self, discovery_info: HassioServiceInfo
     ) -> ConfigFlowResult:
         """Handle Supervisor add-on discovery."""
-        _LOGGER.info("Received hassio discovery: %s", discovery_info)
-        host = discovery_info["host"]
-        port = discovery_info["port"]
-        api_key = discovery_info.get("api_key", "")
+        _LOGGER.info("Received hassio discovery: slug=%s, config=%s", discovery_info.slug, discovery_info.config)
 
-        await self.async_set_unique_id(f"hassio_{host}:{port}")
-        self._abort_if_unique_id_configured()
+        # Extract connection info from discovery config
+        self._discovered_host = discovery_info.config.get("host", DEFAULT_HOST)
+        self._discovered_port = discovery_info.config.get("port", DEFAULT_PORT)
+        self._discovered_api_key = discovery_info.config.get("api_key", "")
 
-        # Try to auto-configure if we can connect
-        if await self._validate_connection(host, port, api_key):
-            return self.async_create_entry(
-                title="Gonzales (Add-on)",
-                data={
-                    CONF_HOST: host,
-                    CONF_PORT: port,
-                    CONF_API_KEY: api_key,
-                    CONF_SCAN_INTERVAL: DEFAULT_SCAN_INTERVAL,
-                },
-            )
+        # Use addon slug as stable unique ID
+        await self.async_set_unique_id(f"hassio_{discovery_info.slug}")
+        self._abort_if_unique_id_configured(
+            updates={
+                CONF_HOST: self._discovered_host,
+                CONF_PORT: self._discovered_port,
+                CONF_API_KEY: self._discovered_api_key,
+            }
+        )
 
-        # Store discovery info and ask for confirmation
+        # Store discovery info for confirmation step
         self._hassio_discovery = discovery_info
+
+        # Always show confirmation - never auto-create (best practice)
         return await self.async_step_hassio_confirm()
 
     async def async_step_hassio_confirm(
@@ -70,29 +71,42 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Confirm Supervisor add-on discovery."""
         if user_input is not None:
-            assert self._hassio_discovery is not None
-            host = self._hassio_discovery["host"]
-            port = self._hassio_discovery["port"]
-            api_key = self._hassio_discovery.get("api_key", "")
+            # Validate connection before creating entry
+            if not await self._validate_connection(
+                self._discovered_host, self._discovered_port, self._discovered_api_key
+            ):
+                return self.async_show_form(
+                    step_id="hassio_confirm",
+                    errors={"base": "cannot_connect"},
+                    description_placeholders={
+                        "host": self._discovered_host,
+                        "port": str(self._discovered_port),
+                    },
+                )
+
             return self.async_create_entry(
                 title="Gonzales (Add-on)",
                 data={
-                    CONF_HOST: host,
-                    CONF_PORT: port,
-                    CONF_API_KEY: api_key,
+                    CONF_HOST: self._discovered_host,
+                    CONF_PORT: self._discovered_port,
+                    CONF_API_KEY: self._discovered_api_key,
                     CONF_SCAN_INTERVAL: DEFAULT_SCAN_INTERVAL,
                 },
             )
-        return self.async_show_form(step_id="hassio_confirm")
+
+        return self.async_show_form(
+            step_id="hassio_confirm",
+            description_placeholders={
+                "host": self._discovered_host,
+                "port": str(self._discovered_port),
+            },
+        )
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Handle the initial step."""
         errors: dict[str, str] = {}
-
-        # Check if running under Supervisor
-        self._supervisor_available = os.environ.get("SUPERVISOR") is not None
 
         # Try to auto-detect addon on first load
         if user_input is None and not self._addon_detected:
@@ -169,97 +183,48 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
         return None
 
     async def _detect_via_supervisor(self) -> dict[str, Any] | None:
-        """Detect addon via Home Assistant Supervisor API.
+        """Detect addon via Home Assistant Supervisor component.
 
-        First queries /addons to find gonzales by name/slug pattern,
-        then gets its actual hostname and IP.
+        Uses the hassio component's addon info if available.
         """
-        supervisor_token = os.environ.get("SUPERVISOR_TOKEN")
-        if not supervisor_token:
-            _LOGGER.debug("No SUPERVISOR_TOKEN, skipping Supervisor detection")
-            return None
-
-        session = async_get_clientsession(self.hass)
-        headers = {"Authorization": f"Bearer {supervisor_token}"}
-
         try:
-            # Step 1: List all installed addons to find gonzales
-            async with session.get(
-                "http://supervisor/addons",
-                headers=headers,
-                timeout=aiohttp.ClientTimeout(total=5),
-            ) as resp:
-                if resp.status != 200:
-                    _LOGGER.debug("Failed to list addons: %s", resp.status)
-                    return None
-
-                data = await resp.json()
-                addons = data.get("data", {}).get("addons", [])
-
-            # Step 2: Find gonzales addon by name or slug pattern
-            gonzales_addon = None
-            for addon in addons:
-                slug = addon.get("slug", "").lower()
-                name = addon.get("name", "").lower()
-                # Match addons with "gonzales" in name or slug
-                if "gonzales" in slug or "gonzales" in name:
-                    if addon.get("installed"):
-                        gonzales_addon = addon
-                        break
-
-            if not gonzales_addon:
-                _LOGGER.debug("No gonzales addon found in installed addons")
+            # Check if hassio component is loaded
+            if "hassio" not in self.hass.config.components:
+                _LOGGER.debug("Hassio component not loaded, skipping Supervisor detection")
                 return None
 
-            addon_slug = gonzales_addon["slug"]
-            _LOGGER.info("Found Gonzales addon with slug: %s", addon_slug)
+            # Get addon info via hassio component
+            hassio = self.hass.components.hassio
 
-            # Step 3: Get detailed info including hostname and IP
-            async with session.get(
-                f"http://supervisor/addons/{addon_slug}/info",
-                headers=headers,
-                timeout=aiohttp.ClientTimeout(total=5),
-            ) as resp:
-                if resp.status != 200:
-                    _LOGGER.debug("Failed to get addon info: %s", resp.status)
-                    return None
+            # Try to get addons info
+            if hasattr(hassio, "async_get_addon_info"):
+                # Try common gonzales addon slugs
+                for slug in ["local_gonzales", "gonzales"]:
+                    try:
+                        addon_info = await hassio.async_get_addon_info(self.hass, slug)
+                        if addon_info and addon_info.get("state") == "started":
+                            hostname = addon_info.get("hostname")
+                            ip_address = addon_info.get("ip_address")
+                            _LOGGER.info("Found Gonzales addon: hostname=%s, ip=%s", hostname, ip_address)
 
-                info = await resp.json()
-                addon_data = info.get("data", {})
+                            # Try hostname with dashes first
+                            if hostname:
+                                dns_hostname = hostname.replace("_", "-")
+                                if await self._validate_connection(dns_hostname, ADDON_PORT, ""):
+                                    return {"host": dns_hostname, "port": ADDON_PORT, "api_key": ""}
+                                if await self._validate_connection(hostname, ADDON_PORT, ""):
+                                    return {"host": hostname, "port": ADDON_PORT, "api_key": ""}
 
-            state = addon_data.get("state")
-            if state != "started":
-                _LOGGER.warning("Gonzales addon found but not running (state=%s)", state)
-                return None
+                            # Fall back to IP
+                            if ip_address and await self._validate_connection(ip_address, ADDON_PORT, ""):
+                                return {"host": ip_address, "port": ADDON_PORT, "api_key": ""}
+                    except Exception:
+                        continue
 
-            # Try hostname first, then IP
-            hostname = addon_data.get("hostname")
-            ip_address = addon_data.get("ip_address")
+            _LOGGER.debug("Could not detect Gonzales addon via Supervisor")
 
-            _LOGGER.info(
-                "Gonzales addon running: hostname=%s, ip=%s",
-                hostname, ip_address
-            )
-
-            # Try hostname with dashes (Docker DNS uses dashes)
-            if hostname:
-                dns_hostname = hostname.replace("_", "-")
-                if await self._validate_connection(dns_hostname, ADDON_PORT, ""):
-                    return {"host": dns_hostname, "port": ADDON_PORT, "api_key": ""}
-                # Try original hostname
-                if await self._validate_connection(hostname, ADDON_PORT, ""):
-                    return {"host": hostname, "port": ADDON_PORT, "api_key": ""}
-
-            # Fall back to IP address
-            if ip_address and await self._validate_connection(ip_address, ADDON_PORT, ""):
-                return {"host": ip_address, "port": ADDON_PORT, "api_key": ""}
-
-            _LOGGER.warning("Could not connect to Gonzales addon at %s or %s", hostname, ip_address)
-
-        except aiohttp.ClientError as err:
-            _LOGGER.debug("Supervisor API error: %s", err)
         except Exception as err:
-            _LOGGER.debug("Unexpected error querying Supervisor: %s", err)
+            _LOGGER.debug("Error during Supervisor detection: %s", err)
 
         return None
 

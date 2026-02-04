@@ -19,7 +19,7 @@
       },
       "hassio_confirm": {
         "title": "Gonzales Add-on Discovered",
-        "description": "The Gonzales Speed Monitor add-on has been detected. Click Submit to complete the setup."
+        "description": "The Gonzales Speed Monitor add-on has been detected at **{host}:{port}**.\n\nClick Submit to complete the setup."
       }
     },
     "error": {
