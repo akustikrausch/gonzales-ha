@@ -6,7 +6,7 @@
 
 ## What Does This Add-on Do?
 
-Gonzales automatically tests your internet speed and keeps track of the results. Think of it like having someone check your internet speed every 30 minutes and write down the results for you.
+Gonzales automatically tests your internet speed and keeps track of the results. Think of it like having someone check your internet speed every hour and write down the results for you.
 
 **What you get:**
 - A dashboard showing your current internet speed
@@ -82,9 +82,9 @@ Download your data as:
 
 How often Gonzales runs a speed test.
 
-- **Default**: 30 minutes
+- **Default**: 60 minutes
 - **Range**: 1 to 1440 minutes (1 minute to 24 hours)
-- **Recommendation**: 30-60 minutes is usually enough
+- **Recommendation**: 60 minutes is usually enough for most users
 
 **Why not test more often?**
 - Speed tests use bandwidth (a few hundred MB each)
@@ -345,9 +345,24 @@ Browser → Home Assistant → Ingress Proxy → Gonzales (port 8099)
                               Ookla Speedtest CLI
 ```
 
+### Accessibility
+
+Gonzales is designed to be accessible to all users:
+
+- **Keyboard Navigation**: All features accessible via keyboard
+- **Screen Reader Support**: ARIA landmarks and live regions
+- **Focus Indicators**: Clear visual feedback for keyboard users
+- **Reduced Motion**: Respects system preference for reduced animations
+
+**Keyboard Shortcuts:**
+- `Tab` / `Shift+Tab`: Navigate between elements
+- `Enter` / `Space`: Activate buttons and links
+- Skip link available at page top for quick navigation
+
 ### Security
 
 - **API Key**: Auto-generated on first start, stored in `/data/.api_key`
+- **Rate Limiting**: 100 requests per minute per IP address
 - **AppArmor**: Restrictive profile limits container access
 - **No open ports**: Web UI only accessible through Home Assistant Ingress
 - **No external dependencies**: Everything runs locally
@@ -366,7 +381,7 @@ Browser → Home Assistant → Ingress Proxy → Gonzales (port 8099)
 
 ## Was macht dieses Add-on?
 
-Gonzales testet automatisch deine Internetgeschwindigkeit und speichert die Ergebnisse. Stell es dir vor wie einen Assistenten, der alle 30 Minuten dein Internet prüft und die Ergebnisse aufschreibt.
+Gonzales testet automatisch deine Internetgeschwindigkeit und speichert die Ergebnisse. Stell es dir vor wie einen Assistenten, der jede Stunde dein Internet prüft und die Ergebnisse aufschreibt.
 
 **Was du bekommst:**
 - Ein Dashboard mit deiner aktuellen Internetgeschwindigkeit
@@ -442,9 +457,9 @@ Lade deine Daten herunter als:
 
 Wie oft Gonzales einen Speedtest durchführt.
 
-- **Standard**: 30 Minuten
+- **Standard**: 60 Minuten
 - **Bereich**: 1 bis 1440 Minuten (1 Minute bis 24 Stunden)
-- **Empfehlung**: 30-60 Minuten reicht meist aus
+- **Empfehlung**: 60 Minuten reicht für die meisten Nutzer aus
 
 **Warum nicht öfter testen?**
 - Speedtests verbrauchen Bandbreite (einige hundert MB pro Test)
@@ -696,9 +711,24 @@ Browser → Home Assistant → Ingress Proxy → Gonzales (Port 8099)
                               Ookla Speedtest CLI
 ```
 
+### Barrierefreiheit
+
+Gonzales ist für alle Nutzer zugänglich gestaltet:
+
+- **Tastaturnavigation**: Alle Funktionen per Tastatur erreichbar
+- **Screenreader-Unterstützung**: ARIA-Landmarks und Live-Regionen
+- **Fokus-Indikatoren**: Klare visuelle Rückmeldung für Tastaturnutzer
+- **Reduzierte Bewegung**: Respektiert Systemeinstellung für weniger Animationen
+
+**Tastaturkürzel:**
+- `Tab` / `Shift+Tab`: Zwischen Elementen navigieren
+- `Enter` / `Leertaste`: Schaltflächen und Links aktivieren
+- Skip-Link am Seitenanfang für schnelle Navigation
+
 ### Sicherheit
 
 - **API-Schlüssel**: Automatisch beim ersten Start generiert, gespeichert in `/data/.api_key`
+- **Rate Limiting**: 100 Anfragen pro Minute pro IP-Adresse
 - **AppArmor**: Restriktives Profil begrenzt Container-Zugriff
 - **Keine offenen Ports**: Web-UI nur über Home Assistant Ingress erreichbar
 - **Keine externen Abhängigkeiten**: Alles läuft lokal

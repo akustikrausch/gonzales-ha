@@ -1,5 +1,35 @@
 # Changelog
 
+## 3.0.0
+
+### Major Release - Architecture & Accessibility
+
+**Clean Architecture**
+- Complete domain layer implementation with Domain-Driven Design principles
+- Pure Python entities (Measurement, Outage, SpeedtestServer, Config)
+- Immutable value objects (Speed, Duration, Percentage, NetworkMetrics, ThresholdConfig)
+- Domain events for decoupled communication
+- Repository pattern with protocol-based interfaces
+- Application layer with use cases (RunSpeedtest, GetStatistics, ManageConfig, ExportData)
+
+**Security Enhancements**
+- **Rate Limiting**: Token bucket algorithm with per-IP limiting (100 requests/minute)
+- HTTP 429 response when rate limit exceeded
+- Configurable burst capacity and rate
+
+**Accessibility (WCAG 2.1 AA)**
+- ARIA landmarks and roles throughout the UI
+- Skip-to-content link for keyboard navigation
+- Screen reader announcements via live regions
+- Full keyboard navigation support
+- Focus-visible indicators on all interactive elements
+- prefers-reduced-motion support for animations
+
+**UI Improvements**
+- Toast notification system with success/error/warning/info variants
+- Enhanced glass button component with loading states
+- Improved semantic HTML structure
+
 ## 2.1.2
 
 ### Fixes

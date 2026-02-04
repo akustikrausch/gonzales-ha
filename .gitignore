@@ -21,3 +21,9 @@ Thumbs.db
 # Virtual environment
 venv/
 .venv/
+
+# Audit reports (private, not to be committed)
+.audits/
+audits/
+*_audit.md
+*_audit.txt

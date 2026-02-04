@@ -295,6 +295,22 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 ---
 
+## What's New in v3.0.0
+
+### Clean Architecture
+- Domain-Driven Design with proper separation of concerns
+- Pure Python entities and value objects
+- Repository pattern for data access abstraction
+
+### Accessibility (WCAG 2.1 AA)
+- Full keyboard navigation
+- Screen reader support with ARIA landmarks
+- Focus indicators on all interactive elements
+
+### Security
+- Rate limiting (100 requests/minute per IP)
+- Token bucket algorithm for fair resource distribution
+
 ## Roadmap / Planned Features
 
 ### Multi-Server Comparison Test (Coming Soon)
@@ -578,6 +594,22 @@ Prüfe die Add-on Logs: **Einstellungen → Add-ons → Gonzales → Log**. Häu
 - Temporäre Ookla Server-Probleme (später erneut versuchen)
 
 ---
+
+## Was ist neu in v3.0.0
+
+### Clean Architecture
+- Domain-Driven Design mit sauberer Trennung der Verantwortlichkeiten
+- Reine Python-Entitäten und Value Objects
+- Repository-Pattern für abstrahierten Datenzugriff
+
+### Barrierefreiheit (WCAG 2.1 AA)
+- Vollständige Tastaturnavigation
+- Screenreader-Unterstützung mit ARIA-Landmarks
+- Fokus-Indikatoren auf allen interaktiven Elementen
+
+### Sicherheit
+- Rate Limiting (100 Anfragen/Minute pro IP)
+- Token-Bucket-Algorithmus für faire Ressourcenverteilung
 
 ## Roadmap / Geplante Features
 
