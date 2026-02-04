@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from typing import Any
 
 import aiohttp
@@ -183,9 +184,10 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
         return None
 
     async def _detect_via_supervisor(self) -> dict[str, Any] | None:
-        """Detect addon via Home Assistant Supervisor component.
+        """Detect addon via Home Assistant Supervisor API.
 
-        Uses the hassio component's addon info if available.
+        Queries all installed addons and finds the Gonzales addon by name,
+        regardless of the slug format (local_gonzales, 546fc077_gonzales, etc.).
         """
         try:
             # Check if hassio component is loaded
@@ -193,21 +195,72 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
                 _LOGGER.debug("Hassio component not loaded, skipping Supervisor detection")
                 return None
 
-            # Get addon info via hassio component
-            hassio = self.hass.components.hassio
+            session = async_get_clientsession(self.hass)
+            supervisor_token = os.environ.get("SUPERVISOR_TOKEN")
 
-            # Try to get addons info
+            # Method 1: Direct Supervisor API call to get ALL addons
+            if supervisor_token:
+                try:
+                    headers = {"Authorization": f"Bearer {supervisor_token}"}
+                    async with session.get(
+                        "http://supervisor/addons",
+                        headers=headers,
+                        timeout=aiohttp.ClientTimeout(total=5)
+                    ) as resp:
+                        if resp.status == 200:
+                            data = await resp.json()
+                            addons = data.get("data", {}).get("addons", [])
+
+                            # Find gonzales addon by name pattern
+                            for addon in addons:
+                                slug = addon.get("slug", "")
+                                name = addon.get("name", "").lower()
+                                state = addon.get("state", "")
+
+                                # Match any addon with "gonzales" in slug or name
+                                if ("gonzales" in slug.lower() or "gonzales" in name) and state == "started":
+                                    # Get detailed addon info for hostname
+                                    async with session.get(
+                                        f"http://supervisor/addons/{slug}/info",
+                                        headers=headers,
+                                        timeout=aiohttp.ClientTimeout(total=5)
+                                    ) as info_resp:
+                                        if info_resp.status == 200:
+                                            info_data = await info_resp.json()
+                                            addon_info = info_data.get("data", {})
+                                            hostname = addon_info.get("hostname")
+                                            ip_address = addon_info.get("ip_address")
+
+                                            _LOGGER.info(
+                                                "Found Gonzales addon: slug=%s, hostname=%s, ip=%s",
+                                                slug, hostname, ip_address
+                                            )
+
+                                            # Try hostname with dashes first (DNS compatible)
+                                            if hostname:
+                                                dns_hostname = hostname.replace("_", "-")
+                                                if await self._validate_connection(dns_hostname, ADDON_PORT, ""):
+                                                    return {"host": dns_hostname, "port": ADDON_PORT, "api_key": ""}
+                                                if await self._validate_connection(hostname, ADDON_PORT, ""):
+                                                    return {"host": hostname, "port": ADDON_PORT, "api_key": ""}
+
+                                            # Fall back to IP
+                                            if ip_address and await self._validate_connection(ip_address, ADDON_PORT, ""):
+                                                return {"host": ip_address, "port": ADDON_PORT, "api_key": ""}
+                except Exception as err:
+                    _LOGGER.debug("Error querying Supervisor API: %s", err)
+
+            # Method 2: Fallback to hassio component API for known slugs
+            hassio = self.hass.components.hassio
             if hasattr(hassio, "async_get_addon_info"):
-                # Try common gonzales addon slugs
                 for slug in ["local_gonzales", "gonzales"]:
                     try:
                         addon_info = await hassio.async_get_addon_info(self.hass, slug)
                         if addon_info and addon_info.get("state") == "started":
                             hostname = addon_info.get("hostname")
                             ip_address = addon_info.get("ip_address")
-                            _LOGGER.info("Found Gonzales addon: hostname=%s, ip=%s", hostname, ip_address)
+                            _LOGGER.info("Found Gonzales addon via hassio: hostname=%s, ip=%s", hostname, ip_address)
 
-                            # Try hostname with dashes first
                             if hostname:
                                 dns_hostname = hostname.replace("_", "-")
                                 if await self._validate_connection(dns_hostname, ADDON_PORT, ""):
@@ -215,7 +268,6 @@ class GonzalesConfigFlow(ConfigFlow, domain=DOMAIN):
                                 if await self._validate_connection(hostname, ADDON_PORT, ""):
                                     return {"host": hostname, "port": ADDON_PORT, "api_key": ""}
 
-                            # Fall back to IP
                             if ip_address and await self._validate_connection(ip_address, ADDON_PORT, ""):
                                 return {"host": ip_address, "port": ADDON_PORT, "api_key": ""}
                     except Exception:
