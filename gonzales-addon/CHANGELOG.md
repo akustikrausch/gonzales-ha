@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.1
+
+### Bug Fixes
+- **Fix Statistics page crash**: Resolved React error #310 by correcting hook ordering
+- **Remove floating action button (FAB)**: Removed the quick actions FAB for cleaner UI
+- **Fix config endpoint**: Added missing data_retention_days and webhook_url fields
+- **Fix database migration**: Added migration for connection_type and mac_address columns
+- **Fix missing dependency**: Added aiohttp for webhook service
+
 ## 3.0.0
 
 ### Major Release - Architecture & Accessibility
