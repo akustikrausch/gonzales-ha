@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.6.1
+
+### Bug Fixes
+- **Fix byte formatting**: Large values now properly display as GB/TB instead of showing huge MB numbers (e.g., "52.1 GB" instead of "53346.8 MB")
+
 ## 3.6.0
 
 ### New Features
