@@ -2,9 +2,11 @@
 
 **[Deutsche Dokumentation weiter unten](#deutsche-dokumentation)**
 
+> **Note:** Home Assistant 2026.2+ renamed "Add-ons" to "Apps". This documentation uses the new terminology. If you're on an older version, "Apps" = "Add-ons" and "App Store" = "Add-on Store".
+
 ---
 
-## What Does This Add-on Do?
+## What Does This App Do?
 
 Gonzales automatically tests your internet speed and keeps track of the results. Think of it like having someone check your internet speed every hour and write down the results for you.
 
@@ -18,16 +20,16 @@ Gonzales automatically tests your internet speed and keeps track of the results.
 
 ## First Time Setup
 
-After installing the add-on, here's what happens:
+After installing the app, here's what happens:
 
-1. **First start**: By using this add-on, you agree to the [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (auto-accepted on first run)
-2. **Integration auto-install**: The addon automatically copies the Gonzales integration to your Home Assistant
+1. **First start**: By using this app, you agree to the [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (auto-accepted on first run)
+2. **Integration auto-install**: The app automatically copies the Gonzales integration to your Home Assistant
 3. **⚠️ Restart required**: **Restart Home Assistant** for the integration to become available
 4. **Integration setup**: Go to **Settings → Devices & Services → Add Integration → Gonzales** and confirm
 5. **First test**: Within a few minutes, the first speed test runs
 6. **Dashboard access**: Click "Gonzales" in your sidebar to see results
 
-> **Important**: After the first addon start (or after an update), you must **restart Home Assistant** for the integration changes to take effect. The sensors will only appear after this restart.
+> **Important**: After the first app start (or after an update), you must **restart Home Assistant** for the integration changes to take effect. The sensors will only appear after this restart.
 
 That's it! Everything else is automatic.
 
@@ -168,7 +170,7 @@ All data stays on your Home Assistant device in the `/data/` folder:
 ### Can I backup my data?
 
 Yes! The data is stored in `/data/gonzales.db`. You can:
-- Use Home Assistant's backup feature (includes add-on data)
+- Use Home Assistant's backup feature (includes app data)
 - Manually copy the file via SSH or Samba
 
 ---
@@ -177,7 +179,7 @@ Yes! The data is stored in `/data/gonzales.db`. You can:
 
 ### "The web interface shows a blank page"
 
-1. Go to **Settings → Add-ons → Gonzales**
+1. Go to **Settings → Apps → Gonzales**
 2. Click **Restart**
 3. Wait 30 seconds
 4. Clear your browser cache (Ctrl+Shift+R or Cmd+Shift+R)
@@ -209,10 +211,10 @@ The sensors need at least one completed speed test:
 
 ### "Integration cannot connect to Gonzales API"
 
-If auto-discovery doesn't find the addon, you need to enter the connection details manually.
+If auto-discovery doesn't find the app, you need to enter the connection details manually.
 
-**Step 1: Open the Add-on Web Interface**
-1. Go to **Settings → Add-ons → Gonzales Speed Monitor**
+**Step 1: Open the App Web Interface**
+1. Go to **Settings → Apps → Gonzales Speed Monitor**
 2. Click **Open Web UI** (or click Gonzales in the sidebar)
 
 **Step 2: Find YOUR Slug in the URL**
@@ -224,7 +226,7 @@ http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/ingress
                                             This is YOUR unique slug
 ```
 
-Your slug depends on how you installed the addon:
+Your slug depends on how you installed the app:
 - `546fc077_gonzales` — installed from GitHub (hash varies!)
 - `a1b2c3d4_gonzales` — different repository = different hash
 - `local_gonzales` — installed from local folder
@@ -251,10 +253,10 @@ Replace underscores `_` with dashes `-`:
 - Using a generic name instead of YOUR slug from the URL
 - Wrong port — try both `8470` and `8099`
 
-### "Add-on keeps restarting"
+### "App keeps restarting"
 
 Check the logs for errors:
-1. Go to **Settings → Add-ons → Gonzales → Log**
+1. Go to **Settings → Apps → Gonzales → Log**
 2. Look for error messages
 3. Common issues:
    - Corrupted database (delete `gonzales.db` and restart)
@@ -278,10 +280,10 @@ If you run Gonzales on a separate machine (Raspberry Pi, server, NAS), you can s
    - **Port**: `8099` (default Gonzales port)
    - **API Key**: If you set one on the server (optional)
 
-### Difference from Add-on
+### Difference from App
 
-| Feature | Add-on | Standalone Integration |
-|---------|--------|------------------------|
+| Feature | App | Standalone Integration |
+|---------|-----|------------------------|
 | Speed tests | Runs on HA device | Runs on separate device |
 | Dashboard | In HA sidebar | On the separate device |
 | Sensors | Yes | Yes |
@@ -423,7 +425,9 @@ Gonzales is designed to be accessible to all users:
 
 # Deutsche Dokumentation
 
-## Was macht dieses Add-on?
+> **Hinweis:** Home Assistant 2026.2+ hat "Add-ons" in "Apps" umbenannt. Diese Dokumentation verwendet die neue Terminologie. Falls du eine ältere Version nutzt: "Apps" = "Add-ons" und "App Store" = "Add-on Store".
+
+## Was macht diese App?
 
 Gonzales testet automatisch deine Internetgeschwindigkeit und speichert die Ergebnisse. Stell es dir vor wie einen Assistenten, der jede Stunde dein Internet prüft und die Ergebnisse aufschreibt.
 
@@ -439,14 +443,14 @@ Gonzales testet automatisch deine Internetgeschwindigkeit und speichert die Erge
 
 Nach der Installation passiert Folgendes:
 
-1. **Erster Start**: Mit der Nutzung dieses Add-ons akzeptierst du die [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (wird beim ersten Start automatisch akzeptiert)
-2. **Integration Auto-Install**: Das Addon kopiert automatisch die Gonzales-Integration in dein Home Assistant
+1. **Erster Start**: Mit der Nutzung dieser App akzeptierst du die [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula) (wird beim ersten Start automatisch akzeptiert)
+2. **Integration Auto-Install**: Die App kopiert automatisch die Gonzales-Integration in dein Home Assistant
 3. **⚠️ Neustart erforderlich**: **Starte Home Assistant neu**, damit die Integration verfügbar wird
 4. **Integration einrichten**: Gehe zu **Einstellungen → Geräte & Dienste → Integration hinzufügen → Gonzales** und bestätige
 5. **Erster Test**: Innerhalb weniger Minuten läuft der erste Speedtest
 6. **Dashboard**: Klicke auf "Gonzales" in deiner Seitenleiste
 
-> **Wichtig**: Nach dem ersten Addon-Start (oder nach einem Update) musst du **Home Assistant neu starten**, damit die Integration-Änderungen wirksam werden. Die Sensoren erscheinen erst nach diesem Neustart.
+> **Wichtig**: Nach dem ersten App-Start (oder nach einem Update) musst du **Home Assistant neu starten**, damit die Integration-Änderungen wirksam werden. Die Sensoren erscheinen erst nach diesem Neustart.
 
 Das war's! Alles andere läuft automatisch.
 
@@ -578,7 +582,7 @@ Alle Daten bleiben auf deinem Home Assistant Gerät im `/data/` Ordner:
 ### Kann ich meine Daten sichern?
 
 Ja! Die Daten sind in `/data/gonzales.db` gespeichert. Du kannst:
-- Home Assistants Backup-Funktion nutzen (beinhaltet Add-on Daten)
+- Home Assistants Backup-Funktion nutzen (beinhaltet App-Daten)
 - Die Datei manuell per SSH oder Samba kopieren
 
 ---
@@ -587,7 +591,7 @@ Ja! Die Daten sind in `/data/gonzales.db` gespeichert. Du kannst:
 
 ### "Die Weboberfläche zeigt eine leere Seite"
 
-1. Gehe zu **Einstellungen → Add-ons → Gonzales**
+1. Gehe zu **Einstellungen → Apps → Gonzales**
 2. Klicke **Neustart**
 3. Warte 30 Sekunden
 4. Leere deinen Browser-Cache (Strg+Umschalt+R oder Cmd+Shift+R)
@@ -619,10 +623,10 @@ Die Sensoren brauchen mindestens einen abgeschlossenen Speedtest:
 
 ### "Integration kann nicht mit Gonzales API verbinden"
 
-Wenn Auto-Discovery das Addon nicht findet, musst du die Verbindungsdaten manuell eingeben.
+Wenn Auto-Discovery die App nicht findet, musst du die Verbindungsdaten manuell eingeben.
 
-**Schritt 1: Add-on Web-Oberfläche öffnen**
-1. Gehe zu **Einstellungen → Add-ons → Gonzales Speed Monitor**
+**Schritt 1: App Web-Oberfläche öffnen**
+1. Gehe zu **Einstellungen → Apps → Gonzales Speed Monitor**
 2. Klicke **Web-UI öffnen** (oder klicke Gonzales in der Seitenleiste)
 
 **Schritt 2: DEINEN Slug in der URL finden**
@@ -634,7 +638,7 @@ http://homeassistant.local:8123/hassio/addon/546fc077_gonzales/ingress
                                             Das ist DEIN einzigartiger Slug
 ```
 
-Dein Slug hängt davon ab, wie du das Addon installiert hast:
+Dein Slug hängt davon ab, wie du die App installiert hast:
 - `546fc077_gonzales` — installiert von GitHub (Hash variiert!)
 - `a1b2c3d4_gonzales` — anderes Repository = anderer Hash
 - `local_gonzales` — installiert aus lokalem Ordner
@@ -661,10 +665,10 @@ Ersetze Unterstriche `_` durch Bindestriche `-`:
 - Generischen Namen statt DEINEM Slug aus der URL verwenden
 - Falscher Port — probiere sowohl `8470` als auch `8099`
 
-### "Add-on startet immer wieder neu"
+### "App startet immer wieder neu"
 
 Prüfe die Logs auf Fehler:
-1. Gehe zu **Einstellungen → Add-ons → Gonzales → Log**
+1. Gehe zu **Einstellungen → Apps → Gonzales → Log**
 2. Suche nach Fehlermeldungen
 3. Häufige Probleme:
    - Beschädigte Datenbank (lösche `gonzales.db` und starte neu)
@@ -688,10 +692,10 @@ Wenn du Gonzales auf einem separaten Gerät betreibst (Raspberry Pi, Server, NAS
    - **Port**: `8099` (Standard-Gonzales-Port)
    - **API Key**: Falls du einen auf dem Server gesetzt hast (optional)
 
-### Unterschied zum Add-on
+### Unterschied zur App
 
-| Funktion | Add-on | Eigenständige Integration |
-|----------|--------|---------------------------|
+| Funktion | App | Eigenständige Integration |
+|----------|-----|---------------------------|
 | Speedtests | Laufen auf HA-Gerät | Laufen auf separatem Gerät |
 | Dashboard | In HA-Seitenleiste | Auf dem separaten Gerät |
 | Sensoren | Ja | Ja |
@@ -833,10 +837,10 @@ Gonzales ist für alle Nutzer zugänglich gestaltet:
 
 **Gonzales** is MIT licensed open source software.
 
-**Ookla Speedtest CLI** is proprietary third-party software by Ookla, LLC. By using this add-on, you accept the [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula):
+**Ookla Speedtest CLI** is proprietary third-party software by Ookla, LLC. By using this app, you accept the [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula):
 - Personal, non-commercial use: Permitted
 - Commercial use: Requires separate license from Ookla
-- The CLI is downloaded from Ookla's servers during add-on installation
+- The CLI is downloaded from Ookla's servers during app installation
 
 Speedtest® is a registered trademark of Ookla, LLC. This project is not affiliated with or endorsed by Ookla.
 
@@ -844,9 +848,9 @@ Speedtest® is a registered trademark of Ookla, LLC. This project is not affilia
 
 **Gonzales** ist MIT-lizenzierte Open-Source-Software.
 
-**Ookla Speedtest CLI** ist proprietäre Drittanbieter-Software von Ookla, LLC. Mit der Nutzung dieses Add-ons akzeptierst du die [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula):
+**Ookla Speedtest CLI** ist proprietäre Drittanbieter-Software von Ookla, LLC. Mit der Nutzung dieser App akzeptierst du die [Ookla Speedtest CLI EULA](https://www.speedtest.net/about/eula):
 - Persönliche, nicht-kommerzielle Nutzung: Erlaubt
 - Kommerzielle Nutzung: Erfordert separate Lizenz von Ookla
-- Die CLI wird während der Add-on-Installation von Ookla-Servern heruntergeladen
+- Die CLI wird während der App-Installation von Ookla-Servern heruntergeladen
 
 Speedtest® ist eine eingetragene Marke von Ookla, LLC. Dieses Projekt ist nicht mit Ookla verbunden oder von Ookla unterstützt.

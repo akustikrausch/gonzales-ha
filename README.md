@@ -31,7 +31,7 @@
 
 | Category | Features |
 |----------|----------|
-| **Installation** | One-click add-on install, auto-discovery integration, Ingress support (no port forwarding) |
+| **Installation** | One-click app install, auto-discovery integration, Ingress support (no port forwarding) |
 | **Monitoring** | Scheduled tests (15-240 min), 10,000+ Ookla servers, server pinning, real-time progress |
 | **Sensors** | Download/upload speed, ping, jitter, packet loss, ISP score, outage binary sensor, diagnostics |
 | **Analytics** | Hourly/daily/weekly stats, server comparison, SLA compliance, reliability metrics, trend prediction |
@@ -60,12 +60,14 @@ Gonzales is a comprehensive internet monitoring system that:
 
 ## Quick Start (5 Minutes)
 
+> **Note:** Home Assistant 2026.2+ renamed "Add-ons" to "Apps". This guide uses the new terminology. If you're on an older version, "Apps" = "Add-ons" and "App Store" = "Add-on Store".
+
 ### Step 1: Add the Repository
 
 1. Open Home Assistant
 2. Go to **Settings** (gear icon in the sidebar)
-3. Click **Add-ons**
-4. Click **Add-on Store** (bottom right corner)
+3. Click **Apps**
+4. Click **App Store** (bottom right corner)
 5. Click the **three dots** (⋮) in the top right corner
 6. Select **Repositories**
 7. Paste this URL: `https://github.com/akustikrausch/gonzales-ha`
@@ -74,7 +76,7 @@ Gonzales is a comprehensive internet monitoring system that:
 
 ### Step 2: Install Gonzales
 
-1. Still in the Add-on Store, search for **Gonzales Speed Monitor**
+1. Still in the App Store, search for **Gonzales Speed Monitor**
 2. Click on it
 3. Click **Install** (this may take 1-2 minutes)
 4. After installation, click **Start**
@@ -82,7 +84,7 @@ Gonzales is a comprehensive internet monitoring system that:
 
 ### Step 3: Add the Integration (Sensors)
 
-The add-on runs the speed tests, but you need the **integration** for Home Assistant sensors.
+The app runs the speed tests, but you need the **integration** for Home Assistant sensors.
 
 1. Go to **Settings → Devices & Services**
 2. Click **+ Add Integration** (bottom right)
@@ -97,11 +99,11 @@ The add-on runs the speed tests, but you need the **integration** for Home Assis
 
 ## Manual Integration Setup
 
-If auto-discovery doesn't find the add-on, you need to enter the connection details manually.
+If auto-discovery doesn't find the app, you need to enter the connection details manually.
 
-### Step 1: Open the Add-on Web Interface
+### Step 1: Open the App Web Interface
 
-1. Go to **Settings → Add-ons → Gonzales Speed Monitor**
+1. Go to **Settings → Apps → Gonzales Speed Monitor**
 2. Click **Open Web UI** (or click Gonzales in the sidebar)
 3. The Gonzales dashboard opens in your browser
 
@@ -146,14 +148,14 @@ Replace underscores `_` with dashes `-`:
 | Copied slug with underscore `_` | Must use dash `-` |
 | Port doesn't work | Try both `8470` and `8099` |
 | Generic hostname like "gonzales" | Use YOUR slug from the URL |
-| Add-on not started | Start the add-on first |
+| App not started | Start the app first |
 
 ### Still Not Working?
 
-1. **Check if add-on is running:** Settings → Add-ons → Gonzales → must show "Running"
+1. **Check if app is running:** Settings → Apps → Gonzales → must show "Running"
 2. **Verify your slug:** Open the web UI and check the URL again
-3. **Check add-on logs:** Settings → Add-ons → Gonzales → Log tab
-4. **Try different ports:** `8470`, `8099`, or check add-on configuration for the port
+3. **Check app logs:** Settings → Apps → Gonzales → Log tab
+4. **Try different ports:** `8470`, `8099`, or check app configuration for the port
 
 ---
 
@@ -161,9 +163,9 @@ Replace underscores `_` with dashes `-`:
 
 You can change settings in two places:
 
-### In Home Assistant Add-on Settings
+### In Home Assistant App Settings
 
-Go to **Settings → Add-ons → Gonzales Speed Monitor → Configuration**
+Go to **Settings → Apps → Gonzales Speed Monitor → Configuration**
 
 | Setting | What it does | Default |
 |---------|--------------|---------|
@@ -358,7 +360,7 @@ Try setting a specific test server:
 3. Set it to a server near you (you can find IDs at speedtest.net)
 
 ### How do I update Gonzales?
-Home Assistant updates add-ons automatically. You can also manually update in **Settings → Add-ons → Gonzales → Update**.
+Home Assistant updates apps automatically. You can also manually update in **Settings → Apps → Gonzales → Update**.
 
 ### My speeds seem lower than expected
 Internet speeds can vary based on:
@@ -374,7 +376,7 @@ For accurate results, test with a wired connection if possible.
 ## Troubleshooting
 
 ### "Web UI not loading"
-1. Go to **Settings → Add-ons → Gonzales**
+1. Go to **Settings → Apps → Gonzales**
 2. Click **Restart**
 3. Wait 30 seconds, then try again
 
@@ -382,7 +384,7 @@ For accurate results, test with a wired connection if possible.
 The sensors need at least one completed test. Wait a few minutes or run a manual test in the dashboard.
 
 ### "Speed test keeps failing"
-Check the add-on logs: **Settings → Add-ons → Gonzales → Log**. Common causes:
+Check the app logs: **Settings → Apps → Gonzales → Log**. Common causes:
 - No internet connection
 - Firewall blocking the speed test
 - Temporary Ookla server issues (try again later)
@@ -452,7 +454,7 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 | Kategorie | Funktionen |
 |-----------|------------|
-| **Installation** | Ein-Klick-Add-on-Installation, Auto-Discovery-Integration, Ingress-Support (kein Port-Forwarding) |
+| **Installation** | Ein-Klick-App-Installation, Auto-Discovery-Integration, Ingress-Support (kein Port-Forwarding) |
 | **Monitoring** | Geplante Tests (15-240 Min), 10.000+ Ookla-Server, Server-Pinning, Echtzeit-Fortschritt |
 | **Sensoren** | Download/Upload-Speed, Ping, Jitter, Paketverlust, ISP-Score, Ausfall-Binärsensor, Diagnose |
 | **Analysen** | Stündliche/tägliche/wöchentliche Stats, Server-Vergleich, SLA-Compliance, Zuverlässigkeitsmetriken, Trend-Vorhersage |
@@ -481,12 +483,14 @@ Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 
 ## Schnellstart (5 Minuten)
 
+> **Hinweis:** Home Assistant 2026.2+ hat "Add-ons" in "Apps" umbenannt. Diese Anleitung verwendet die neue Terminologie. Falls du eine ältere Version nutzt: "Apps" = "Add-ons" und "App Store" = "Add-on Store".
+
 ### Schritt 1: Repository hinzufügen
 
 1. Öffne Home Assistant
 2. Gehe zu **Einstellungen** (Zahnrad-Symbol in der Seitenleiste)
-3. Klicke auf **Add-ons**
-4. Klicke auf **Add-on Store** (unten rechts)
+3. Klicke auf **Apps**
+4. Klicke auf **App Store** (unten rechts)
 5. Klicke auf die **drei Punkte** (⋮) oben rechts
 6. Wähle **Repositories**
 7. Füge diese URL ein: `https://github.com/akustikrausch/gonzales-ha`
@@ -495,7 +499,7 @@ Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 
 ### Schritt 2: Gonzales installieren
 
-1. Suche im Add-on Store nach **Gonzales Speed Monitor**
+1. Suche im App Store nach **Gonzales Speed Monitor**
 2. Klicke darauf
 3. Klicke **Installieren** (kann 1-2 Minuten dauern)
 4. Nach der Installation klicke **Starten**
@@ -503,7 +507,7 @@ Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 
 ### Schritt 3: Integration hinzufügen (Sensoren)
 
-Das Add-on führt die Speedtests durch, aber du brauchst die **Integration** für Home Assistant Sensoren.
+Die App führt die Speedtests durch, aber du brauchst die **Integration** für Home Assistant Sensoren.
 
 1. Gehe zu **Einstellungen → Geräte & Dienste**
 2. Klicke **+ Integration hinzufügen** (unten rechts)
@@ -518,11 +522,11 @@ Das Add-on führt die Speedtests durch, aber du brauchst die **Integration** fü
 
 ## Manuelle Integration einrichten
 
-Wenn Auto-Discovery das Add-on nicht findet, musst du die Verbindungsdaten manuell eingeben.
+Wenn Auto-Discovery die App nicht findet, musst du die Verbindungsdaten manuell eingeben.
 
-### Schritt 1: Add-on Web-Oberfläche öffnen
+### Schritt 1: App Web-Oberfläche öffnen
 
-1. Gehe zu **Einstellungen → Add-ons → Gonzales Speed Monitor**
+1. Gehe zu **Einstellungen → Apps → Gonzales Speed Monitor**
 2. Klicke **Web-UI öffnen** (oder klicke Gonzales in der Seitenleiste)
 3. Das Gonzales Dashboard öffnet sich im Browser
 
@@ -567,22 +571,22 @@ Ersetze Unterstriche `_` durch Bindestriche `-`:
 | Slug mit Unterstrich `_` kopiert | Muss Bindestrich `-` sein |
 | Port funktioniert nicht | Probiere sowohl `8470` als auch `8099` |
 | Generischer Hostname wie "gonzales" | Nutze DEINEN Slug aus der URL |
-| Add-on nicht gestartet | Erst Add-on starten |
+| App nicht gestartet | Erst App starten |
 
 ### Funktioniert immer noch nicht?
 
-1. **Prüfe ob Add-on läuft:** Einstellungen → Add-ons → Gonzales → muss "Gestartet" zeigen
+1. **Prüfe ob App läuft:** Einstellungen → Apps → Gonzales → muss "Gestartet" zeigen
 2. **Slug nochmal prüfen:** Web-UI öffnen und URL nochmal anschauen
-3. **Add-on-Logs prüfen:** Einstellungen → Add-ons → Gonzales → Log-Tab
-4. **Andere Ports probieren:** `8470`, `8099`, oder in der Add-on-Konfiguration nach dem Port schauen
+3. **App-Logs prüfen:** Einstellungen → Apps → Gonzales → Log-Tab
+4. **Andere Ports probieren:** `8470`, `8099`, oder in der App-Konfiguration nach dem Port schauen
 
 ---
 
 ## Konfiguration (Optional)
 
-### In den Home Assistant Add-on Einstellungen
+### In den Home Assistant App-Einstellungen
 
-Gehe zu **Einstellungen → Add-ons → Gonzales Speed Monitor → Konfiguration**
+Gehe zu **Einstellungen → Apps → Gonzales Speed Monitor → Konfiguration**
 
 | Einstellung | Was sie bewirkt | Standard |
 |-------------|-----------------|----------|
@@ -767,7 +771,7 @@ Versuche einen bestimmten Testserver einzustellen:
 3. Stelle einen Server in deiner Nähe ein
 
 ### Wie aktualisiere ich Gonzales?
-Home Assistant aktualisiert Add-ons automatisch. Du kannst auch manuell aktualisieren unter **Einstellungen → Add-ons → Gonzales → Aktualisieren**.
+Home Assistant aktualisiert Apps automatisch. Du kannst auch manuell aktualisieren unter **Einstellungen → Apps → Gonzales → Aktualisieren**.
 
 ### Meine Geschwindigkeiten scheinen niedriger als erwartet
 Internetgeschwindigkeiten können variieren durch:
@@ -783,7 +787,7 @@ Für genaue Ergebnisse teste mit einer Kabelverbindung, wenn möglich.
 ## Problemlösung
 
 ### "Web UI lädt nicht"
-1. Gehe zu **Einstellungen → Add-ons → Gonzales**
+1. Gehe zu **Einstellungen → Apps → Gonzales**
 2. Klicke **Neustart**
 3. Warte 30 Sekunden, dann versuche es erneut
 
@@ -791,7 +795,7 @@ Für genaue Ergebnisse teste mit einer Kabelverbindung, wenn möglich.
 Die Sensoren brauchen mindestens einen abgeschlossenen Test. Warte ein paar Minuten oder starte einen manuellen Test im Dashboard.
 
 ### "Speedtest schlägt immer fehl"
-Prüfe die Add-on Logs: **Einstellungen → Add-ons → Gonzales → Log**. Häufige Ursachen:
+Prüfe die App-Logs: **Einstellungen → Apps → Gonzales → Log**. Häufige Ursachen:
 - Keine Internetverbindung
 - Firewall blockiert den Speedtest
 - Temporäre Ookla Server-Probleme (später erneut versuchen)
