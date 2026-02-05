@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.6.0
+
+### New Features
+- **Scheduler control toggle**: Click the scheduler badge in the header to pause/resume automatic speed tests
+- **Scheduler control in Settings**: New "Scheduler Control" card in Settings page with pause/resume button
+- **API endpoint for scheduler control**: New `PUT /api/v1/status/scheduler` endpoint to programmatically control the scheduler
+
+### Improvements
+- **Interactive header badge**: Scheduler badge now shows clickable states (Active/Paused/Stopped) with color indicators
+- **Visual feedback**: Clear visual states for scheduler status with pause icon when paused
+
 ## 3.5.3
 
 ### Improvements
