@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.7.1
+
+### Bug Fixes
+
+- **Fix startup crash**: Correct import path in root_cause.py (`db.session` → `db.engine`)
+
+---
+
 ## 3.7.0
 
 ### Improvements
