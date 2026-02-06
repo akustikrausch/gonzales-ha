@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.7.4
+
+### Bug Fixes
+
+- **Fix startup crash**: Correct import name in speedtest.py
+
+---
+
 ## 3.7.3
 
 ### Bug Fixes
