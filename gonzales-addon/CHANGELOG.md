@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.7.5
+
+### Bug Fixes
+
+- **Fix HA integration speedtest trigger**: Handle 202 Accepted response from async endpoint
+
+---
+
 ## 3.7.4
 
 ### Bug Fixes

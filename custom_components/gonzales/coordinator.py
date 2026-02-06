@@ -147,15 +147,19 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             async with session.post(
                 f"{self._base_url}/speedtest/trigger",
                 headers=self._headers,
-                timeout=aiohttp.ClientTimeout(total=120),
+                timeout=aiohttp.ClientTimeout(total=10),  # Short timeout - returns immediately
             ) as resp:
-                if resp.status == 200:
+                if resp.status in (200, 202):  # 202 = Accepted (async)
                     result = await resp.json()
-                    # Refresh data after test
-                    await self.async_request_refresh()
+                    _LOGGER.info("Speed test triggered: %s", result.get("status", "started"))
+                    # Don't refresh immediately - test runs in background
+                    # The regular polling will pick up results
                     return result
                 elif resp.status == 429:
                     _LOGGER.warning("Speed test rate limited, try again later")
+                    return None
+                elif resp.status == 503:
+                    _LOGGER.warning("Speed test already in progress")
                     return None
                 else:
                     _LOGGER.error("Failed to trigger speed test: %s", resp.status)
