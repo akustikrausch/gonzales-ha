@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.7.2
+
+### Bug Fixes
+
+- **Fix live test view**: Test progress now displays correctly during backend-initiated tests in Home Assistant Ingress (fixes "Ready" badge showing during active tests)
+- **Fix integration install issues**: Complete cleanup of old integration files including `__pycache__` to prevent "Invalid handler specified" errors when upgrading from older versions
+
+---
+
 ## 3.7.1
 
 ### Bug Fixes

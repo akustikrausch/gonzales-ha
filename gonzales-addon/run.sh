@@ -42,21 +42,45 @@ if [[ -d "${BUNDLED_INTEGRATION}" ]]; then
     BUNDLED_VERSION=$(python3 -c "import json; print(json.load(open('${BUNDLED_INTEGRATION}/manifest.json'))['version'])" 2>/dev/null || echo "0.0.0")
 
     # Get installed version (if exists)
+    INSTALLED_VERSION="0.0.0"
     if [[ -f "${HA_INTEGRATION}/manifest.json" ]]; then
         INSTALLED_VERSION=$(python3 -c "import json; print(json.load(open('${HA_INTEGRATION}/manifest.json'))['version'])" 2>/dev/null || echo "0.0.0")
-    else
-        INSTALLED_VERSION="0.0.0"
     fi
 
-    # Install or update if bundled is newer
+    # ALWAYS do a clean install to avoid stale __pycache__ issues
+    # This ensures old .pyc files don't interfere with updated code
+    NEEDS_INSTALL=false
     if [[ "${BUNDLED_VERSION}" != "${INSTALLED_VERSION}" ]]; then
-        bashio::log.info "Installing Gonzales integration v${BUNDLED_VERSION} (was: ${INSTALLED_VERSION})"
+        NEEDS_INSTALL=true
+        bashio::log.info "Version mismatch: bundled=${BUNDLED_VERSION}, installed=${INSTALLED_VERSION}"
+    elif [[ ! -f "${HA_INTEGRATION}/config_flow.py" ]]; then
+        NEEDS_INSTALL=true
+        bashio::log.info "Integration incomplete - missing config_flow.py"
+    elif [[ -d "${HA_INTEGRATION}/__pycache__" ]]; then
+        # Check if pycache is older than bundled files (could cause issues)
+        NEEDS_INSTALL=true
+        bashio::log.info "Cleaning stale __pycache__"
+    fi
+
+    if [[ "${NEEDS_INSTALL}" == "true" ]]; then
+        bashio::log.info "Installing Gonzales integration v${BUNDLED_VERSION}"
         mkdir -p /config/custom_components
-        rm -rf "${HA_INTEGRATION}"
+
+        # Complete removal including pycache to avoid stale bytecode
+        if [[ -d "${HA_INTEGRATION}" ]]; then
+            rm -rf "${HA_INTEGRATION}"
+        fi
+
+        # Fresh copy from bundled integration
         cp -r "${BUNDLED_INTEGRATION}" "${HA_INTEGRATION}"
-        bashio::log.info "Integration installed. Home Assistant restart required for changes to take effect."
+
+        # Ensure no pycache in the fresh install
+        find "${HA_INTEGRATION}" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+        find "${HA_INTEGRATION}" -type f -name "*.pyc" -delete 2>/dev/null || true
+
+        bashio::log.info "Integration v${BUNDLED_VERSION} installed. Home Assistant restart required."
     else
-        bashio::log.debug "Gonzales integration v${INSTALLED_VERSION} already up to date"
+        bashio::log.debug "Gonzales integration v${INSTALLED_VERSION} up to date"
     fi
 else
     bashio::log.warning "Bundled integration not found at ${BUNDLED_INTEGRATION}"
