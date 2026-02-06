@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.7.6
+
+### Bug Fixes
+
+- **Fix live progress display**: Test status is now immediately visible when triggered via HA
+
+---
+
 ## 3.7.5
 
 ### Bug Fixes
