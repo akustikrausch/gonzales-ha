@@ -1,5 +1,60 @@
 # Changelog
 
+## 3.7.0
+
+### Improvements
+
+- **Mobile Navigation UX**: Complete overhaul with proper animations and accessibility
+  - Smooth slide-up/slide-down animations for bottom sheet
+  - Touch targets increased to 44x44px (Apple/Google guidelines)
+  - ARIA attributes for screen readers, focus trapping, keyboard navigation
+
+### New Features
+
+**Smart Test Scheduling**
+- **Adaptive test intervals**: Automatically adjusts test frequency based on network conditions
+- **Three-phase model**: Normal (fixed interval) → Burst (frequent tests on anomaly) → Recovery (gradual return to normal)
+- **Stability detection**: Uses coefficient of variation and z-score analysis to detect network instability
+- **Safety mechanisms**: Circuit breaker (max tests per window), daily data budget, min/max interval limits
+- **Settings UI**: New Smart Scheduler card in Settings page with phase indicator, stability score, and data budget display
+
+**Root-Cause Analysis**
+- **New Root-Cause page**: Comprehensive network diagnostics accessible from navigation
+- **Network health score**: 0-100 composite score based on all network layers
+- **Layer health breakdown**: Individual scores for DNS, Local Network, ISP Backbone, ISP Last-Mile, and Server
+- **Problem fingerprinting**: Automatic detection of issues with severity, confidence, and evidence
+- **Hop-speed correlation**: Pearson correlation analysis between traceroute hops and download speed (identifies bottlenecks)
+- **Time-based pattern detection**: Detects peak-hour degradation and off-peak improvements
+- **Connection impact analysis**: Compares performance across WiFi vs Ethernet connections
+- **Actionable recommendations**: Prioritized suggestions based on detected issues
+
+### Home Assistant Integration
+
+**New Sensors:**
+- `sensor.gonzales_smart_scheduler_phase` - Current scheduler phase (normal/burst/recovery)
+- `sensor.gonzales_stability_score` - Network stability score (0-100%)
+- `sensor.gonzales_current_interval` - Current test interval in minutes
+- `sensor.gonzales_data_used_today` - Data used today in MB
+- `sensor.gonzales_network_health` - Root-cause network health score (0-100)
+- `sensor.gonzales_primary_issue` - Primary detected network issue (or "Healthy")
+- `sensor.gonzales_dns_health` - DNS layer health score
+- `sensor.gonzales_local_network_health` - Local network layer health score
+- `sensor.gonzales_isp_backbone_health` - ISP backbone layer health score
+- `sensor.gonzales_isp_lastmile_health` - ISP last-mile layer health score
+
+**New CLI Commands:**
+- `gonzales smart-scheduler status/enable/disable/config/decisions` - Manage smart scheduling
+- `gonzales root-cause analyze/fingerprints/recommendations/hops` - Network diagnostics
+
+### API Endpoints
+
+- `GET /api/v1/smart-scheduler/status` - Current scheduler phase, stability score, data budget
+- `GET /api/v1/smart-scheduler/config` - Configuration settings
+- `PUT /api/v1/smart-scheduler/config` - Update configuration
+- `POST /api/v1/smart-scheduler/enable` - Enable smart scheduling
+- `POST /api/v1/smart-scheduler/disable` - Disable smart scheduling
+- `GET /api/v1/root-cause/analysis` - Full root-cause analysis
+
 ## 3.6.1
 
 ### Bug Fixes

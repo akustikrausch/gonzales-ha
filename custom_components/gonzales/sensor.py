@@ -61,6 +61,33 @@ def _scheduler(data: dict[str, Any], key: str) -> Any:
     return sched.get(key)
 
 
+def _smart_scheduler(data: dict[str, Any], key: str) -> Any:
+    """Extract a value from the smart scheduler data."""
+    ss = data.get("smart_scheduler")
+    if ss is None:
+        return None
+    return ss.get(key)
+
+
+def _root_cause(data: dict[str, Any], key: str) -> Any:
+    """Extract a value from the root cause analysis data."""
+    rc = data.get("root_cause")
+    if rc is None:
+        return None
+    return rc.get(key)
+
+
+def _layer_score(data: dict[str, Any], layer: str) -> float | None:
+    """Extract a layer score from root cause analysis."""
+    rc = data.get("root_cause")
+    if rc is None:
+        return None
+    scores = rc.get("layer_scores")
+    if scores is None:
+        return None
+    return scores.get(layer)
+
+
 MAIN_SENSORS: tuple[GonzalesSensorEntityDescription, ...] = (
     GonzalesSensorEntityDescription(
         key="download_speed",
@@ -174,7 +201,115 @@ DIAGNOSTIC_SENSORS: tuple[GonzalesSensorEntityDescription, ...] = (
     ),
 )
 
-ALL_SENSORS = MAIN_SENSORS + DIAGNOSTIC_SENSORS
+# Smart Scheduler sensors (v3.7.0+)
+SMART_SCHEDULER_SENSORS: tuple[GonzalesSensorEntityDescription, ...] = (
+    GonzalesSensorEntityDescription(
+        key="smart_scheduler_phase",
+        translation_key="smart_scheduler_phase",
+        icon="mdi:auto-fix",
+        value_fn=lambda data: _smart_scheduler(data, "phase"),
+    ),
+    GonzalesSensorEntityDescription(
+        key="smart_scheduler_stability",
+        translation_key="smart_scheduler_stability",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        suggested_display_precision=0,
+        icon="mdi:signal-cellular-3",
+        value_fn=lambda data: (
+            round(_smart_scheduler(data, "stability_score") * 100)
+            if _smart_scheduler(data, "stability_score") is not None
+            else None
+        ),
+    ),
+    GonzalesSensorEntityDescription(
+        key="smart_scheduler_interval",
+        translation_key="smart_scheduler_interval",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        suggested_display_precision=0,
+        icon="mdi:timer-outline",
+        value_fn=lambda data: _smart_scheduler(data, "current_interval_minutes"),
+    ),
+    GonzalesSensorEntityDescription(
+        key="smart_scheduler_data_used",
+        translation_key="smart_scheduler_data_used",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement=PERCENTAGE,
+        suggested_display_precision=0,
+        icon="mdi:database",
+        value_fn=lambda data: (
+            round(100 - (_smart_scheduler(data, "data_budget_remaining_pct") or 100))
+            if _smart_scheduler(data, "enabled")
+            else None
+        ),
+    ),
+)
+
+# Root-Cause Analysis sensors (v3.7.0+)
+ROOT_CAUSE_SENSORS: tuple[GonzalesSensorEntityDescription, ...] = (
+    GonzalesSensorEntityDescription(
+        key="network_health_score",
+        translation_key="network_health_score",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="points",
+        suggested_display_precision=0,
+        icon="mdi:heart-pulse",
+        value_fn=lambda data: _root_cause(data, "network_health_score"),
+    ),
+    GonzalesSensorEntityDescription(
+        key="primary_issue",
+        translation_key="primary_issue",
+        icon="mdi:alert-circle-outline",
+        value_fn=lambda data: (
+            _root_cause(data, "primary_cause").get("category")
+            if _root_cause(data, "primary_cause")
+            else "none"
+        ),
+    ),
+    GonzalesSensorEntityDescription(
+        key="dns_health",
+        translation_key="dns_health",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="points",
+        suggested_display_precision=0,
+        icon="mdi:dns",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda data: _layer_score(data, "dns_score"),
+    ),
+    GonzalesSensorEntityDescription(
+        key="local_network_health",
+        translation_key="local_network_health",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="points",
+        suggested_display_precision=0,
+        icon="mdi:lan",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda data: _layer_score(data, "local_network_score"),
+    ),
+    GonzalesSensorEntityDescription(
+        key="isp_backbone_health",
+        translation_key="isp_backbone_health",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="points",
+        suggested_display_precision=0,
+        icon="mdi:server-network",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda data: _layer_score(data, "isp_backbone_score"),
+    ),
+    GonzalesSensorEntityDescription(
+        key="isp_lastmile_health",
+        translation_key="isp_lastmile_health",
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="points",
+        suggested_display_precision=0,
+        icon="mdi:home-city-outline",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda data: _layer_score(data, "isp_lastmile_score"),
+    ),
+)
+
+ALL_SENSORS = MAIN_SENSORS + DIAGNOSTIC_SENSORS + SMART_SCHEDULER_SENSORS + ROOT_CAUSE_SENSORS
 
 
 async def async_setup_entry(
@@ -247,5 +382,34 @@ class GonzalesSensor(CoordinatorEntity[GonzalesCoordinator], SensorEntity):
                 return {
                     "server": m.get("server_name"),
                     "isp": m.get("isp"),
+                }
+        if self.entity_description.key == "smart_scheduler_phase":
+            ss = self.coordinator.data.get("smart_scheduler")
+            if ss:
+                return {
+                    "enabled": ss.get("enabled"),
+                    "base_interval_minutes": ss.get("base_interval_minutes"),
+                    "last_decision_reason": ss.get("last_decision_reason"),
+                }
+        if self.entity_description.key == "network_health_score":
+            rc = self.coordinator.data.get("root_cause")
+            if rc:
+                primary = rc.get("primary_cause")
+                return {
+                    "primary_issue_category": primary.get("category") if primary else None,
+                    "primary_issue_severity": primary.get("severity") if primary else None,
+                    "primary_issue_confidence": primary.get("confidence") if primary else None,
+                    "issues_count": len(rc.get("secondary_causes", [])) + (1 if primary else 0),
+                    "recommendations_count": len(rc.get("recommendations", [])),
+                }
+        if self.entity_description.key == "primary_issue":
+            rc = self.coordinator.data.get("root_cause")
+            if rc and rc.get("primary_cause"):
+                cause = rc["primary_cause"]
+                return {
+                    "severity": cause.get("severity"),
+                    "confidence": cause.get("confidence"),
+                    "description": cause.get("description"),
+                    "occurrence_count": cause.get("occurrence_count"),
                 }
         return None

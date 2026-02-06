@@ -66,6 +66,8 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             "measurement": None,
             "status": None,
             "isp_score": None,
+            "smart_scheduler": None,
+            "root_cause": None,
         }
 
         try:
@@ -99,6 +101,30 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     stats = await resp.json()
                     if stats and stats.get("isp_score"):
                         data["isp_score"] = stats["isp_score"]
+
+            # Fetch Smart Scheduler status (v3.7.0+)
+            try:
+                async with session.get(
+                    f"{self._base_url}/smart-scheduler/status",
+                    headers=self._headers,
+                    timeout=aiohttp.ClientTimeout(total=10),
+                ) as resp:
+                    if resp.status == 200:
+                        data["smart_scheduler"] = await resp.json()
+            except aiohttp.ClientError:
+                pass  # Smart scheduler may not be available on older versions
+
+            # Fetch Root-Cause analysis (v3.7.0+)
+            try:
+                async with session.get(
+                    f"{self._base_url}/root-cause/analysis?days=7",
+                    headers=self._headers,
+                    timeout=aiohttp.ClientTimeout(total=30),
+                ) as resp:
+                    if resp.status == 200:
+                        data["root_cause"] = await resp.json()
+            except aiohttp.ClientError:
+                pass  # Root cause may not be available on older versions
 
         except aiohttp.ClientError as err:
             raise UpdateFailed(
