@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.9.4
+
+### Bug Fixes
+
+- **Fix manual test not showing progress** (THE root cause): Status endpoint was only checking scheduler flag, not measurement service flag. Manual triggers now correctly report `test_in_progress=true`.
+
+---
+
 ## 3.9.3
 
 ### Bug Fixes
