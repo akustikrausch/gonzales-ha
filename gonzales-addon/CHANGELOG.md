@@ -1,5 +1,22 @@
 # Changelog
 
+## 3.9.0
+
+### New Features
+
+- **Dashboard: Connection Health Score** - Composite ISP health score gauge (0-100) with grade and breakdown
+- **Dashboard: Outage Alert** - Warning banner on dashboard when outage is detected
+- **Dashboard: Enhanced Latest Result** - Jitter, Packet Loss, Connection Type fields added
+- **Statistics: Confidence Bands** - Trend chart shows prediction confidence intervals
+- **Statistics: Data Usage** - Total data used and average per test in overview
+
+### Improvements
+
+- **Mobile Navigation** - Horizontal scroll tabs, better heatmap, tablet breakpoints
+- **Version Links** - Clickable version number in sidebar, mobile nav, and settings
+
+---
+
 ## 3.8.0
 
 ### Bug Fixes
