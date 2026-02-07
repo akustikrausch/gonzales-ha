@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.9.1
+
+### Bug Fixes
+
+- **Fix live test view in Home Assistant Ingress**: Speed meter now stays visible during tests. Fixed race condition where polling fallback would immediately mark the test as "complete" before the trigger POST reached the backend through the Ingress proxy chain. Added 30-second grace period for test startup detection.
+- **Add debug logging**: Browser console now shows `[gonzales]` prefixed debug messages for SSE/polling diagnostics.
+
+---
+
 ## 3.9.0
 
 ### New Features
