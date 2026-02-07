@@ -9,6 +9,8 @@ readonly DL_THRESHOLD=$(bashio::config 'download_threshold_mbps')
 readonly UL_THRESHOLD=$(bashio::config 'upload_threshold_mbps')
 readonly SERVER_ID=$(bashio::config 'preferred_server_id')
 readonly LOG_LEVEL=$(bashio::config 'log_level')
+readonly TOLERANCE_PERCENT=$(bashio::config 'tolerance_percent')
+readonly ISP_NAME=$(bashio::config 'isp_name')
 
 if [[ "${TEST_INTERVAL}" -lt 1 ]] || [[ "${TEST_INTERVAL}" -gt 1440 ]]; then
     bashio::log.error "test_interval_minutes out of range (1-1440): ${TEST_INTERVAL}"
@@ -98,6 +100,8 @@ export GONZALES_DOWNLOAD_THRESHOLD_MBPS="${DL_THRESHOLD}"
 export GONZALES_UPLOAD_THRESHOLD_MBPS="${UL_THRESHOLD}"
 export GONZALES_PREFERRED_SERVER_ID="${SERVER_ID}"
 export GONZALES_LOG_LEVEL="${LOG_LEVEL}"
+export GONZALES_TOLERANCE_PERCENT="${TOLERANCE_PERCENT}"
+export GONZALES_ISP_NAME="${ISP_NAME}"
 
 # --- Register discovery (with API key) ---
 if bashio::supervisor.ping 2>/dev/null; then

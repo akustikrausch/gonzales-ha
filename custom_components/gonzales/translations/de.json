@@ -66,11 +66,46 @@
       },
       "db_size": {
         "name": "Datenbankgröße"
+      },
+      "smart_scheduler_phase": {
+        "name": "Smart-Scheduler Phase"
+      },
+      "smart_scheduler_stability": {
+        "name": "Verbindungsstabilität"
+      },
+      "smart_scheduler_interval": {
+        "name": "Smart-Scheduler Intervall"
+      },
+      "smart_scheduler_data_used": {
+        "name": "Datenbudget verbraucht"
+      },
+      "network_health_score": {
+        "name": "Netzwerk-Gesundheitswert"
+      },
+      "primary_issue": {
+        "name": "Primäres Netzwerkproblem"
+      },
+      "dns_health": {
+        "name": "DNS-Gesundheit"
+      },
+      "local_network_health": {
+        "name": "Lokale Netzwerk-Gesundheit"
+      },
+      "isp_backbone_health": {
+        "name": "ISP-Backbone-Gesundheit"
+      },
+      "isp_lastmile_health": {
+        "name": "ISP-Letzte-Meile-Gesundheit"
       }
     },
     "binary_sensor": {
       "internet_outage": {
         "name": "Internetausfall"
+      }
+    },
+    "button": {
+      "run_speed_test": {
+        "name": "Speedtest starten"
       }
     }
   }

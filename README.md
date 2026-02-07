@@ -9,7 +9,7 @@
 
 # Gonzales Speed Monitor for Home Assistant
 
-**Professional internet monitoring, fully integrated with Home Assistant.** One-click installation, comprehensive web dashboard, and 10+ sensors for complete visibility into your connection quality.
+**Professional internet monitoring, fully integrated with Home Assistant.** One-click installation, comprehensive web dashboard, and 20+ sensors for complete visibility into your connection quality.
 
 **[Deutsche Anleitung weiter unten](#deutsche-anleitung)**
 
@@ -21,7 +21,7 @@
 
 **Professional Dashboard** — Real-time analytics with historical trends, hourly/daily/weekly breakdowns, per-server comparisons, ISP grading (A+ to F), and 7-day predictive forecasts. Accessible directly from your HA sidebar via Ingress.
 
-**Deep Home Assistant Integration** — 10+ sensors including download, upload, ping, jitter, packet loss, ISP score, and outage detection. Build automations for notifications, router reboots, failover switching, and more.
+**Deep Home Assistant Integration** — 20+ sensors including download, upload, ping, jitter, packet loss, ISP score, smart scheduler status, network health diagnostics, and outage detection. Build automations for notifications, router reboots, failover switching, and more.
 
 **100% Local & Private** — All data stays on your Home Assistant. No cloud accounts, no subscriptions, no external dependencies.
 
@@ -47,7 +47,7 @@
 
 Gonzales is a comprehensive internet monitoring system that:
 - Runs automatic speed tests at regular intervals (default: every 60 minutes)
-- Provides 10+ sensors for download/upload speeds, ping, jitter, packet loss, and ISP quality score
+- Provides 20+ sensors for download/upload speeds, ping, jitter, packet loss, ISP quality score, smart scheduling, and network health diagnostics
 - Detects internet outages automatically with smart 3-strike retry logic
 - Tracks SLA compliance and calculates reliability percentages
 - Analyzes QoS requirements for gaming, streaming, and video calls
@@ -196,16 +196,98 @@ This is useful because internet speeds normally fluctuate a bit. A measurement o
 
 After setup, you get these sensors automatically:
 
-| Sensor | What it shows |
-|--------|---------------|
-| Download Speed | Your latest download speed in Mbps |
-| Upload Speed | Your latest upload speed in Mbps |
-| Ping | How fast your connection responds (lower = better) |
-| ISP Score | Overall rating of your internet (0-100) |
-| Last Test Time | When the last test ran |
-| Internet Outage | Binary sensor: ON if outage detected |
+### Main Sensors
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Download Speed | `sensor.gonzales_download_speed` | Latest download speed in Mbps |
+| Upload Speed | `sensor.gonzales_upload_speed` | Latest upload speed in Mbps |
+| Ping Latency | `sensor.gonzales_ping_latency` | Ping latency in ms |
+| Ping Jitter | `sensor.gonzales_ping_jitter` | Ping jitter in ms |
+| Packet Loss | `sensor.gonzales_packet_loss` | Packet loss percentage |
+| Last Test Time | `sensor.gonzales_last_test_time` | Timestamp of last speed test |
+| ISP Score | `sensor.gonzales_isp_score` | ISP performance score (0-100 points) |
+
+### Diagnostic Sensors
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Scheduler Status | `sensor.gonzales_scheduler_running` | running/stopped |
+| Test in Progress | `sensor.gonzales_test_in_progress` | yes/no |
+| Uptime | `sensor.gonzales_uptime` | Backend uptime in seconds |
+| Total Measurements | `sensor.gonzales_total_measurements` | Total test count |
+| Database Size | `sensor.gonzales_db_size` | Database size in bytes |
+
+### Smart Scheduler Sensors (v3.7.0+)
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Smart Scheduler Phase | `sensor.gonzales_smart_scheduler_phase` | Current phase (learning/stable/aggressive) |
+| Connection Stability | `sensor.gonzales_smart_scheduler_stability` | Stability score as percentage |
+| Smart Scheduler Interval | `sensor.gonzales_smart_scheduler_interval` | Current adaptive interval in minutes |
+| Data Budget Used | `sensor.gonzales_smart_scheduler_data_used` | Percentage of monthly data budget used |
+
+### Root Cause Analysis Sensors (v3.7.0+)
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Network Health Score | `sensor.gonzales_network_health_score` | Overall network health (0-100 points) |
+| Primary Network Issue | `sensor.gonzales_primary_issue` | Category of main detected issue |
+| DNS Health | `sensor.gonzales_dns_health` | DNS layer health score (0-100) |
+| Local Network Health | `sensor.gonzales_local_network_health` | Local network score (0-100) |
+| ISP Backbone Health | `sensor.gonzales_isp_backbone_health` | ISP backbone score (0-100) |
+| ISP Last Mile Health | `sensor.gonzales_isp_lastmile_health` | ISP last mile score (0-100) |
+
+### Binary Sensor
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Internet Outage | `binary_sensor.gonzales_internet_outage` | ON when outage detected |
+
+### Button
+
+| Entity | Entity ID | Description |
+|--------|-----------|-------------|
+| Run Speed Test | `button.gonzales_run_speed_test` | Trigger manual speed test |
 
 Use these sensors in automations, dashboards, or to track your ISP's performance over time.
+
+---
+
+## Services
+
+Gonzales provides two services you can call from automations or the Developer Tools:
+
+| Service | Description |
+|---------|-------------|
+| `gonzales.run_speedtest` | Trigger a speed test (optional: `entry_id`) |
+| `gonzales.set_interval` | Set test interval in minutes 1-1440 (required: `interval`, optional: `entry_id`) |
+
+### Service Examples
+
+**Trigger a speed test from an automation:**
+```yaml
+automation:
+  - alias: "Morning Speed Test"
+    trigger:
+      - platform: time
+        at: "06:00:00"
+    action:
+      - service: gonzales.run_speedtest
+```
+
+**Change the test interval dynamically:**
+```yaml
+automation:
+  - alias: "Test More Often During Peak Hours"
+    trigger:
+      - platform: time
+        at: "18:00:00"
+    action:
+      - service: gonzales.set_interval
+        data:
+          interval: 30
+```
 
 ---
 
@@ -397,6 +479,28 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 ---
 
+## What's New in v3.7.0
+
+### Smart Scheduler
+- **Adaptive test intervals**: Gonzales learns your connection patterns and adjusts test frequency automatically
+- **Three phases**: Learning (collects baseline data), Stable (optimized intervals), Aggressive (frequent tests when issues detected)
+- **Data budget**: Set a monthly data limit and the scheduler stays within it
+- **Connection stability tracking**: Monitors how stable your connection is over time
+
+### Root Cause Analysis
+- **Network health scoring**: Overall health score (0-100) broken down by network layer
+- **Automatic issue detection**: Identifies whether problems are in DNS, local network, ISP backbone, or last mile
+- **Layer-by-layer diagnostics**: Individual health scores for DNS, local network, ISP backbone, and ISP last mile
+- **Primary issue identification**: Pinpoints the most likely cause of network problems
+
+### New Entities
+- 4 Smart Scheduler sensors (phase, stability, interval, data budget)
+- 6 Root Cause Analysis sensors (health score, primary issue, DNS/local/backbone/last mile health)
+- 1 button entity to trigger speed tests directly from Home Assistant
+- 2 services (`gonzales.run_speedtest`, `gonzales.set_interval`)
+
+---
+
 ## What's New in v3.5.0
 
 ### AI Agent Integration
@@ -444,7 +548,7 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 **Professionelles Dashboard** — Echtzeit-Analysen mit historischen Trends, stündlichen/täglichen/wöchentlichen Aufschlüsselungen, Server-Vergleichen, ISP-Bewertung (A+ bis F) und 7-Tage-Vorhersagen. Direkt über die HA-Seitenleiste via Ingress erreichbar.
 
-**Tiefe Home Assistant Integration** — 10+ Sensoren inklusive Download, Upload, Ping, Jitter, Paketverlust, ISP-Score und Ausfallerkennung. Erstelle Automationen für Benachrichtigungen, Router-Neustarts, Failover-Umschaltung und mehr.
+**Tiefe Home Assistant Integration** — 20+ Sensoren inklusive Download, Upload, Ping, Jitter, Paketverlust, ISP-Score, Smart-Scheduler-Status, Netzwerk-Gesundheitsdiagnose und Ausfallerkennung. Erstelle Automationen für Benachrichtigungen, Router-Neustarts, Failover-Umschaltung und mehr.
 
 **100% Lokal & Privat** — Alle Daten bleiben auf deinem Home Assistant. Keine Cloud-Konten, keine Abos, keine externen Abhängigkeiten.
 
@@ -470,7 +574,7 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 
 Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 - Automatisch regelmäßige Speedtests durchführt (Standard: alle 60 Minuten)
-- 10+ Sensoren für Download/Upload, Ping, Jitter, Paketverlust und ISP-Qualitätsbewertung bereitstellt
+- 20+ Sensoren für Download/Upload, Ping, Jitter, Paketverlust, ISP-Qualitätsbewertung, Smart-Scheduling und Netzwerk-Gesundheitsdiagnose bereitstellt
 - Internet-Ausfälle automatisch mit intelligenter 3-Strike-Retry-Logik erkennt
 - SLA-Compliance trackt und Zuverlässigkeitsprozente berechnet
 - QoS-Anforderungen für Gaming, Streaming und Videoanrufe analysiert
@@ -607,16 +711,98 @@ Das ist nützlich, weil Internetgeschwindigkeiten normal etwas schwanken. Eine M
 
 ## Sensoren in Home Assistant
 
-Nach der Einrichtung erhältst du diese Sensoren:
+Nach der Einrichtung erhältst du diese Sensoren automatisch:
 
-| Sensor | Was er anzeigt |
-|--------|----------------|
-| Download Speed | Deine letzte Download-Geschwindigkeit in Mbps |
-| Upload Speed | Deine letzte Upload-Geschwindigkeit in Mbps |
-| Ping | Reaktionszeit deiner Verbindung (niedriger = besser) |
-| ISP Score | Gesamtbewertung deines Internets (0-100) |
-| Last Test Time | Wann der letzte Test lief |
-| Internet Outage | Binärer Sensor: AN wenn Ausfall erkannt |
+### Hauptsensoren
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Download Speed | `sensor.gonzales_download_speed` | Aktuelle Download-Geschwindigkeit in Mbps |
+| Upload Speed | `sensor.gonzales_upload_speed` | Aktuelle Upload-Geschwindigkeit in Mbps |
+| Ping Latency | `sensor.gonzales_ping_latency` | Ping-Latenz in ms |
+| Ping Jitter | `sensor.gonzales_ping_jitter` | Ping-Jitter in ms |
+| Packet Loss | `sensor.gonzales_packet_loss` | Paketverlust in Prozent |
+| Last Test Time | `sensor.gonzales_last_test_time` | Zeitstempel des letzten Speedtests |
+| ISP Score | `sensor.gonzales_isp_score` | ISP-Leistungsbewertung (0-100 Punkte) |
+
+### Diagnose-Sensoren
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Scheduler Status | `sensor.gonzales_scheduler_running` | running/stopped |
+| Test in Progress | `sensor.gonzales_test_in_progress` | yes/no |
+| Uptime | `sensor.gonzales_uptime` | Backend-Laufzeit in Sekunden |
+| Total Measurements | `sensor.gonzales_total_measurements` | Gesamtanzahl der Tests |
+| Database Size | `sensor.gonzales_db_size` | Datenbankgroesse in Bytes |
+
+### Smart-Scheduler-Sensoren (v3.7.0+)
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Smart Scheduler Phase | `sensor.gonzales_smart_scheduler_phase` | Aktuelle Phase (learning/stable/aggressive) |
+| Connection Stability | `sensor.gonzales_smart_scheduler_stability` | Stabilitaetsbewertung in Prozent |
+| Smart Scheduler Interval | `sensor.gonzales_smart_scheduler_interval` | Aktuelles adaptives Intervall in Minuten |
+| Data Budget Used | `sensor.gonzales_smart_scheduler_data_used` | Prozent des monatlichen Datenbudgets verbraucht |
+
+### Root-Cause-Analyse-Sensoren (v3.7.0+)
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Network Health Score | `sensor.gonzales_network_health_score` | Netzwerk-Gesundheitsbewertung (0-100 Punkte) |
+| Primary Network Issue | `sensor.gonzales_primary_issue` | Kategorie des erkannten Hauptproblems |
+| DNS Health | `sensor.gonzales_dns_health` | DNS-Gesundheitsbewertung (0-100) |
+| Local Network Health | `sensor.gonzales_local_network_health` | Lokales Netzwerk Bewertung (0-100) |
+| ISP Backbone Health | `sensor.gonzales_isp_backbone_health` | ISP-Backbone-Bewertung (0-100) |
+| ISP Last Mile Health | `sensor.gonzales_isp_lastmile_health` | ISP-Last-Mile-Bewertung (0-100) |
+
+### Binaerer Sensor
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Internet Outage | `binary_sensor.gonzales_internet_outage` | AN wenn Ausfall erkannt |
+
+### Button
+
+| Entity | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Run Speed Test | `button.gonzales_run_speed_test` | Manuellen Speedtest ausloesen |
+
+---
+
+## Services (Dienste)
+
+Gonzales bietet zwei Dienste, die du in Automationen oder den Entwicklerwerkzeugen aufrufen kannst:
+
+| Service | Beschreibung |
+|---------|--------------|
+| `gonzales.run_speedtest` | Speedtest ausloesen (optional: `entry_id`) |
+| `gonzales.set_interval` | Testintervall in Minuten setzen, 1-1440 (erforderlich: `interval`, optional: `entry_id`) |
+
+### Service-Beispiele
+
+**Speedtest per Automation ausloesen:**
+```yaml
+automation:
+  - alias: "Morgens Speedtest"
+    trigger:
+      - platform: time
+        at: "06:00:00"
+    action:
+      - service: gonzales.run_speedtest
+```
+
+**Testintervall dynamisch aendern:**
+```yaml
+automation:
+  - alias: "Haeufiger testen zu Stosszeiten"
+    trigger:
+      - platform: time
+        at: "18:00:00"
+    action:
+      - service: gonzales.set_interval
+        data:
+          interval: 30
+```
 
 ---
 
@@ -799,6 +985,28 @@ Prüfe die App-Logs: **Einstellungen → Apps → Gonzales → Log**. Häufige U
 - Keine Internetverbindung
 - Firewall blockiert den Speedtest
 - Temporäre Ookla Server-Probleme (später erneut versuchen)
+
+---
+
+## Was ist neu in v3.7.0
+
+### Smart Scheduler
+- **Adaptive Testintervalle**: Gonzales lernt deine Verbindungsmuster und passt die Testhaeufigkeit automatisch an
+- **Drei Phasen**: Learning (Basisdaten sammeln), Stable (optimierte Intervalle), Aggressive (haeufige Tests bei erkannten Problemen)
+- **Datenbudget**: Setze ein monatliches Datenlimit und der Scheduler haelt sich daran
+- **Verbindungsstabilitaet**: Ueberwacht wie stabil deine Verbindung ueber die Zeit ist
+
+### Root-Cause-Analyse
+- **Netzwerk-Gesundheitsbewertung**: Gesamtbewertung (0-100) aufgeschluesselt nach Netzwerkschicht
+- **Automatische Problemerkennung**: Identifiziert ob Probleme bei DNS, lokalem Netzwerk, ISP-Backbone oder Last Mile liegen
+- **Schicht-fuer-Schicht-Diagnose**: Einzelne Gesundheitsbewertungen fuer DNS, lokales Netzwerk, ISP-Backbone und ISP-Last-Mile
+- **Hauptproblem-Identifikation**: Findet die wahrscheinlichste Ursache von Netzwerkproblemen
+
+### Neue Entities
+- 4 Smart-Scheduler-Sensoren (Phase, Stabilitaet, Intervall, Datenbudget)
+- 6 Root-Cause-Analyse-Sensoren (Gesundheitsbewertung, Hauptproblem, DNS/Lokal/Backbone/Last-Mile-Gesundheit)
+- 1 Button-Entity zum Ausloesen von Speedtests direkt aus Home Assistant
+- 2 Services (`gonzales.run_speedtest`, `gonzales.set_interval`)
 
 ---
 

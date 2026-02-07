@@ -66,11 +66,46 @@
       },
       "db_size": {
         "name": "Database size"
+      },
+      "smart_scheduler_phase": {
+        "name": "Smart scheduler phase"
+      },
+      "smart_scheduler_stability": {
+        "name": "Connection stability"
+      },
+      "smart_scheduler_interval": {
+        "name": "Smart scheduler interval"
+      },
+      "smart_scheduler_data_used": {
+        "name": "Data budget used"
+      },
+      "network_health_score": {
+        "name": "Network health score"
+      },
+      "primary_issue": {
+        "name": "Primary network issue"
+      },
+      "dns_health": {
+        "name": "DNS health"
+      },
+      "local_network_health": {
+        "name": "Local network health"
+      },
+      "isp_backbone_health": {
+        "name": "ISP backbone health"
+      },
+      "isp_lastmile_health": {
+        "name": "ISP last mile health"
       }
     },
     "binary_sensor": {
       "internet_outage": {
         "name": "Internet outage"
+      }
+    },
+    "button": {
+      "run_speed_test": {
+        "name": "Run speed test"
       }
     }
   }

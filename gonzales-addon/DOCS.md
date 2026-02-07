@@ -295,15 +295,70 @@ If you run Gonzales on a separate machine (Raspberry Pi, server, NAS), you can s
 
 Gonzales creates these sensors in Home Assistant:
 
+### Main Sensors
+
 | Sensor | Entity ID | Description |
 |--------|-----------|-------------|
-| Download Speed | `sensor.gonzales_download_speed` | Latest download in Mbps |
-| Upload Speed | `sensor.gonzales_upload_speed` | Latest upload in Mbps |
-| Ping | `sensor.gonzales_ping_latency` | Latency in ms |
-| Jitter | `sensor.gonzales_ping_jitter` | Jitter in ms |
-| Packet Loss | `sensor.gonzales_packet_loss` | Packet loss % |
-| ISP Score | `sensor.gonzales_isp_score` | Overall rating 0-100 |
-| Last Test | `sensor.gonzales_last_test_time` | Timestamp of last test |
+| Download Speed | `sensor.gonzales_download_speed` | Latest download speed in Mbps |
+| Upload Speed | `sensor.gonzales_upload_speed` | Latest upload speed in Mbps |
+| Ping Latency | `sensor.gonzales_ping_latency` | Ping latency in ms |
+| Ping Jitter | `sensor.gonzales_ping_jitter` | Ping jitter in ms |
+| Packet Loss | `sensor.gonzales_packet_loss` | Packet loss percentage |
+| Last Test Time | `sensor.gonzales_last_test_time` | Timestamp of last speed test |
+| ISP Score | `sensor.gonzales_isp_score` | ISP performance score (0-100 points) |
+
+### Diagnostic Sensors
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Scheduler Status | `sensor.gonzales_scheduler_running` | running/stopped |
+| Test in Progress | `sensor.gonzales_test_in_progress` | yes/no |
+| Uptime | `sensor.gonzales_uptime` | Backend uptime in seconds |
+| Total Measurements | `sensor.gonzales_total_measurements` | Total test count |
+| Database Size | `sensor.gonzales_db_size` | Database size in bytes |
+
+### Smart Scheduler Sensors (v3.7.0+)
+
+The Smart Scheduler learns your connection patterns and adjusts test frequency automatically. It operates in three phases: **learning** (collects baseline data), **stable** (optimized intervals for normal operation), and **aggressive** (frequent tests when issues are detected).
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Smart Scheduler Phase | `sensor.gonzales_smart_scheduler_phase` | Current phase (learning/stable/aggressive) |
+| Connection Stability | `sensor.gonzales_smart_scheduler_stability` | Stability score as percentage |
+| Smart Scheduler Interval | `sensor.gonzales_smart_scheduler_interval` | Current adaptive interval in minutes |
+| Data Budget Used | `sensor.gonzales_smart_scheduler_data_used` | Percentage of monthly data budget used |
+
+### Root Cause Analysis Sensors (v3.7.0+)
+
+Root Cause Analysis breaks down your network health into layers, helping you identify where problems originate. Instead of just knowing your speed is slow, you can see whether the issue is in DNS resolution, your local network, the ISP backbone, or the last mile connection.
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Network Health Score | `sensor.gonzales_network_health_score` | Overall network health (0-100 points) |
+| Primary Network Issue | `sensor.gonzales_primary_issue` | Category of main detected issue |
+| DNS Health | `sensor.gonzales_dns_health` | DNS layer health score (0-100) |
+| Local Network Health | `sensor.gonzales_local_network_health` | Local network score (0-100) |
+| ISP Backbone Health | `sensor.gonzales_isp_backbone_health` | ISP backbone score (0-100) |
+| ISP Last Mile Health | `sensor.gonzales_isp_lastmile_health` | ISP last mile score (0-100) |
+
+### Binary Sensor
+
+| Sensor | Entity ID | Description |
+|--------|-----------|-------------|
+| Internet Outage | `binary_sensor.gonzales_internet_outage` | ON when outage detected |
+
+### Button
+
+| Entity | Entity ID | Description |
+|--------|-----------|-------------|
+| Run Speed Test | `button.gonzales_run_speed_test` | Trigger manual speed test |
+
+### Services
+
+| Service | Description |
+|---------|-------------|
+| `gonzales.run_speedtest` | Trigger a speed test (optional: `entry_id`) |
+| `gonzales.set_interval` | Set test interval in minutes 1-1440 (required: `interval`, optional: `entry_id`) |
 
 ### Dashboard Examples
 
@@ -707,15 +762,70 @@ Wenn du Gonzales auf einem separaten Gerät betreibst (Raspberry Pi, Server, NAS
 
 Gonzales erstellt diese Sensoren in Home Assistant:
 
+### Hauptsensoren
+
 | Sensor | Entity ID | Beschreibung |
 |--------|-----------|--------------|
-| Download Speed | `sensor.gonzales_download_speed` | Aktueller Download in Mbps |
-| Upload Speed | `sensor.gonzales_upload_speed` | Aktueller Upload in Mbps |
-| Ping | `sensor.gonzales_ping_latency` | Latenz in ms |
-| Jitter | `sensor.gonzales_ping_jitter` | Jitter in ms |
-| Packet Loss | `sensor.gonzales_packet_loss` | Paketverlust % |
-| ISP Score | `sensor.gonzales_isp_score` | Gesamtbewertung 0-100 |
-| Letzter Test | `sensor.gonzales_last_test_time` | Zeitstempel des letzten Tests |
+| Download Speed | `sensor.gonzales_download_speed` | Aktuelle Download-Geschwindigkeit in Mbps |
+| Upload Speed | `sensor.gonzales_upload_speed` | Aktuelle Upload-Geschwindigkeit in Mbps |
+| Ping Latency | `sensor.gonzales_ping_latency` | Ping-Latenz in ms |
+| Ping Jitter | `sensor.gonzales_ping_jitter` | Ping-Jitter in ms |
+| Packet Loss | `sensor.gonzales_packet_loss` | Paketverlust in Prozent |
+| Last Test Time | `sensor.gonzales_last_test_time` | Zeitstempel des letzten Speedtests |
+| ISP Score | `sensor.gonzales_isp_score` | ISP-Leistungsbewertung (0-100 Punkte) |
+
+### Diagnose-Sensoren
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Scheduler Status | `sensor.gonzales_scheduler_running` | running/stopped |
+| Test in Progress | `sensor.gonzales_test_in_progress` | yes/no |
+| Uptime | `sensor.gonzales_uptime` | Backend-Laufzeit in Sekunden |
+| Total Measurements | `sensor.gonzales_total_measurements` | Gesamtanzahl der Tests |
+| Database Size | `sensor.gonzales_db_size` | Datenbankgroesse in Bytes |
+
+### Smart-Scheduler-Sensoren (v3.7.0+)
+
+Der Smart Scheduler lernt deine Verbindungsmuster und passt die Testhaeufigkeit automatisch an. Er arbeitet in drei Phasen: **learning** (sammelt Basisdaten), **stable** (optimierte Intervalle im Normalbetrieb) und **aggressive** (haeufige Tests bei erkannten Problemen).
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Smart Scheduler Phase | `sensor.gonzales_smart_scheduler_phase` | Aktuelle Phase (learning/stable/aggressive) |
+| Connection Stability | `sensor.gonzales_smart_scheduler_stability` | Stabilitaetsbewertung in Prozent |
+| Smart Scheduler Interval | `sensor.gonzales_smart_scheduler_interval` | Aktuelles adaptives Intervall in Minuten |
+| Data Budget Used | `sensor.gonzales_smart_scheduler_data_used` | Prozent des monatlichen Datenbudgets verbraucht |
+
+### Root-Cause-Analyse-Sensoren (v3.7.0+)
+
+Die Root-Cause-Analyse schluesselt deine Netzwerk-Gesundheit nach Schichten auf und hilft dir zu erkennen, wo Probleme entstehen. Statt nur zu wissen, dass dein Internet langsam ist, kannst du sehen, ob das Problem bei der DNS-Aufloesung, deinem lokalen Netzwerk, dem ISP-Backbone oder der Last-Mile-Verbindung liegt.
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Network Health Score | `sensor.gonzales_network_health_score` | Netzwerk-Gesundheitsbewertung (0-100 Punkte) |
+| Primary Network Issue | `sensor.gonzales_primary_issue` | Kategorie des erkannten Hauptproblems |
+| DNS Health | `sensor.gonzales_dns_health` | DNS-Gesundheitsbewertung (0-100) |
+| Local Network Health | `sensor.gonzales_local_network_health` | Lokales Netzwerk Bewertung (0-100) |
+| ISP Backbone Health | `sensor.gonzales_isp_backbone_health` | ISP-Backbone-Bewertung (0-100) |
+| ISP Last Mile Health | `sensor.gonzales_isp_lastmile_health` | ISP-Last-Mile-Bewertung (0-100) |
+
+### Binaerer Sensor
+
+| Sensor | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Internet Outage | `binary_sensor.gonzales_internet_outage` | AN wenn Ausfall erkannt |
+
+### Button
+
+| Entity | Entity ID | Beschreibung |
+|--------|-----------|--------------|
+| Run Speed Test | `button.gonzales_run_speed_test` | Manuellen Speedtest ausloesen |
+
+### Services (Dienste)
+
+| Service | Beschreibung |
+|---------|--------------|
+| `gonzales.run_speedtest` | Speedtest ausloesen (optional: `entry_id`) |
+| `gonzales.set_interval` | Testintervall in Minuten setzen, 1-1440 (erforderlich: `interval`, optional: `entry_id`) |
 
 ### Dashboard-Beispiele
 

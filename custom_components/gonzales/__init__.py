@@ -101,4 +101,12 @@ async def async_unload_entry(
     entry: GonzalesConfigEntry,
 ) -> bool:
     """Unload a config entry."""
-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+
+    # Unregister services if this is the last entry for the domain
+    remaining = hass.config_entries.async_entries(DOMAIN)
+    if not [e for e in remaining if e.entry_id != entry.entry_id]:
+        hass.services.async_remove(DOMAIN, SERVICE_RUN_SPEEDTEST)
+        hass.services.async_remove(DOMAIN, SERVICE_SET_INTERVAL)
+
+    return unload_ok

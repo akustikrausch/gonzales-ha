@@ -179,7 +179,7 @@ class GonzalesCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         """
         session = async_get_clientsession(self.hass)
         try:
-            async with session.patch(
+            async with session.put(
                 f"{self._base_url}/config",
                 headers=self._headers,
                 json={"test_interval_minutes": interval_minutes},
