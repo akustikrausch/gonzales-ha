@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.9.2
+
+### Bug Fixes
+
+- **Fix live test view disappearing in HA Ingress**: Added sticky `testActive` flag preventing speed meter flicker during proxy delays.
+- **Add visible debug overlay**: On-screen diagnostic bar showing SSE/polling/trigger state without needing DevTools.
+- **Fix console.debug invisibility**: Changed to `console.log()` for Chrome compatibility.
+- **Add cache-busting to status polls**: Prevent proxy caching during test.
+
+---
+
 ## 3.9.1
 
 ### Bug Fixes
