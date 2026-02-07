@@ -3,11 +3,11 @@
   "name": "Gonzales",
   "codeowners": ["@akustikrausch"],
   "config_flow": true,
-  "dependencies": ["hassio"],
+  "after_dependencies": ["hassio"],
   "documentation": "https://github.com/akustikrausch/gonzales-ha",
   "integration_type": "hub",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/akustikrausch/gonzales-ha/issues",
   "requirements": [],
-  "version": "3.9.7"
+  "version": "3.9.8"
 }

@@ -8,8 +8,12 @@ from typing import Any
 import aiohttp
 import voluptuous as vol
 
-from homeassistant.components.hassio import HassioServiceInfo
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+
+try:
+    from homeassistant.helpers.service_info.hassio import HassioServiceInfo
+except ImportError:
+    from homeassistant.components.hassio import HassioServiceInfo
 from homeassistant.const import CONF_HOST, CONF_PORT, CONF_SCAN_INTERVAL
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.9.8
+
+### Bug Fixes
+
+- **Fix "Invalid handler specified" when adding integration**: `HassioServiceInfo` import path changed in recent HA Core versions. Integration now supports both old and new import locations.
+- **Fix hard hassio dependency**: Changed to `after_dependencies` so integration loads reliably.
+
+---
+
 ## 3.9.7
 
 ### Bug Fixes
