@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.9.6
+
+### Bug Fixes
+
+- **Fix speed needle pointing to wrong position**: Redesigned gauge arc layout so needle correctly tracks the displayed speed value. All marks visible.
+- **Fix animation jumps during rapid polling**: Smooth needle animation from current position instead of jumping.
+- **Remove debug overlay**: Green diagnostic bar no longer shown.
+
+---
+
 ## 3.9.5
 
 ### Bug Fixes
