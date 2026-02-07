@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.9.3
+
+### Bug Fixes
+
+- **Fix premature test completion in HA Ingress**: Polling no longer marks test as "completed" after 6s. Root cause: trigger response bypassed grace period + React batching swallowed "complete" phase.
+- **Increase grace period to 60s, poll interval to 2s**
+
+---
+
 ## 3.9.2
 
 ### Bug Fixes
