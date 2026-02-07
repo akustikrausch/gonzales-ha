@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.9.5
+
+### Bug Fixes
+
+- **Fix speed meter showing 0 Mbps during test**: Status API now exposes live bandwidth data from the speedtest event bus. Polling fallback displays real speed values.
+- **Fix dashboard stuck on 3 gauges after test**: Fixed streaming state not clearing on completion, and added 5-second result display before transitioning to full dashboard.
+
+---
+
 ## 3.9.4
 
 ### Bug Fixes
