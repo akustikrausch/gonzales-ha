@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.8.0
+
+### Bug Fixes
+
+- **SSE Streaming in HA Ingress**: Definitive fix for live speedtest view not working in Home Assistant
+  - Root cause: HA Core's `should_compress()` applies deflate to `text/event-stream`, breaking SSE through ingress
+  - Use `application/octet-stream` content-type to bypass compression
+  - Replace `EventSource` with `fetch()` + `ReadableStream` for compatibility
+  - Add keepalive heartbeats, fix polling fallback timer leak, fix auto-connect loop
+
+---
+
 ## 3.7.7
 
 ### Bug Fixes
