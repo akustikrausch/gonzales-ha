@@ -1,5 +1,27 @@
 # Changelog
 
+## 3.7.7
+
+### Bug Fixes
+
+- **Integration**: Fix set_interval service using PATCH instead of PUT (405 error)
+- **Integration**: Fix button entity not extending CoordinatorEntity
+- **Integration**: Fix services not unregistered on last entry unload
+- **Addon**: Export missing tolerance_percent and isp_name env vars to backend
+
+### Improvements
+
+- Add translations for all 10 Smart Scheduler and Root Cause sensors (EN/DE)
+- Button entity now uses DeviceInfo and translation keys
+
+### Documentation
+
+- Update sensor tables with all 23 sensors, binary sensor, button, and services
+- Document Smart Scheduler and Root Cause Analysis features
+- Add v3.7.0 feature highlights to README
+
+---
+
 ## 3.7.6
 
 ### Bug Fixes
