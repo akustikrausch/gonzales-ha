@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.9.7
+
+### Bug Fixes
+
+- **Fix infinite reload loop on version mismatch**: HA Ingress proxy can cache old frontend assets after addon update. Version check now reloads only once; if mismatch persists, continues normally instead of looping.
+
+---
+
 ## 3.9.6
 
 ### Bug Fixes
