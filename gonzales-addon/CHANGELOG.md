@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.9.9
+
+### Features
+
+- **Full i18n support (English + German)**: All web UI strings now translatable. Switch language in Settings > Preferences > Language.
+
+---
+
 ## 3.9.8
 
 ### Bug Fixes
