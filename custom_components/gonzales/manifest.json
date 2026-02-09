@@ -1,9 +1,9 @@
 {
   "domain": "gonzales",
   "name": "Gonzales",
+  "after_dependencies": ["hassio"],
   "codeowners": ["@akustikrausch"],
   "config_flow": true,
-  "after_dependencies": ["hassio"],
   "documentation": "https://github.com/akustikrausch/gonzales-ha",
   "integration_type": "hub",
   "iot_class": "local_polling",
