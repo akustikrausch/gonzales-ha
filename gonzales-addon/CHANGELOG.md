@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.10.0
+
+### Features
+
+- **Scheduler randomization**: Optional jitter for scheduled speed tests. Covers different times of day instead of always testing at the same hours. Toggle in Settings > Scheduler. Jitter adapts to interval (25%, capped at 30 min).
+
+---
+
 ## 3.9.9
 
 ### Features
