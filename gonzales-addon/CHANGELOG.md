@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.10.1
+
+### Bug Fixes
+
+- **Fix 500 error on config save**: `save_config()` crashed because smart scheduler keys were missing from the Settings class. Added missing fields with proper defaults.
+
+---
+
 ## 3.10.0
 
 ### Features
