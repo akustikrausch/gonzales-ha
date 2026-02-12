@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.10.2
+
+### Bug Fixes
+
+- **Fix web UI crash in HA Ingress**: Rate limiter blocked static JS assets served via HA Ingress double-slash paths (`//assets/`), causing `Failed to fetch dynamically imported module` errors. Fixed path normalization and increased burst limit.
+
+---
+
 ## 3.10.1
 
 ### Bug Fixes
