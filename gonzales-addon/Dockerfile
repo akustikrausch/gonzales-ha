@@ -44,7 +44,7 @@ LABEL \
     org.opencontainers.image.title="${BUILD_NAME}" \
     org.opencontainers.image.description="${BUILD_DESCRIPTION}" \
     org.opencontainers.image.vendor="Gonzales" \
-    org.opencontainers.image.authors="akustikrausch" \
+    org.opencontainers.image.authors="Andreas Wendorf" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.url="https://github.com/akustikrausch/gonzales-ha" \
     org.opencontainers.image.source="https://github.com/akustikrausch/gonzales-ha" \
