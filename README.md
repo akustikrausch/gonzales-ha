@@ -11,6 +11,8 @@
 
 **Professional internet monitoring, fully integrated with Home Assistant.** One-click installation, comprehensive web dashboard, and 20+ sensors for complete visibility into your connection quality.
 
+[![Add Repository to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fakustikrausch%2Fgonzales-ha)
+
 **[Deutsche Anleitung weiter unten](#deutsche-anleitung)**
 
 ---
@@ -63,6 +65,12 @@ Gonzales is a comprehensive internet monitoring system that:
 > **Note:** Home Assistant 2026.2+ renamed "Add-ons" to "Apps". This guide uses the new terminology. If you're on an older version, "Apps" = "Add-ons" and "App Store" = "Add-on Store".
 
 ### Step 1: Add the Repository
+
+**Quick method** -- click this button to add the repository automatically:
+
+[![Add Repository to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fakustikrausch%2Fgonzales-ha)
+
+**Manual method:**
 
 1. Open Home Assistant
 2. Go to **Settings** (gear icon in the sidebar)
@@ -590,6 +598,12 @@ Gonzales ist ein umfassendes Internet-Überwachungssystem, das:
 > **Hinweis:** Home Assistant 2026.2+ hat "Add-ons" in "Apps" umbenannt. Diese Anleitung verwendet die neue Terminologie. Falls du eine ältere Version nutzt: "Apps" = "Add-ons" und "App Store" = "Add-on Store".
 
 ### Schritt 1: Repository hinzufügen
+
+**Schnelle Methode** -- klicke diesen Button, um das Repository automatisch hinzuzufügen:
+
+[![Repository zu Home Assistant hinzufügen](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fakustikrausch%2Fgonzales-ha)
+
+**Manuelle Methode:**
 
 1. Öffne Home Assistant
 2. Gehe zu **Einstellungen** (Zahnrad-Symbol in der Seitenleiste)
