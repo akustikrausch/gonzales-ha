@@ -17,6 +17,18 @@
 
 ---
 
+## Gonzales Ecosystem
+
+| Repository | What it is | You need this if... |
+|-----------|------------|---------------------|
+| **[gonzales](https://github.com/akustikrausch/gonzales)** | Backend, Web Dashboard, TUI, CLI, API, MCP Server | You run Gonzales standalone (Docker, Raspberry Pi, bare metal) |
+| **[gonzales-ha](https://github.com/akustikrausch/gonzales-ha)** | Home Assistant Add-on (App) | You use HA OS/Supervised and want one-click installation |
+| **[gonzales-integration](https://github.com/akustikrausch/gonzales-integration)** | Home Assistant Integration (HACS) | You run Gonzales standalone AND want HA sensors |
+
+> **You're here!** This is the add-on repo. If you use HA OS/Supervised, this is all you need -- the integration is bundled automatically.
+
+---
+
 ## Why Gonzales?
 
 **Transparency & Documentation** — Continuous monitoring creates an objective record of your internet performance. Understand patterns, identify issues early, and have data when you need it.
@@ -562,6 +574,18 @@ For full integration documentation, see the [Gonzales Integration](https://githu
 ---
 
 # Deutsche Anleitung
+
+## Gonzales Ecosystem
+
+| Repository | Was es ist | Du brauchst das wenn... |
+|-----------|------------|------------------------|
+| **[gonzales](https://github.com/akustikrausch/gonzales)** | Backend, Web Dashboard, TUI, CLI, API, MCP Server | Du Gonzales standalone betreibst (Docker, Raspberry Pi, Bare Metal) |
+| **[gonzales-ha](https://github.com/akustikrausch/gonzales-ha)** | Home Assistant Add-on (App) | Du HA OS/Supervised nutzt und Ein-Klick-Installation willst |
+| **[gonzales-integration](https://github.com/akustikrausch/gonzales-integration)** | Home Assistant Integration (HACS) | Du Gonzales standalone betreibst UND HA-Sensoren willst |
+
+> **Du bist hier!** Dies ist das Add-on Repo. Wenn du HA OS/Supervised nutzt, brauchst du nur dieses -- die Integration wird automatisch mitgeliefert.
+
+---
 
 ## Warum Gonzales?
 
