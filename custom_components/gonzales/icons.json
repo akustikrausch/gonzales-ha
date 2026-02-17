@@ -1,0 +1,10 @@
+{
+  "services": {
+    "run_speedtest": {
+      "service": "mdi:speedometer"
+    },
+    "set_interval": {
+      "service": "mdi:timer-cog"
+    }
+  }
+}
