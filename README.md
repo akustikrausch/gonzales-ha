@@ -481,9 +481,21 @@ Check the app logs: **Settings → Apps → Gonzales → Log**. Common causes:
 
 ---
 
-## Advanced: Standalone Integration
+## Integration for Standalone Gonzales
 
-If you run Gonzales on a separate device (like a Raspberry Pi), you can still connect it to Home Assistant. See the [Integration Setup Guide](gonzales-addon/DOCS.md#standalone-integration) for details.
+If you run Gonzales on a separate device (Docker, Raspberry Pi, bare metal), you can still get all 20+ sensors in Home Assistant by installing the integration separately.
+
+### Via HACS (Recommended)
+1. In HACS, search for **Gonzales**
+2. Install the integration
+3. Restart Home Assistant
+4. Go to **Settings → Devices & Services → Add Integration**
+5. Search for **Gonzales** and enter your server's IP, port, and API key
+
+### Manual Installation
+Copy `custom_components/gonzales/` from the [gonzales-integration](https://github.com/akustikrausch/gonzales-integration) repository to your Home Assistant `config/custom_components/` directory.
+
+For full integration documentation, see the [Gonzales Integration](https://github.com/akustikrausch/gonzales-integration) repository.
 
 ---
 
@@ -541,6 +553,7 @@ If you run Gonzales on a separate device (like a Raspberry Pi), you can still co
 ## Links
 
 - [Main Gonzales Project](https://github.com/akustikrausch/gonzales) - Full documentation, standalone setup, API reference
+- [Gonzales Integration (HACS)](https://github.com/akustikrausch/gonzales-integration) - Install sensors via HACS for standalone setups
 - [Report Issues](https://github.com/akustikrausch/gonzales-ha/issues) - Bug reports and feature requests
 - [Ookla Terms](https://www.speedtest.net/about/terms) - Speed test provider's terms of use
 
@@ -999,6 +1012,33 @@ Prüfe die App-Logs: **Einstellungen → Apps → Gonzales → Log**. Häufige U
 - Keine Internetverbindung
 - Firewall blockiert den Speedtest
 - Temporäre Ookla Server-Probleme (später erneut versuchen)
+
+---
+
+## Integration fuer Standalone-Gonzales
+
+Wenn du Gonzales auf einem separaten Geraet betreibst (Docker, Raspberry Pi, Bare Metal), kannst du trotzdem alle 20+ Sensoren in Home Assistant nutzen, indem du die Integration separat installierst.
+
+### Via HACS (Empfohlen)
+1. Suche in HACS nach **Gonzales**
+2. Installiere die Integration
+3. Starte Home Assistant neu
+4. Gehe zu **Einstellungen → Geraete & Dienste → Integration hinzufuegen**
+5. Suche nach **Gonzales** und gib die IP, den Port und den API-Key deines Servers ein
+
+### Manuelle Installation
+Kopiere `custom_components/gonzales/` aus dem [gonzales-integration](https://github.com/akustikrausch/gonzales-integration) Repository in dein Home Assistant `config/custom_components/` Verzeichnis.
+
+Die vollstaendige Integrations-Dokumentation findest du im [Gonzales Integration](https://github.com/akustikrausch/gonzales-integration) Repository.
+
+---
+
+## Links
+
+- [Gonzales Hauptprojekt](https://github.com/akustikrausch/gonzales) - Vollstaendige Dokumentation, Standalone-Setup, API-Referenz
+- [Gonzales Integration (HACS)](https://github.com/akustikrausch/gonzales-integration) - Sensoren via HACS fuer Standalone-Setups installieren
+- [Fehler melden](https://github.com/akustikrausch/gonzales-ha/issues) - Bug Reports und Feature Requests
+- [Ookla Nutzungsbedingungen](https://www.speedtest.net/about/terms) - Nutzungsbedingungen des Speedtest-Anbieters
 
 ---
 

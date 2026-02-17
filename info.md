@@ -32,11 +32,12 @@ Automated internet speed monitoring with Home Assistant integration.
 ### Option 1: Add-on (Recommended)
 Add this repository to Home Assistant Add-on Store and install "Gonzales Speed Monitor".
 
-### Option 2: HACS Integration
-Install this integration via HACS and connect to an existing Gonzales instance.
+### Option 2: Standalone Integration via HACS
+If you run Gonzales on a separate device, install the [Gonzales Integration](https://github.com/akustikrausch/gonzales-integration) via HACS to get all sensors in Home Assistant.
 
 ## Links
 
 - [Documentation](https://github.com/akustikrausch/gonzales-ha)
 - [Main Project](https://github.com/akustikrausch/gonzales)
+- [Gonzales Integration (HACS)](https://github.com/akustikrausch/gonzales-integration) - Standalone sensor integration
 - [Report Issues](https://github.com/akustikrausch/gonzales-ha/issues)
