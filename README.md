@@ -9,6 +9,9 @@
 
 # Gonzales Speed Monitor for Home Assistant
 
+[![GitHub Release](https://img.shields.io/github/release/akustikrausch/gonzales-ha.svg)](https://github.com/akustikrausch/gonzales-ha/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **Professional internet monitoring, fully integrated with Home Assistant.** One-click installation, comprehensive web dashboard, and 20+ sensors for complete visibility into your connection quality.
 
 [![Add Repository to Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fakustikrausch%2Fgonzales-ha)
