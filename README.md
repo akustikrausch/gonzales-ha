@@ -26,7 +26,7 @@
 |-----------|------------|---------------------|
 | **[gonzales](https://github.com/akustikrausch/gonzales)** | Backend, Web Dashboard, TUI, CLI, API, MCP Server | You run Gonzales standalone (Docker, Raspberry Pi, bare metal) |
 | **[gonzales-ha](https://github.com/akustikrausch/gonzales-ha)** | Home Assistant Add-on (App) | You use HA OS/Supervised and want one-click installation |
-| **[gonzales-integration](https://github.com/akustikrausch/gonzales-integration)** | Home Assistant Integration (HACS) | You run Gonzales standalone AND want HA sensors |
+| **[gonzales-integration](https://github.com/akustikrausch/gonzales-integration)** | Home Assistant Integration (HACS Default) | You run Gonzales standalone AND want HA sensors |
 
 > **You're here!** This is the add-on repo. If you use HA OS/Supervised, this is all you need -- the integration is bundled automatically.
 
@@ -501,6 +501,7 @@ Check the app logs: **Settings → Apps → Gonzales → Log**. Common causes:
 If you run Gonzales on a separate device (Docker, Raspberry Pi, bare metal), you can still get all 20+ sensors in Home Assistant by installing the integration separately.
 
 ### Via HACS (Recommended)
+Gonzales is part of the HACS Default repository -- no custom repository URL needed.
 1. In HACS, search for **Gonzales**
 2. Install the integration
 3. Restart Home Assistant
@@ -568,7 +569,7 @@ For full integration documentation, see the [Gonzales Integration](https://githu
 ## Links
 
 - [Main Gonzales Project](https://github.com/akustikrausch/gonzales) - Full documentation, standalone setup, API reference
-- [Gonzales Integration (HACS)](https://github.com/akustikrausch/gonzales-integration) - Install sensors via HACS for standalone setups
+- [Gonzales Integration (HACS Default)](https://github.com/akustikrausch/gonzales-integration) - Install sensors via HACS for standalone setups
 - [Report Issues](https://github.com/akustikrausch/gonzales-ha/issues) - Bug reports and feature requests
 - [Ookla Terms](https://www.speedtest.net/about/terms) - Speed test provider's terms of use
 
@@ -584,7 +585,7 @@ For full integration documentation, see the [Gonzales Integration](https://githu
 |-----------|------------|------------------------|
 | **[gonzales](https://github.com/akustikrausch/gonzales)** | Backend, Web Dashboard, TUI, CLI, API, MCP Server | Du Gonzales standalone betreibst (Docker, Raspberry Pi, Bare Metal) |
 | **[gonzales-ha](https://github.com/akustikrausch/gonzales-ha)** | Home Assistant Add-on (App) | Du HA OS/Supervised nutzt und Ein-Klick-Installation willst |
-| **[gonzales-integration](https://github.com/akustikrausch/gonzales-integration)** | Home Assistant Integration (HACS) | Du Gonzales standalone betreibst UND HA-Sensoren willst |
+| **[gonzales-integration](https://github.com/akustikrausch/gonzales-integration)** | Home Assistant Integration (HACS Default) | Du Gonzales standalone betreibst UND HA-Sensoren willst |
 
 > **Du bist hier!** Dies ist das Add-on Repo. Wenn du HA OS/Supervised nutzt, brauchst du nur dieses -- die Integration wird automatisch mitgeliefert.
 
@@ -1047,6 +1048,7 @@ Prüfe die App-Logs: **Einstellungen → Apps → Gonzales → Log**. Häufige U
 Wenn du Gonzales auf einem separaten Geraet betreibst (Docker, Raspberry Pi, Bare Metal), kannst du trotzdem alle 20+ Sensoren in Home Assistant nutzen, indem du die Integration separat installierst.
 
 ### Via HACS (Empfohlen)
+Gonzales ist im HACS Default Repository enthalten -- keine Custom Repository URL noetig.
 1. Suche in HACS nach **Gonzales**
 2. Installiere die Integration
 3. Starte Home Assistant neu
@@ -1063,7 +1065,7 @@ Die vollstaendige Integrations-Dokumentation findest du im [Gonzales Integration
 ## Links
 
 - [Gonzales Hauptprojekt](https://github.com/akustikrausch/gonzales) - Vollstaendige Dokumentation, Standalone-Setup, API-Referenz
-- [Gonzales Integration (HACS)](https://github.com/akustikrausch/gonzales-integration) - Sensoren via HACS fuer Standalone-Setups installieren
+- [Gonzales Integration (HACS Default)](https://github.com/akustikrausch/gonzales-integration) - Sensoren via HACS fuer Standalone-Setups installieren
 - [Fehler melden](https://github.com/akustikrausch/gonzales-ha/issues) - Bug Reports und Feature Requests
 - [Ookla Nutzungsbedingungen](https://www.speedtest.net/about/terms) - Nutzungsbedingungen des Speedtest-Anbieters
 
