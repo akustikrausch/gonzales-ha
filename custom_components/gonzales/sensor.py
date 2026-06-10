@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import (
@@ -22,6 +23,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN
 from .coordinator import GonzalesConfigEntry, GonzalesCoordinator
@@ -31,7 +33,7 @@ from .coordinator import GonzalesConfigEntry, GonzalesCoordinator
 class GonzalesSensorEntityDescription(SensorEntityDescription):
     """Describe a Gonzales sensor."""
 
-    value_fn: Callable[[dict[str, Any]], float | int | str | None]
+    value_fn: Callable[[dict[str, Any]], float | int | str | datetime | None]
 
 
 def _measurement(data: dict[str, Any], key: str) -> float | None:
@@ -48,6 +50,22 @@ def _status(data: dict[str, Any], key: str) -> Any:
     if s is None:
         return None
     return s.get(key)
+
+
+def _utc_timestamp(value: Any) -> Any:
+    """Parse an API timestamp string as aware UTC datetime.
+
+    The backend stores UTC but serializes without timezone suffix, and
+    TIMESTAMP sensors require timezone-aware datetime values.
+    """
+    if not value:
+        return None
+    parsed = dt_util.parse_datetime(str(value))
+    if parsed is None:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=dt_util.UTC)
+    return parsed
 
 
 def _scheduler(data: dict[str, Any], key: str) -> Any:
@@ -137,7 +155,7 @@ MAIN_SENSORS: tuple[GonzalesSensorEntityDescription, ...] = (
         key="last_test_time",
         translation_key="last_test_time",
         device_class=SensorDeviceClass.TIMESTAMP,
-        value_fn=lambda data: _status(data, "last_test_time"),
+        value_fn=lambda data: _utc_timestamp(_status(data, "last_test_time")),
     ),
     GonzalesSensorEntityDescription(
         key="isp_score",

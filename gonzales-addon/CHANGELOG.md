@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.10.3
+
+### Bug Fixes
+
+- **Fix stuck outages that never resolve** (gonzales#6): A successful speed test now always closes any active outage record in the database - previously outages stayed "in progress" forever after an add-on restart. Outage statistics now also count active outages instead of showing "0 total outages".
+- **Fix timestamps shown with wrong timezone offset** (gonzales#5): The web UI now correctly converts UTC timestamps to your local timezone, and the TUI converts stored UTC timestamps to the container's local time (the Supervisor already provides the host timezone via the `TZ` environment variable).
+- **Fix inconsistent date format on chart axes** (gonzales#4): Charts now use the same locale-aware day-month format as the rest of the UI.
+- **Fix `last_test_time` sensor**: Now provides a timezone-aware datetime as required by Home Assistant.
+
+---
+
 ## 3.10.2
 
 ### Bug Fixes
